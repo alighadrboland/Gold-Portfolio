@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>پورتفوی صندوق طلای عیار مفید</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jalaali-js"></script> <!-- برای تبدیل تاریخ شمسی به میلادی -->
     <style>
         @font-face {
             font-family: 'BNazanin';
@@ -126,8 +127,10 @@
             let today = new Date();
 
             transactions.forEach(tx => {
-                let [shamsiYear, shamsiMonth, shamsiDay] = tx.date.split("/");
-                let dateObj = new Date(`${shamsiYear}-${shamsiMonth}-${shamsiDay}`);
+                // تبدیل تاریخ شمسی به میلادی
+                const [shamsiYear, shamsiMonth, shamsiDay] = tx.date.split("/");
+                const miladiDate = jalaali.toGregorian(shamsiYear, shamsiMonth, shamsiDay);
+                const dateObj = new Date(miladiDate[0], miladiDate[1] - 1, miladiDate[2]);
                 let diffDays = (today - dateObj) / (1000 * 3600 * 24);
                 let profit = (currentPrice - tx.buyPrice) * tx.buyUnits;
                 
@@ -144,6 +147,7 @@
             let values = Object.values(profitData);
             let colors = values.map(value => value >= 0 ? "green" : "red");
 
+            // نمایش اطلاعات سود و زیان
             document.getElementById("output").innerHTML = `
                 مبلغ کل خرید: ${totalBuyAmount.toLocaleString('fa-IR')} ریال<br>
                 <span style="color: blue;">ارزش فعلی: ${(currentPrice * totalUnits).toLocaleString('fa-IR')} ریال</span><br>
