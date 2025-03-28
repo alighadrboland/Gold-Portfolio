@@ -59,11 +59,6 @@
 </head>
 <body>
     <div class="container">
-        <h2>بارگذاری اطلاعات از GitHub</h2>
-        <button onclick="loadDataFromGitHub()">بارگذاری اطلاعات</button>
-    </div>
-
-    <div class="container">
         <h2>محاسبه ارزش و سود</h2>
         <label for="currentPrice">قیمت فعلی هر واحد:</label>
         <input type="number" id="currentPrice" placeholder="قیمت فعلی">
@@ -75,6 +70,11 @@
         let totalBuyAmount = 0, totalUnits = 0;
         const GITHUB_FILE_URL = "https://raw.githubusercontent.com/alighadrboland/Gold-Porfolio/refs/heads/main/portfolio.csv"; // لینک فایل CSV در گیت‌هاب
 
+        // خواندن داده‌ها از گیت‌هاب هنگام بارگذاری صفحه
+        document.addEventListener("DOMContentLoaded", function() {
+            loadDataFromGitHub();
+        });
+
         function loadDataFromGitHub() {
             fetch(GITHUB_FILE_URL)
                 .then(response => response.text())
@@ -85,9 +85,9 @@
                         totalBuyAmount += (buyPrice * buyUnits || 0) - (sellPrice * sellUnits || 0);
                         totalUnits += (buyUnits || 0) - (sellUnits || 0);
                     });
-                    alert("اطلاعات از GitHub بارگذاری شد.");
+                    console.log("اطلاعات از GitHub بارگذاری شد.");
                 })
-                .catch(error => alert("خطا در بارگذاری داده‌ها: " + error));
+                .catch(error => console.error("خطا در بارگذاری داده‌ها: " + error));
         }
 
         function calculate() {
@@ -105,7 +105,6 @@
                 `مبلغ کل خرید: ${totalBuyAmount.toLocaleString('fa-IR')} ریال<br>
                 <span style="color: blue;">ارزش فعلی: ${currentValue.toLocaleString('fa-IR')} ریال</span><br>
                 <span style="color: green;">میزان سود/زیان: ${profit.toLocaleString('fa-IR')} ریال</span>`;
-
         }
     </script>
 </body>
