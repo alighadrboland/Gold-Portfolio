@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>پورتفوی صندوق طلای عیار مفید</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jalaali-js"></script> <!-- برای تبدیل تاریخ شمسی به میلادی -->
+    <script src="https://cdn.jsdelivr.net/npm/jalaali-js"></script>
     <style>
         @font-face {
             font-family: 'BNazanin';
@@ -93,16 +93,19 @@
                 .then(data => {
                     transactions = data.split("\n").map(line => {
                         const [date, buyPrice, buyUnits, sellPrice, sellUnits] = line.split(",");
-                        totalBuyAmount += (Number(buyPrice) * Number(buyUnits)) - (Number(sellPrice) * Number(sellUnits));
-                        totalUnits += Number(buyUnits) - Number(sellUnits);
-                        return { 
-                            date: date.trim(),
-                            buyPrice: Number(buyPrice),
-                            buyUnits: Number(buyUnits),
-                            sellPrice: Number(sellPrice),
-                            sellUnits: Number(sellUnits)
-                        };
-                    });
+                        if (date && buyPrice && buyUnits && sellPrice && sellUnits) {
+                            totalBuyAmount += (Number(buyPrice) * Number(buyUnits)) - (Number(sellPrice) * Number(sellUnits));
+                            totalUnits += Number(buyUnits) - Number(sellUnits);
+                            return { 
+                                date: date.trim(),
+                                buyPrice: Number(buyPrice),
+                                buyUnits: Number(buyUnits),
+                                sellPrice: Number(sellPrice),
+                                sellUnits: Number(sellUnits)
+                            };
+                        }
+                    }).filter(Boolean); // فیلتر کردن موارد نادرست
+                    console.log(transactions); // بررسی داده‌های بارگذاری شده
                     alert("اطلاعات از GitHub بارگذاری شد.");
                 })
                 .catch(error => alert("خطا در بارگذاری داده‌ها: " + error));
@@ -127,7 +130,6 @@
             let today = new Date();
 
             transactions.forEach(tx => {
-                // تبدیل تاریخ شمسی به میلادی
                 const [shamsiYear, shamsiMonth, shamsiDay] = tx.date.split("/");
                 const miladiDate = jalaali.toGregorian(shamsiYear, shamsiMonth, shamsiDay);
                 const dateObj = new Date(miladiDate[0], miladiDate[1] - 1, miladiDate[2]);
