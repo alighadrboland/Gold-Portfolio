@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>پورتفوی صندوق طلای عیار مفید</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         @font-face {
             font-family: 'BNazanin';
@@ -20,7 +21,7 @@
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
+            max-width: 90%;
             margin: auto;
             margin-bottom: 20px;
         }
@@ -55,6 +56,9 @@
             font-weight: bold;
             color: #333;
         }
+        canvas {
+            max-width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -72,19 +76,22 @@
         <div class="result" id="profitPercentage"></div>
     </div>
 
+    <div class="container">
+        <h2>بازدهی در بازه‌های مختلف</h2>
+        <canvas id="performanceChart"></canvas>
+    </div>
+
     <script>
-        let totalBuyAmount = 0, totalUnits = 0;
+        let transactions = [];
         const GITHUB_FILE_URL = "https://raw.githubusercontent.com/alighadrboland/Gold-Porfolio/refs/heads/main/Gold.csv";
 
         function loadDataFromGitHub() {
             fetch(GITHUB_FILE_URL)
                 .then(response => response.text())
                 .then(data => {
-                    const lines = data.split("\n");
-                    lines.forEach(line => {
-                        const [buyPrice, buyUnits, sellPrice, sellUnits] = line.split(",").map(Number);
-                        totalBuyAmount += (buyPrice * buyUnits || 0) - (sellPrice * sellUnits || 0);
-                        totalUnits += (buyUnits || 0) - (sellUnits || 0);
+                    transactions = data.split("\n").map(line => {
+                        const [date, buyPrice, buyUnits, sellPrice, sellUnits] = line.split(",");
+                        return { date: new Date(date), buyPrice: Number(buyPrice), buyUnits: Number(buyUnits), sellPrice: Number(sellPrice), sellUnits: Number(sellUnits) };
                     });
                     alert("اطلاعات از GitHub بارگذاری شد.");
                 })
@@ -93,26 +100,57 @@
 
         function calculate() {
             let currentPrice = parseFloat(document.getElementById("currentPrice").value);
-
-            if (isNaN(currentPrice) || totalUnits <= 0) {
-                document.getElementById("output").innerHTML = "لطفاً قیمت فعلی را وارد کنید و ابتدا اطلاعات را بارگذاری نمایید.";
+            if (isNaN(currentPrice)) {
+                document.getElementById("output").innerHTML = "لطفاً قیمت فعلی را وارد کنید.";
                 return;
             }
 
-            let currentValue = currentPrice * totalUnits;
-            let profit = currentValue - totalBuyAmount;
-            let profitPercentage = (profit / totalBuyAmount) * 100;
-            let profitColor = profit >= 0 ? "green" : "red";
-            let profitText = profit >= 0 ? "میزان سود" : "میزان زیان";
-            let percentageText = profit >= 0 ? "درصد سود" : "درصد زیان";
+            let profitData = {
+                "یک هفته": 0,
+                "یک ماه": 0,
+                "سه ماه": 0,
+                "شش ماه": 0,
+                "یک سال": 0,
+                "دو سال": 0,
+                "سه سال": 0
+            };
+            let today = new Date();
 
-            document.getElementById("output").innerHTML = 
-               `مبلغ کل خرید: ${totalBuyAmount.toLocaleString('fa-IR')} ریال<br>
-                <span style="color: blue;">ارزش فعلی: ${currentValue.toLocaleString('fa-IR')} ریال</span><br>
-                <span style="color: ${profitColor};">${profitText}: ${Math.abs(profit).toLocaleString('fa-IR')} ریال</span>`;
-            
-            document.getElementById("profitPercentage").innerHTML = 
-                `<span style="color: ${profitColor};">${percentageText}: ${Math.abs(profitPercentage).toFixed(2)}%</span>`;
+            transactions.forEach(tx => {
+                let diffDays = (today - tx.date) / (1000 * 3600 * 24);
+                let profit = (currentPrice - tx.buyPrice) * tx.buyUnits;
+                if (diffDays <= 7) profitData["یک هفته"] += profit;
+                if (diffDays <= 30) profitData["یک ماه"] += profit;
+                if (diffDays <= 90) profitData["سه ماه"] += profit;
+                if (diffDays <= 180) profitData["شش ماه"] += profit;
+                if (diffDays <= 365) profitData["یک سال"] += profit;
+                if (diffDays <= 730) profitData["دو سال"] += profit;
+                if (diffDays <= 1095) profitData["سه سال"] += profit;
+            });
+
+            let labels = Object.keys(profitData);
+            let values = Object.values(profitData);
+            let colors = values.map(value => value >= 0 ? "green" : "red");
+
+            document.getElementById("output").innerHTML = "تحلیل بازدهی به روز شد.";
+
+            new Chart(document.getElementById("performanceChart"), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'بازدهی (ریال)',
+                        data: values,
+                        backgroundColor: colors
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
         }
     </script>
 </body>
