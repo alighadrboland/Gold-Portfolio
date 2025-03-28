@@ -102,9 +102,9 @@
             let profit = currentValue - totalBuyAmount;
 
             document.getElementById("output").innerHTML = 
-                `مبلغ کل خرید: ${totalBuyAmount.toLocaleString()} ریال<br>
-                 ارزش فعلی: ${currentValue.toLocaleString()} ریال<br>
-                 میزان سود/زیان: ${profit.toLocaleString()} ریال`;
+               `مبلغ کل خرید: ${totalBuyAmount.toLocaleString('fa-IR')} ریال<br>
+                <span style="color: blue;">ارزش فعلی: ${currentValue.toLocaleString('fa-IR')} ریال</span><br>
+                <span style="color: green;">میزان سود: ${profit.toLocaleString('fa-IR')} ریال</span>`;
         }
     </script>
 </body>
