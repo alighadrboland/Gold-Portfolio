@@ -59,7 +59,7 @@
 </head>
 <body>
     <div class="container">
-        <h2>بارگزاری اطلاعات از گیت هاب</h2>
+        <h2>بارگذاری اطلاعات از GitHub</h2>
         <button onclick="loadDataFromGitHub()">بارگذاری اطلاعات</button>
     </div>
 
@@ -69,6 +69,7 @@
         <input type="number" id="currentPrice" placeholder="قیمت فعلی">
         <button onclick="calculate()">محاسبه</button>
         <div class="result" id="output"></div>
+        <div class="result" id="profitPercentage"></div>
     </div>
 
     <script>
@@ -85,7 +86,7 @@
                         totalBuyAmount += (buyPrice * buyUnits || 0) - (sellPrice * sellUnits || 0);
                         totalUnits += (buyUnits || 0) - (sellUnits || 0);
                     });
-                    alert(".اطلاعات از گیت هاب بارگزاری شد");
+                    alert("اطلاعات از GitHub بارگذاری شد.");
                 })
                 .catch(error => alert("خطا در بارگذاری داده‌ها: " + error));
         }
@@ -100,13 +101,18 @@
 
             let currentValue = currentPrice * totalUnits;
             let profit = currentValue - totalBuyAmount;
+            let profitPercentage = (profit / totalBuyAmount) * 100;
             let profitColor = profit >= 0 ? "green" : "red";
             let profitText = profit >= 0 ? "میزان سود" : "میزان زیان";
+            let percentageText = profit >= 0 ? "درصد سود" : "درصد زیان";
 
             document.getElementById("output").innerHTML = 
                `مبلغ کل خرید: ${totalBuyAmount.toLocaleString('fa-IR')} ریال<br>
                 <span style="color: blue;">ارزش فعلی: ${currentValue.toLocaleString('fa-IR')} ریال</span><br>
                 <span style="color: ${profitColor};">${profitText}: ${Math.abs(profit).toLocaleString('fa-IR')} ریال</span>`;
+            
+            document.getElementById("profitPercentage").innerHTML = 
+                `<span style="color: ${profitColor};">${percentageText}: ${Math.abs(profitPercentage).toFixed(2)}%</span>`;
         }
     </script>
 </body>
