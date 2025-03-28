@@ -83,6 +83,7 @@
 
     <script>
         let transactions = [];
+        let totalBuyAmount = 0, totalUnits = 0;
         const GITHUB_FILE_URL = "https://raw.githubusercontent.com/alighadrboland/Gold-Porfolio/refs/heads/main/Gold_Porfolio_Shamsi.csv";
 
         function loadDataFromGitHub() {
@@ -91,6 +92,8 @@
                 .then(data => {
                     transactions = data.split("\n").map(line => {
                         const [date, buyPrice, buyUnits, sellPrice, sellUnits] = line.split(",");
+                        totalBuyAmount += (Number(buyPrice) * Number(buyUnits)) - (Number(sellPrice) * Number(sellUnits));
+                        totalUnits += Number(buyUnits) - Number(sellUnits);
                         return { 
                             date: date.trim(),
                             buyPrice: Number(buyPrice),
@@ -141,7 +144,11 @@
             let values = Object.values(profitData);
             let colors = values.map(value => value >= 0 ? "green" : "red");
 
-            document.getElementById("output").innerHTML = "تحلیل بازدهی به روز شد.";
+            document.getElementById("output").innerHTML = `
+                مبلغ کل خرید: ${totalBuyAmount.toLocaleString('fa-IR')} ریال<br>
+                <span style="color: blue;">ارزش فعلی: ${(currentPrice * totalUnits).toLocaleString('fa-IR')} ریال</span><br>
+                <span style="color: ${values[values.length - 1] >= 0 ? 'green' : 'red'};">میزان سود/زیان: ${values[values.length - 1].toLocaleString('fa-IR')} ریال</span>
+            `;
 
             new Chart(document.getElementById("performanceChart"), {
                 type: 'bar',
