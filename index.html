@@ -105,7 +105,9 @@
                             };
                         }
                     }).filter(Boolean); // فیلتر کردن موارد نادرست
-                    console.log(transactions); // بررسی داده‌های بارگذاری شده
+                    console.log("Data loaded:", transactions); // بررسی داده‌های بارگذاری شده
+                    console.log("Total Buy Amount:", totalBuyAmount);
+                    console.log("Total Units:", totalUnits);
                     alert("اطلاعات از GitHub بارگذاری شد.");
                 })
                 .catch(error => alert("خطا در بارگذاری داده‌ها: " + error));
@@ -156,6 +158,7 @@
                 <span style="color: ${values[values.length - 1] >= 0 ? 'green' : 'red'};">میزان سود/زیان: ${values[values.length - 1].toLocaleString('fa-IR')} ریال</span>
             `;
 
+            // ترسیم نمودار
             new Chart(document.getElementById("performanceChart"), {
                 type: 'bar',
                 data: {
