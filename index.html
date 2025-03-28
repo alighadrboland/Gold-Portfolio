@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>پورتفوی صندوق طلای عیار مفید</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment-jalaali@0.9.1/moment-jalaali.js"></script>
     <style>
         @font-face {
             font-family: 'BNazanin';
@@ -63,7 +64,7 @@
 </head>
 <body>
     <div class="container">
-        <h2>بارگزاری اطلاعات از گیت هاب</h2>
+        <h2>بارگذاری اطلاعات از GitHub</h2>
         <button onclick="loadDataFromGitHub()">بارگذاری اطلاعات</button>
     </div>
 
@@ -89,11 +90,13 @@
             fetch(GITHUB_FILE_URL)
                 .then(response => response.text())
                 .then(data => {
+                    // تاریخ‌ها را به فرمت فارسی تبدیل می‌کنیم
                     transactions = data.split("\n").map(line => {
-                        const [date, buyPrice, buyUnits, sellPrice, sellUnits] = line.split(",");
-                        return { date: new Date(date), buyPrice: Number(buyPrice), buyUnits: Number(buyUnits), sellPrice: Number(sellPrice), sellUnits: Number(sellUnits) };
+                        const [date, buyUnits, buyPrice] = line.split(",");
+                        const jalaaliDate = moment(date, "YYYY/MM/DD").format("jYYYY/jMM/jDD"); // تبدیل تاریخ میلادی به شمسی
+                        return { date: jalaaliDate, buyUnits: Number(buyUnits), buyPrice: Number(buyPrice) };
                     });
-                    alert("اطلاعات از گیت هاب بارگزاری شد");
+                    alert("اطلاعات از GitHub بارگذاری شد.");
                 })
                 .catch(error => alert("خطا در بارگذاری داده‌ها: " + error));
         }
@@ -117,7 +120,7 @@
             let today = new Date();
 
             transactions.forEach(tx => {
-                let diffDays = (today - tx.date) / (1000 * 3600 * 24);
+                let diffDays = (today - new Date(tx.date)) / (1000 * 3600 * 24);
                 let profit = (currentPrice - tx.buyPrice) * tx.buyUnits;
                 if (diffDays <= 7) profitData["یک هفته"] += profit;
                 if (diffDays <= 30) profitData["یک ماه"] += profit;
