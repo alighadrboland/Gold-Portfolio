@@ -30,11 +30,34 @@
         canvas {
             margin-top: 20px;
         }
+        .input-section {
+            margin-bottom: 20px;
+        }
+        input[type="number"] {
+            padding: 5px;
+            font-size: 1em;
+        }
+        button {
+            padding: 5px 10px;
+            font-size: 1em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>تحلیل پورتفوی</h1>
+        <div class="input-section">
+            <label for="currentPrice">قیمت فعلی هر واحد (ریال):</label>
+            <input type="number" id="currentPrice" min="0" step="1" required>
+            <button onclick="calculatePortfolio()">محاسبه</button>
+        </div>
         <div id="totalBuySell" class="value"></div>
         <div id="portfolioValue" class="value portfolio-value"></div>
         <div id="profitLoss" class="value"></div>
@@ -43,13 +66,14 @@
 
     <script>
         // Fetch CSV from GitHub
-        const csvUrl = 'https://raw.githubusercontent.com/alighadrboland/Gold-Porfolio/refs/heads/main/portfolio.csv';
+        const csvUrl = 'https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPOSITORY/main/portfolio.csv';
+        let transactions = [];
 
         fetch(csvUrl)
             .then(response => response.text())
             .then(data => {
                 const rows = data.trim().split('\n').slice(1); // Skip header
-                const transactions = rows.map(row => {
+                transactions = rows.map(row => {
                     const [date, buyUnits, buyPrice, sellUnits, sellPrice] = row.split(',');
                     return {
                         date: convertPersianDate(date),
@@ -59,29 +83,36 @@
                         sellPrice: parseInt(sellPrice)
                     };
                 });
-
-                // Calculate totals
-                const totalBuy = transactions.reduce((sum, t) => sum + (t.buyUnits * t.buyPrice), 0);
-                const totalSell = transactions.reduce((sum, t) => sum + (t.sellUnits * t.sellPrice), 0);
-                const totalBuySell = totalBuy - totalSell;
-
-                const remainingUnits = transactions.reduce((sum, t) => sum + t.buyUnits - t.sellUnits, 0);
-                const lastPrice = transactions[transactions.length - 1].buyPrice; // Assuming last buy price as current price
-                const portfolioValue = remainingUnits * lastPrice;
-                const profitLoss = portfolioValue + totalSell - totalBuy;
-
-                // Display values
-                document.getElementById('totalBuySell').innerHTML = `مبلغ کل خرید با احتساب فروش: ${totalBuySell.toLocaleString()} ریال`;
-                document.getElementById('portfolioValue').innerHTML = `ارزش پورتفو: ${portfolioValue.toLocaleString()} ریال`;
-                const profitLossElement = document.getElementById('profitLoss');
-                profitLossElement.innerHTML = `مبلغ سود/زیان: ${Math.abs(profitLoss).toLocaleString()} ریال`;
-                profitLossElement.className = `value ${profitLoss >= 0 ? 'profit' : 'loss'}`;
-
-                // Calculate performance
-                const performance = calculatePerformance(transactions, lastPrice);
-                renderChart(performance);
             })
             .catch(error => console.error('Error fetching CSV:', error));
+
+        function calculatePortfolio() {
+            const currentPrice = parseInt(document.getElementById('currentPrice').value);
+            if (!currentPrice || currentPrice <= 0) {
+                alert('لطفاً قیمت فعلی معتبر وارد کنید.');
+                return;
+            }
+
+            // Calculate totals
+            const totalBuy = transactions.reduce((sum, t) => sum + (t.buyUnits * t.buyPrice), 0);
+            const totalSell = transactions.reduce((sum, t) => sum + (t.sellUnits * t.sellPrice), 0);
+            const totalBuySell = totalBuy - totalSell;
+
+            const remainingUnits = transactions.reduce((sum, t) => sum + t.buyUnits - t.sellUnits, 0);
+            const portfolioValue = remainingUnits * currentPrice;
+            const profitLoss = portfolioValue + totalSell - totalBuy;
+
+            // Display values
+            document.getElementById('totalBuySell').innerHTML = `مبلغ کل خرید با احتساب فروش: ${totalBuySell.toLocaleString()} ریال`;
+            document.getElementById('portfolioValue').innerHTML = `ارزش پورتفو: ${portfolioValue.toLocaleString()} ریال`;
+            const profitLossElement = document.getElementById('profitLoss');
+            profitLossElement.innerHTML = `مبلغ سود/زیان: ${Math.abs(profitLoss).toLocaleString()} ریال`;
+            profitLossElement.className = `value ${profitLoss >= 0 ? 'profit' : 'loss'}`;
+
+            // Calculate and render performance
+            const performance = calculatePerformance(transactions, currentPrice);
+            renderChart(performance);
+        }
 
         // Convert Persian date (e.g., 1403/05/09) to Gregorian timestamp
         function convertPersianDate(persianDate) {
@@ -126,7 +157,8 @@
         // Render bar chart
         function renderChart(performance) {
             const ctx = document.getElementById('performanceChart').getContext('2d');
-            new Chart(ctx, {
+            if (window.myChart) window.myChart.destroy(); // Destroy previous chart if exists
+            window.myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: Object.keys(performance),
