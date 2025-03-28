@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> صندوق عیار مفید</title>
+    <style>
+        @font-face {
+            font-family: 'BNazanin';
+            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/b-nazanin-font@master/fonts/BNazanin.woff2') format('woff2');
+        }
+        body {
+            font-family: 'BNazanin', Arial, sans-serif;
+            text-align: center;
+            background-color: #eef2f7;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+            margin-bottom: 20px;
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 12px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        #currentPrice {
+            width: 50%;
+            padding: 8px;
+            font-size: 14px;
+            display: block;
+            margin: 10px auto;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            border: none;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>بارگذاری اطلاعات از GitHub</h2>
+        <button onclick="loadDataFromGitHub()">بارگذاری اطلاعات</button>
+    </div>
+
+    <div class="container">
+        <h2>محاسبه ارزش و سود</h2>
+        <label for="currentPrice">قیمت فعلی هر واحد:</label>
+        <input type="number" id="currentPrice" placeholder="قیمت فعلی">
+        <button onclick="calculate()">محاسبه</button>
+        <div class="result" id="output"></div>
+    </div>
+
+    <script>
+        let totalBuyAmount = 0, totalUnits = 0;
+        const GITHUB_FILE_URL = "https://raw.githubusercontent.com/USERNAME/REPOSITORY/main/data.csv"; // لینک فایل CSV در گیت‌هاب
+
+        function loadDataFromGitHub() {
+            fetch(GITHUB_FILE_URL)
+                .then(response => response.text())
+                .then(data => {
+                    const lines = data.split("\n");
+                    lines.forEach(line => {
+                        const [buyPrice, buyUnits, sellPrice, sellUnits] = line.split(",").map(Number);
+                        totalBuyAmount += (buyPrice * buyUnits || 0) - (sellPrice * sellUnits || 0);
+                        totalUnits += (buyUnits || 0) - (sellUnits || 0);
+                    });
+                    alert("اطلاعات از GitHub بارگذاری شد.");
+                })
+                .catch(error => alert("خطا در بارگذاری داده‌ها: " + error));
+        }
+
+        function calculate() {
+            let currentPrice = parseFloat(document.getElementById("currentPrice").value);
+
+            if (isNaN(currentPrice) || totalUnits <= 0) {
+                document.getElementById("output").innerHTML = "لطفاً قیمت فعلی را وارد کنید و ابتدا اطلاعات را بارگذاری نمایید.";
+                return;
+            }
+
+            let currentValue = currentPrice * totalUnits;
+            let profit = currentValue - totalBuyAmount;
+
+            document.getElementById("output").innerHTML = 
+                `مبلغ کل خرید: ${totalBuyAmount.toLocaleString()} تومان<br>
+                 ارزش فعلی: ${currentValue.toLocaleString()} تومان<br>
+                 میزان سود/زیان: ${profit.toLocaleString()} تومان`;
+        }
+    </script>
+</body>
+</html>
