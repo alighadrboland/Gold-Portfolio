@@ -63,7 +63,7 @@
 </head>
 <body>
     <div class="container">
-        <h2>بارگذاری اطلاعات از GitHub</h2>
+        <h2>بارگزاری اطلاعات از گیت هاب</h2>
         <button onclick="loadDataFromGitHub()">بارگذاری اطلاعات</button>
     </div>
 
@@ -93,7 +93,7 @@
                         const [date, buyPrice, buyUnits, sellPrice, sellUnits] = line.split(",");
                         return { date: new Date(date), buyPrice: Number(buyPrice), buyUnits: Number(buyUnits), sellPrice: Number(sellPrice), sellUnits: Number(sellUnits) };
                     });
-                    alert("اطلاعات از GitHub بارگذاری شد.");
+                    alert("اطلاعات از گیت هاب بارگزاری شد");
                 })
                 .catch(error => alert("خطا در بارگذاری داده‌ها: " + error));
         }
