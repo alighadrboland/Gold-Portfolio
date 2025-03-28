@@ -1,182 +1,146 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>پورتفوی صندوق طلای عیار مفید</title>
+    <title>تحلیل پورتفوی</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jalaali-js"></script>
     <style>
-        @font-face {
-            font-family: 'BNazanin';
-            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/b-nazanin-font@master/fonts/BNazanin.woff2') format('woff2');
-        }
         body {
-            font-family: 'BNazanin', Arial, sans-serif;
-            text-align: center;
-            background-color: #eef2f7;
+            font-family: Arial, sans-serif;
+            text-align: right;
+            background-color: #f4f4f4;
             padding: 20px;
         }
         .container {
+            max-width: 800px;
+            margin: 0 auto;
             background: white;
             padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            max-width: 90%;
-            margin: auto;
-            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        input, button {
+        .value {
+            font-size: 1.2em;
             margin: 10px 0;
-            padding: 12px;
-            width: 100%;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 16px;
         }
-        #currentPrice {
-            width: 50%;
-            padding: 8px;
-            font-size: 14px;
-            display: block;
-            margin: 10px auto;
-        }
-        button {
-            background: #007bff;
-            color: white;
-            cursor: pointer;
-            border: none;
-            transition: background 0.3s;
-        }
-        button:hover {
-            background: #0056b3;
-        }
-        .result {
-            margin-top: 20px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-        }
+        .portfolio-value { color: blue; }
+        .profit { color: green; }
+        .loss { color: red; }
         canvas {
-            max-width: 100%;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>بارگذاری اطلاعات از GitHub</h2>
-        <button onclick="loadDataFromGitHub()">بارگذاری اطلاعات</button>
-    </div>
-
-    <div class="container">
-        <h2>محاسبه سود و زیان</h2>
-        <label for="currentPrice">قیمت فعلی هر واحد</label>
-        <input type="number" id="currentPrice" placeholder="قیمت فعلی">
-        <button onclick="calculate()">محاسبه</button>
-        <div class="result" id="output"></div>
-        <div class="result" id="profitPercentage"></div>
-    </div>
-
-    <div class="container">
-        <h2>بازدهی در بازه‌های مختلف</h2>
+        <h1>تحلیل پورتفوی</h1>
+        <div id="totalBuySell" class="value"></div>
+        <div id="portfolioValue" class="value portfolio-value"></div>
+        <div id="profitLoss" class="value"></div>
         <canvas id="performanceChart"></canvas>
     </div>
 
     <script>
-        let transactions = [];
-        let totalBuyAmount = 0, totalUnits = 0;
-        const GITHUB_FILE_URL = "https://raw.githubusercontent.com/alighadrboland/Gold-Porfolio/refs/heads/main/Gold_Porfolio_Shamsi.csv";
+        // Fetch CSV from GitHub
+        const csvUrl = 'https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPOSITORY/main/portfolio.csv';
 
-        function loadDataFromGitHub() {
-            fetch(GITHUB_FILE_URL)
-                .then(response => response.text())
-                .then(data => {
-                    transactions = data.split("\n").map(line => {
-                        const [date, buyPrice, buyUnits, sellPrice, sellUnits] = line.split(",");
-                        if (date && buyPrice && buyUnits && sellPrice && sellUnits) {
-                            totalBuyAmount += (Number(buyPrice) * Number(buyUnits)) - (Number(sellPrice) * Number(sellUnits));
-                            totalUnits += Number(buyUnits) - Number(sellUnits);
-                            return { 
-                                date: date.trim(),
-                                buyPrice: Number(buyPrice),
-                                buyUnits: Number(buyUnits),
-                                sellPrice: Number(sellPrice),
-                                sellUnits: Number(sellUnits)
-                            };
-                        }
-                    }).filter(Boolean); // فیلتر کردن موارد نادرست
-                    console.log("Data loaded:", transactions); // بررسی داده‌های بارگذاری شده
-                    console.log("Total Buy Amount:", totalBuyAmount);
-                    console.log("Total Units:", totalUnits);
-                    alert("اطلاعات از GitHub بارگذاری شد.");
-                })
-                .catch(error => alert("خطا در بارگذاری داده‌ها: " + error));
+        fetch(csvUrl)
+            .then(response => response.text())
+            .then(data => {
+                const rows = data.trim().split('\n').slice(1); // Skip header
+                const transactions = rows.map(row => {
+                    const [date, buyUnits, buyPrice, sellUnits, sellPrice] = row.split(',');
+                    return {
+                        date: convertPersianDate(date),
+                        buyUnits: parseInt(buyUnits),
+                        buyPrice: parseInt(buyPrice),
+                        sellUnits: parseInt(sellUnits),
+                        sellPrice: parseInt(sellPrice)
+                    };
+                });
+
+                // Calculate totals
+                const totalBuy = transactions.reduce((sum, t) => sum + (t.buyUnits * t.buyPrice), 0);
+                const totalSell = transactions.reduce((sum, t) => sum + (t.sellUnits * t.sellPrice), 0);
+                const totalBuySell = totalBuy - totalSell;
+
+                const remainingUnits = transactions.reduce((sum, t) => sum + t.buyUnits - t.sellUnits, 0);
+                const lastPrice = transactions[transactions.length - 1].buyPrice; // Assuming last buy price as current price
+                const portfolioValue = remainingUnits * lastPrice;
+                const profitLoss = portfolioValue + totalSell - totalBuy;
+
+                // Display values
+                document.getElementById('totalBuySell').innerHTML = `مبلغ کل خرید با احتساب فروش: ${totalBuySell.toLocaleString()} ریال`;
+                document.getElementById('portfolioValue').innerHTML = `ارزش پورتفو: ${portfolioValue.toLocaleString()} ریال`;
+                const profitLossElement = document.getElementById('profitLoss');
+                profitLossElement.innerHTML = `مبلغ سود/زیان: ${Math.abs(profitLoss).toLocaleString()} ریال`;
+                profitLossElement.className = `value ${profitLoss >= 0 ? 'profit' : 'loss'}`;
+
+                // Calculate performance
+                const performance = calculatePerformance(transactions, lastPrice);
+                renderChart(performance);
+            })
+            .catch(error => console.error('Error fetching CSV:', error));
+
+        // Convert Persian date (e.g., 1403/05/09) to Gregorian timestamp
+        function convertPersianDate(persianDate) {
+            const [year, month, day] = persianDate.split('/').map(Number);
+            const gregorianDate = new Date(year - 621, month - 1, day); // Rough approximation
+            return gregorianDate;
         }
 
-        function calculate() {
-            let currentPrice = parseFloat(document.getElementById("currentPrice").value);
-            if (isNaN(currentPrice)) {
-                document.getElementById("output").innerHTML = "لطفاً قیمت فعلی را وارد کنید.";
-                return;
-            }
-
-            let profitData = {
-                "یک هفته": 0,
-                "یک ماه": 0,
-                "سه ماه": 0,
-                "شش ماه": 0,
-                "یک سال": 0,
-                "دو سال": 0,
-                "سه سال": 0
+        // Calculate performance over time periods
+        function calculatePerformance(transactions, currentPrice) {
+            const periods = {
+                'هفتگی': 7,
+                'ماهانه': 30,
+                'سه ماهه': 90,
+                'شش ماهه': 180,
+                'سالانه': 365,
+                'دو ساله': 730,
+                'سه ساله': 1095
             };
-            let today = new Date();
+            const today = new Date('2025-03-28'); // Current date
+            const performance = {};
 
-            transactions.forEach(tx => {
-                // تبدیل تاریخ از شمسی به میلادی
-                const [shamsiYear, shamsiMonth, shamsiDay] = tx.date.split("/");
-                const miladiDate = jalaali.toGregorian(shamsiYear, shamsiMonth, shamsiDay);
-                const dateObj = new Date(miladiDate[0], miladiDate[1] - 1, miladiDate[2]);
-                
-                let diffDays = (today - dateObj) / (1000 * 3600 * 24);
-                let profit = (currentPrice - tx.buyPrice) * tx.buyUnits;
-                
-                console.log(`Transaction: ${tx.date} => Days Diff: ${diffDays} => Profit: ${profit}`);
+            for (const [label, days] of Object.entries(periods)) {
+                const startDate = new Date(today);
+                startDate.setDate(today.getDate() - days);
 
-                if (diffDays <= 7) profitData["یک هفته"] += profit;
-                if (diffDays <= 30) profitData["یک ماه"] += profit;
-                if (diffDays <= 90) profitData["سه ماه"] += profit;
-                if (diffDays <= 180) profitData["شش ماه"] += profit;
-                if (diffDays <= 365) profitData["یک سال"] += profit;
-                if (diffDays <= 730) profitData["دو سال"] += profit;
-                if (diffDays <= 1095) profitData["سه سال"] += profit;
-            });
+                let units = 0, totalCost = 0, totalSell = 0;
+                transactions.forEach(t => {
+                    if (t.date >= startDate) {
+                        units += t.buyUnits - t.sellUnits;
+                        totalCost += t.buyUnits * t.buyPrice;
+                        totalSell += t.sellUnits * t.sellPrice;
+                    }
+                });
+                const currentValue = units * currentPrice;
+                const returnValue = (currentValue + totalSell - totalCost) / (totalCost || 1) * 100;
+                performance[label] = returnValue;
+            }
+            return performance;
+        }
 
-            let labels = Object.keys(profitData);
-            let values = Object.values(profitData);
-            let colors = values.map(value => value >= 0 ? "green" : "red");
-
-            // نمایش اطلاعات سود و زیان
-            document.getElementById("output").innerHTML = `
-                مبلغ کل خرید: ${totalBuyAmount.toLocaleString('fa-IR')} ریال<br>
-                <span style="color: blue;">ارزش فعلی: ${(currentPrice * totalUnits).toLocaleString('fa-IR')} ریال</span><br>
-                <span style="color: ${values[values.length - 1] >= 0 ? 'green' : 'red'};">میزان سود/زیان: ${values[values.length - 1].toLocaleString('fa-IR')} ریال</span>
-            `;
-
-            // ترسیم نمودار
-            new Chart(document.getElementById("performanceChart"), {
+        // Render bar chart
+        function renderChart(performance) {
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: labels,
+                    labels: Object.keys(performance),
                     datasets: [{
-                        label: 'بازدهی (ریال)',
-                        data: values,
-                        backgroundColor: colors
+                        label: 'بازدهی (%)',
+                        data: Object.values(performance),
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
                     }]
                 },
                 options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { display: false }
+                    scales: {
+                        y: { beginAtZero: true }
                     }
                 }
             });
