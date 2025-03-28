@@ -132,12 +132,16 @@
             let today = new Date();
 
             transactions.forEach(tx => {
+                // تبدیل تاریخ از شمسی به میلادی
                 const [shamsiYear, shamsiMonth, shamsiDay] = tx.date.split("/");
                 const miladiDate = jalaali.toGregorian(shamsiYear, shamsiMonth, shamsiDay);
                 const dateObj = new Date(miladiDate[0], miladiDate[1] - 1, miladiDate[2]);
+                
                 let diffDays = (today - dateObj) / (1000 * 3600 * 24);
                 let profit = (currentPrice - tx.buyPrice) * tx.buyUnits;
                 
+                console.log(`Transaction: ${tx.date} => Days Diff: ${diffDays} => Profit: ${profit}`);
+
                 if (diffDays <= 7) profitData["یک هفته"] += profit;
                 if (diffDays <= 30) profitData["یک ماه"] += profit;
                 if (diffDays <= 90) profitData["سه ماه"] += profit;
