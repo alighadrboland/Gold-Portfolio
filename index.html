@@ -33,9 +33,9 @@
             font-size: 16px;
         }
         #currentPrice, #goldPrice {
-            width: 60%; /* کاهش عرض */
-            padding: 6px; /* کاهش ارتفاع */
-            font-size: 14px; /* کاهش اندازه فونت */
+            width: 60%;
+            padding: 6px;
+            font-size: 14px;
             display: block;
             margin: 10px auto;
         }
@@ -61,18 +61,13 @@
             font-size: 16px;
             font-weight: bold;
         }
-
-        /* تغییرات رنگ */
         .gold {
-            color: #B8860B; /* رنگ طلایی تیره */
+            color: #B8860B;
         }
-
         .totalValue {
             color: green;
-            font-size: 24px; /* اندازه بزرگتر */
+            font-size: 24px;
         }
-
-        /* واکنش‌گرایی برای موبایل */
         @media screen and (max-width: 480px) {
             body {
                 padding: 10px;
@@ -110,7 +105,7 @@
     </div>
 
     <script>
-        let totalBuyAmount = 0, totalUnits = 0, totalGoldValue = 0, totalProfitLoss = 0;
+        let totalBuyAmount = 0, totalUnits = 0, totalGoldValue = 0, totalProfitLoss = 0, currentValue = 0;
         const GITHUB_FILE_URL = "https://raw.githubusercontent.com/alighadrboland/Gold-Porfolio/refs/heads/main/portfolio.csv";
 
         document.addEventListener("DOMContentLoaded", function() {
@@ -140,7 +135,7 @@
                 return;
             }
 
-            let currentValue = currentPrice * totalUnits;
+            currentValue = currentPrice * totalUnits;
             let profit = currentValue - totalBuyAmount;
             let percentageChange = (profit / totalBuyAmount) * 100; 
 
@@ -172,10 +167,9 @@
         }
 
         function updateTotalValue() {
-    let totalValue = currentValue + (totalGoldValue / 10);  // تغییرات اینجا
-    document.getElementById("totalValue").innerHTML = `ارزش کل: <span class="totalValue">${Math.floor(totalValue).toLocaleString('fa-IR')} تومان</span>`;
-}
-
+            let totalValue = currentValue + (totalGoldValue / 10); 
+            document.getElementById("totalValue").innerHTML = `ارزش کل: <span class="totalValue">${Math.floor(totalValue).toLocaleString('fa-IR')} تومان</span>`;
+        }
     </script>
 </body>
 </html>
