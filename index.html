@@ -28,20 +28,20 @@
         }
         input, button {
             margin: 10px 0;
-            padding: 12px;
-            width: 100%;
             border: 1px solid #ccc;
             border-radius: 8px;
             font-size: 16px;
         }
         #currentPrice, #goldPrice {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
+            width: 60%; /* کاهش عرض */
+            padding: 6px; /* کاهش ارتفاع */
+            font-size: 14px; /* کاهش اندازه فونت */
             display: block;
             margin: 10px auto;
         }
         button {
+            width: 100%;
+            padding: 12px;
             background: #007bff;
             color: white;
             cursor: pointer;
@@ -90,7 +90,7 @@
         <div class="result" id="output"></div>
         
         <h2>طلای آبشده</h2>
-        <label for="goldPrice">قیمت هر گرم طلا:</label>
+        <label for="goldPrice">قیمت هر گرم طلا</label>
         <input type="number" id="goldPrice" placeholder="قیمت هر گرم طلا">
         <button onclick="calculateGoldValue()">محاسبه</button>
         <div class="result" id="goldOutput"></div>
@@ -101,7 +101,7 @@
 
     <script>
         let totalBuyAmount = 0, totalUnits = 0, totalGoldValue = 0, totalProfitLoss = 0;
-        const GITHUB_FILE_URL = "https://raw.githubusercontent.com/alighadrboland/Gold-Porfolio/refs/heads/main/portfolio.csv"; // لینک فایل CSV در گیت‌هاب
+        const GITHUB_FILE_URL = "https://raw.githubusercontent.com/alighadrboland/Gold-Porfolio/refs/heads/main/portfolio.csv";
 
         document.addEventListener("DOMContentLoaded", function() {
             loadDataFromGitHub();
