@@ -83,19 +83,19 @@
 </head>
 <body>
     <div class="container">
-        <h2>صندوق طلای عیار مفید</h2>
+        <h2><span class="gold">صندوق طلای عیار مفید</span></h2>
         <label for="currentPrice">قیمت هر واحد</label>
         <input type="number" id="currentPrice" placeholder="قیمت فعلی">
         <button onclick="calculate()">محاسبه</button>
         <div class="result" id="output"></div>
         
-        <h2>طلای آبشده</h2>
+        <h2><span class="gold">طلای آبشده</span></h2>
         <label for="goldPrice">قیمت هر گرم طلا</label>
         <input type="number" id="goldPrice" placeholder="قیمت هر گرم طلا">
         <button onclick="calculateGoldValue()">محاسبه</button>
         <div class="result" id="goldOutput"></div>
         
-        <h2>ارزش موجودی طلا</h2>
+        <h2><span class="gold">ارزش موجودی طلا</span></h2>
         <div class="result" id="totalValue"></div>
     </div>
 
@@ -163,7 +163,7 @@
 
         function updateTotalValue() {
             let totalValue = totalProfitLoss + (totalGoldValue / 10);
-            document.getElementById("totalValue").innerHTML = `ارزش کل: ${Math.floor(totalValue).toLocaleString('fa-IR')} تومان`;
+            document.getElementById("totalValue").innerHTML = `ارزش کل:<span class="green">${Math.floor(totalValue).toLocaleString('fa-IR')} تومان`;
         }
     </script>
 </body>
