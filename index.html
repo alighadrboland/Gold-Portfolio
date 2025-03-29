@@ -137,7 +137,7 @@
 
             currentValue = currentPrice * totalUnits;
             let profit = currentValue - totalBuyAmount;
-            let percentageChange = ((profit / totalBuyAmount) * 100).toLocaleString('fa-IR'); 
+            let percentageChange = Math.floor((profit / totalBuyAmount) * 100).toLocaleString('fa-IR'); 
 
             let percentageColor = percentageChange >= 0 ? 'green' : 'red';
 
