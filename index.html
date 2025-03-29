@@ -148,7 +148,7 @@
                 <span style="color: ${percentageColor};">میزان سود یا زیان: ${(Math.floor(totalProfitLoss)).toLocaleString('fa-IR')}</span><br>
                 <span class="percentage" style="color: ${percentageColor};">درصد تغییرات: ${percentageChange.toFixed(2)}</span>`;
 
-            document.querySelector(".gold").innerHTML = `صندوق طلای عیار مفید (${totalUnits})`;
+            document.querySelector(".gold").innerHTML = `صندوق طلای عیار مفید (${totalUnits.toLocaleString()})`;
 
             updateTotalValue();
         }
