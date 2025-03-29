@@ -94,13 +94,13 @@
 <body>
     <div class="container">
         <h2><span class="gold">صندوق طلای عیار مفید</span></h2>
-        <label for="currentPrice">قیمت هر واحد</label>
+        <label for="currentPrice">قیمت هر واحد (ریال)</label>
         <input type="number" id="currentPrice" placeholder="قیمت فعلی">
         <button onclick="calculate()">محاسبه</button>
         <div class="result" id="output"></div>
         
         <h2><span class="gold">طلای آبشده</span></h2>
-        <label for="goldPrice">قیمت هر گرم طلا</label>
+        <label for="goldPrice">قیمت هر گرم طلا (تومان)</label>
         <input type="number" id="goldPrice" placeholder="قیمت هر گرم طلا">
         <button onclick="calculateGoldValue()">محاسبه</button>
         <div class="result" id="goldOutput"></div>
@@ -148,9 +148,9 @@
 
             totalProfitLoss = profit / 10;
             document.getElementById("output").innerHTML = 
-                `مبلغ کل خرید: ${(Math.floor(totalBuyAmount / 10)).toLocaleString('fa-IR')} تومان<br>
-                <span style="color: blue;">ارزش فعلی: ${(Math.floor(currentValue / 10)).toLocaleString('fa-IR')} تومان</span><br>
-                <span style="color: ${percentageColor};">میزان سود/زیان: ${(Math.floor(totalProfitLoss)).toLocaleString('fa-IR')} تومان</span><br>
+                `مبلغ کل خرید: ${(Math.floor(totalBuyAmount / 10)).toLocaleString('fa-IR')}<br>
+                <span style="color: blue;">ارزش فعلی: ${(Math.floor(currentValue / 10)).toLocaleString('fa-IR')}</span><br>
+                <span style="color: ${percentageColor};">میزان سود/زیان: ${(Math.floor(totalProfitLoss)).toLocaleString('fa-IR')}</span><br>
                 <span class="percentage" style="color: ${percentageColor};">درصد تغییرات: ${percentageChange.toFixed(2)}</span>`;
 
             updateTotalValue();
@@ -166,7 +166,7 @@
             }
 
             totalGoldValue = (goldPrice / 750) * 750 * 278.44;
-            document.getElementById("goldOutput").innerHTML = `ارزش طلای آبشده: ${(Math.floor(totalGoldValue / 10)).toLocaleString('fa-IR')} تومان`;
+            document.getElementById("goldOutput").innerHTML = `ارزش طلای آبشده: ${(Math.floor(totalGoldValue / 10)).toLocaleString('fa-IR')}`;
 
             updateTotalValue();
         }
