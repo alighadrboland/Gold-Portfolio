@@ -143,10 +143,12 @@
 
             totalProfitLoss = profit / 10;
             document.getElementById("output").innerHTML = 
-                `مبلغ کل خرید: ${(Math.floor(totalBuyAmount / 10)).toLocaleString('fa-IR')} تومان<br>
+                `مبلغ کل خرید: ${(Math.floor(totalBuyAmount / 10)).toLocaleString('fa-IR')}<br>
                 <span style="color: blue;">ارزش فعلی: ${(Math.floor(currentValue / 10)).toLocaleString('fa-IR')}</span><br>
                 <span style="color: ${percentageColor};">میزان سود یا زیان: ${(Math.floor(totalProfitLoss)).toLocaleString('fa-IR')}</span><br>
-                <span class="percentage" style="color: ${percentageColor};">درصد تغییرات: ${percentageChange.toFixed(2).toLocaleString('fa-IR')}</span>`;
+                <span class="percentage" style="color: ${percentageColor};">
+                    درصد تغییرات: ${percentageChange.toLocaleString('fa-IR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </span>
 
             updateTotalValue();
         }
