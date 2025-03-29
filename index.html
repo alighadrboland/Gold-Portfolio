@@ -161,7 +161,7 @@
                 document.getElementById("goldOutput").innerHTML = "لطفاً قیمت هر گرم طلا را وارد کنید.";
                 return;
             }
-            let gram = 278.44
+            let gram = 278.44;
             totalGoldValue = (goldPrice / 750) * 750 * gram;
             document.getElementById("goldOutput").innerHTML = `ارزش طلا: ${(Math.floor(totalGoldValue / 10)).toLocaleString('fa-IR')}`;
 
