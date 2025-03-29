@@ -148,6 +148,8 @@
                 <span style="color: ${percentageColor};">میزان سود یا زیان: ${(Math.floor(totalProfitLoss)).toLocaleString('fa-IR')}</span><br>
                 <span class="percentage" style="color: ${percentageColor};">درصد تغییرات: ${percentageChange.toFixed(2)}</span>`;
 
+            document.querySelector(".gold").innerHTML = `صندوق طلای عیار مفید (${totalUnits})`;
+
             updateTotalValue();
         }
 
@@ -159,9 +161,12 @@
                 document.getElementById("goldOutput").innerHTML = "لطفاً قیمت هر گرم طلا را وارد کنید.";
                 return;
             }
-
-            totalGoldValue = (goldPrice / 750) * 750 * 278.44;
+            let gram = 278.44
+            totalGoldValue = (goldPrice / 750) * 750 * gram;
             document.getElementById("goldOutput").innerHTML = `ارزش طلا: ${(Math.floor(totalGoldValue / 10)).toLocaleString('fa-IR')}`;
+
+            document.querySelectorAll(".gold")[1].innerHTML = `طلای آبشده (gram)`;
+
 
             updateTotalValue();
         }
