@@ -151,7 +151,7 @@
                 `مبلغ کل خرید: ${(Math.floor(totalBuyAmount / 10)).toLocaleString('fa-IR')} تومان<br>
                 <span style="color: blue;">ارزش فعلی: ${(Math.floor(currentValue / 10)).toLocaleString('fa-IR')} تومان</span><br>
                 <span style="color: ${percentageColor};">میزان سود/زیان: ${(Math.floor(totalProfitLoss)).toLocaleString('fa-IR')} تومان</span><br>
-                <span class="percentage" style="color: ${percentageColor};">درصد تغییرات: ${percentageChange.toFixed(2)}%</span>`;
+                <span class="percentage" style="color: ${percentageColor};">درصد تغییرات: ${percentageChange.toFixed(2)}</span>`;
 
             updateTotalValue();
         }
@@ -166,7 +166,7 @@
             }
 
             totalGoldValue = (goldPrice / 750) * 750 * 278.44;
-            document.getElementById("goldOutput").innerHTML = `ارزش طلا: ${(Math.floor(totalGoldValue / 10)).toLocaleString('fa-IR')} تومان`;
+            document.getElementById("goldOutput").innerHTML = `ارزش طلای آبشده: ${(Math.floor(totalGoldValue / 10)).toLocaleString('fa-IR')} تومان`;
 
             updateTotalValue();
         }
