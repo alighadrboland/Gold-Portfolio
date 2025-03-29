@@ -62,6 +62,16 @@
             font-weight: bold;
         }
 
+        /* تغییرات رنگ */
+        .gold {
+            color: #B8860B; /* رنگ طلایی تیره */
+        }
+
+        .totalValue {
+            color: green;
+            font-size: 24px; /* اندازه بزرگتر */
+        }
+
         /* واکنش‌گرایی برای موبایل */
         @media screen and (max-width: 480px) {
             body {
@@ -163,7 +173,7 @@
 
         function updateTotalValue() {
             let totalValue = totalProfitLoss + (totalGoldValue / 10);
-            document.getElementById("totalValue").innerHTML = `ارزش کل:<span class="green">${Math.floor(totalValue).toLocaleString('fa-IR')} تومان`;
+            document.getElementById("totalValue").innerHTML = <span class="totalValue">${Math.floor(totalValue).toLocaleString('fa-IR')} تومان</span>;
         }
     </script>
 </body>
