@@ -172,7 +172,7 @@
         }
 
         function updateTotalValue() {
-            let totalValue = totalProfitLoss + (totalGoldValue / 10);
+            let totalValue = currentValue + (totalGoldValue / 10);
             document.getElementById("totalValue").innerHTML = `<span class="totalValue">${Math.floor(totalValue).toLocaleString('fa-IR')}</span>`;
         }
     </script>
