@@ -145,7 +145,7 @@
             document.getElementById("output").innerHTML = 
                 `مبلغ کل خرید: ${(Math.floor(totalBuyAmount / 10)).toLocaleString('fa-IR')} تومان<br>
                 <span style="color: blue;">ارزش فعلی: ${(Math.floor(currentValue / 10)).toLocaleString('fa-IR')}</span><br>
-                <span style="color: ${percentageColor};">میزان سود/زیان: ${(Math.floor(totalProfitLoss)).toLocaleString('fa-IR')}</span><br>
+                <span style="color: ${percentageColor};">میزان سود یا زیان: ${(Math.floor(totalProfitLoss)).toLocaleString('fa-IR')}</span><br>
                 <span class="percentage" style="color: ${percentageColor};">درصد تغییرات: ${percentageChange.toFixed(2)}</span>`;
 
             updateTotalValue();
