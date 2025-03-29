@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محاسبه صندوق عیار مفید</title>
+    <title>Gold Portfolio</title>
     <style>
         @font-face {
             font-family: 'BNazanin';
@@ -14,6 +14,7 @@
             text-align: center;
             background-color: #eef2f7;
             padding: 20px;
+            margin: 0;
         }
         .container {
             background: white;
@@ -21,6 +22,7 @@
             border-radius: 15px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             max-width: 400px;
+            width: 90%;
             margin: auto;
             margin-bottom: 20px;
         }
@@ -32,10 +34,10 @@
             border-radius: 8px;
             font-size: 16px;
         }
-        #currentPrice {
-            width: 50%;
-            padding: 8px;
-            font-size: 14px;
+        #currentPrice, #goldPrice {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
             display: block;
             margin: 10px auto;
         }
@@ -55,22 +57,52 @@
             font-weight: bold;
             color: #333;
         }
+        .percentage {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        /* واکنش‌گرایی برای موبایل */
+        @media screen and (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                max-width: 100%;
+                padding: 15px;
+            }
+            input, button {
+                font-size: 14px;
+                padding: 10px;
+            }
+            .result {
+                font-size: 16px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>محاسبه ارزش و سود</h2>
-        <label for="currentPrice">قیمت فعلی هر واحد:</label>
+        <h2>صندوق طلای عیار مفید</h2>
+        <label for="currentPrice">قیمت هر واحد</label>
         <input type="number" id="currentPrice" placeholder="قیمت فعلی">
         <button onclick="calculate()">محاسبه</button>
         <div class="result" id="output"></div>
+        
+        <h2>طلای آبشده</h2>
+        <label for="goldPrice">قیمت هر گرم طلا:</label>
+        <input type="number" id="goldPrice" placeholder="قیمت هر گرم طلا">
+        <button onclick="calculateGoldValue()">محاسبه</button>
+        <div class="result" id="goldOutput"></div>
+        
+        <h2>ارزش موجودی طلا</h2>
+        <div class="result" id="totalValue"></div>
     </div>
 
     <script>
-        let totalBuyAmount = 0, totalUnits = 0;
+        let totalBuyAmount = 0, totalUnits = 0, totalGoldValue = 0, totalProfitLoss = 0;
         const GITHUB_FILE_URL = "https://raw.githubusercontent.com/alighadrboland/Gold-Porfolio/refs/heads/main/portfolio.csv"; // لینک فایل CSV در گیت‌هاب
 
-        // خواندن داده‌ها از گیت‌هاب هنگام بارگذاری صفحه
         document.addEventListener("DOMContentLoaded", function() {
             loadDataFromGitHub();
         });
@@ -100,11 +132,38 @@
 
             let currentValue = currentPrice * totalUnits;
             let profit = currentValue - totalBuyAmount;
+            let percentageChange = (profit / totalBuyAmount) * 100; 
 
+            let percentageColor = percentageChange >= 0 ? 'green' : 'red';
+
+            totalProfitLoss = profit / 10;
             document.getElementById("output").innerHTML = 
-                `مبلغ کل خرید: ${totalBuyAmount.toLocaleString('fa-IR')} ریال<br>
-                <span style="color: blue;">ارزش فعلی: ${currentValue.toLocaleString('fa-IR')} ریال</span><br>
-                <span style="color: green;">میزان سود/زیان: ${profit.toLocaleString('fa-IR')} ریال</span>`;
+                `مبلغ کل خرید: ${(Math.floor(totalBuyAmount / 10)).toLocaleString('fa-IR')} تومان<br>
+                <span style="color: blue;">ارزش فعلی: ${(Math.floor(currentValue / 10)).toLocaleString('fa-IR')} تومان</span><br>
+                <span style="color: ${percentageColor};">میزان سود/زیان: ${(Math.floor(totalProfitLoss)).toLocaleString('fa-IR')} تومان</span><br>
+                <span class="percentage" style="color: ${percentageColor};">درصد تغییرات: ${percentageChange.toFixed(2)}%</span>`;
+
+            updateTotalValue();
+        }
+
+        function calculateGoldValue() {
+            let goldPriceInput = document.getElementById("goldPrice").value;
+            let goldPrice = parseFloat(goldPriceInput);
+
+            if (isNaN(goldPrice)) {
+                document.getElementById("goldOutput").innerHTML = "لطفاً قیمت هر گرم طلا را وارد کنید.";
+                return;
+            }
+
+            totalGoldValue = (goldPrice / 750) * 750 * 278.44;
+            document.getElementById("goldOutput").innerHTML = `ارزش طلا: ${(Math.floor(totalGoldValue / 10)).toLocaleString('fa-IR')} تومان`;
+
+            updateTotalValue();
+        }
+
+        function updateTotalValue() {
+            let totalValue = totalProfitLoss + (totalGoldValue / 10);
+            document.getElementById("totalValue").innerHTML = `ارزش کل: ${Math.floor(totalValue).toLocaleString('fa-IR')} تومان`;
         }
     </script>
 </body>
