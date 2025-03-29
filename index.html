@@ -134,6 +134,10 @@
                 document.getElementById("output").innerHTML = "لطفاً قیمت فعلی را وارد کنید و ابتدا اطلاعات را بارگذاری نمایید.";
                 return;
             }
+        function toPersianNumber(num) {
+                const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+                return num.toString().replace(/\d/g, (digit) => persianDigits[digit]);
+            }
 
             currentValue = currentPrice * totalUnits;
             let profit = currentValue - totalBuyAmount;
