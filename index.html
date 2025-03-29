@@ -33,9 +33,9 @@
             font-size: 16px;
         }
         #currentPrice, #goldPrice {
-            width: 60%;
-            padding: 6px;
-            font-size: 14px;
+            width: 60%; /* کاهش عرض */
+            padding: 6px; /* کاهش ارتفاع */
+            font-size: 14px; /* کاهش اندازه فونت */
             display: block;
             margin: 10px auto;
         }
@@ -57,12 +57,37 @@
             font-weight: bold;
             color: #333;
         }
-        .gold {
-            color: #B8860B;
+        .percentage {
+            font-size: 16px;
+            font-weight: bold;
         }
+
+        /* تغییرات رنگ */
+        .gold {
+            color: #B8860B; /* رنگ طلایی تیره */
+        }
+
         .totalValue {
             color: green;
-            font-size: 24px;
+            font-size: 24px; /* اندازه بزرگتر */
+        }
+
+        /* واکنش‌گرایی برای موبایل */
+        @media screen and (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                max-width: 100%;
+                padding: 15px;
+            }
+            input, button {
+                font-size: 14px;
+                padding: 10px;
+            }
+            .result {
+                font-size: 16px;
+            }
         }
     </style>
 </head>
@@ -86,40 +111,68 @@
 
     <script>
         let totalBuyAmount = 0, totalUnits = 0, totalGoldValue = 0, totalProfitLoss = 0;
+        const GITHUB_FILE_URL = "https://raw.githubusercontent.com/alighadrboland/Gold-Porfolio/refs/heads/main/portfolio.csv";
+
+        document.addEventListener("DOMContentLoaded", function() {
+            loadDataFromGitHub();
+        });
+
+        function loadDataFromGitHub() {
+            fetch(GITHUB_FILE_URL)
+                .then(response => response.text())
+                .then(data => {
+                    const lines = data.split("\n");
+                    lines.forEach(line => {
+                        const [buyPrice, buyUnits, sellPrice, sellUnits] = line.split(",").map(Number);
+                        totalBuyAmount += (buyPrice * buyUnits || 0) - (sellPrice * sellUnits || 0);
+                        totalUnits += (buyUnits || 0) - (sellUnits || 0);
+                    });
+                    console.log("اطلاعات از GitHub بارگذاری شد.");
+                })
+                .catch(error => console.error("خطا در بارگذاری داده‌ها: " + error));
+        }
 
         function calculate() {
             let currentPrice = parseFloat(document.getElementById("currentPrice").value);
+
             if (isNaN(currentPrice) || totalUnits <= 0) {
                 document.getElementById("output").innerHTML = "لطفاً قیمت فعلی را وارد کنید و ابتدا اطلاعات را بارگذاری نمایید.";
                 return;
             }
+
             let currentValue = currentPrice * totalUnits;
             let profit = currentValue - totalBuyAmount;
             let percentageChange = (profit / totalBuyAmount) * 100; 
+
             let percentageColor = percentageChange >= 0 ? 'green' : 'red';
+
             totalProfitLoss = profit / 10;
             document.getElementById("output").innerHTML = 
                 `مبلغ کل خرید: ${(Math.floor(totalBuyAmount / 10)).toLocaleString('fa-IR')} تومان<br>
                 <span style="color: blue;">ارزش فعلی: ${(Math.floor(currentValue / 10)).toLocaleString('fa-IR')} تومان</span><br>
                 <span style="color: ${percentageColor};">میزان سود/زیان: ${(Math.floor(totalProfitLoss)).toLocaleString('fa-IR')} تومان</span><br>
                 <span class="percentage" style="color: ${percentageColor};">درصد تغییرات: ${percentageChange.toFixed(2)}%</span>`;
+
             updateTotalValue();
         }
 
         function calculateGoldValue() {
             let goldPriceInput = document.getElementById("goldPrice").value;
             let goldPrice = parseFloat(goldPriceInput);
+
             if (isNaN(goldPrice)) {
                 document.getElementById("goldOutput").innerHTML = "لطفاً قیمت هر گرم طلا را وارد کنید.";
                 return;
             }
+
             totalGoldValue = (goldPrice / 750) * 750 * 278.44;
             document.getElementById("goldOutput").innerHTML = `ارزش طلا: ${(Math.floor(totalGoldValue / 10)).toLocaleString('fa-IR')} تومان`;
+
             updateTotalValue();
         }
 
         function updateTotalValue() {
-            let totalValue = (currentValue / 10) + (totalGoldValue / 10);
+            let totalValue = totalProfitLoss + (totalGoldValue / 10);
             document.getElementById("totalValue").innerHTML = `ارزش کل: <span class="totalValue">${Math.floor(totalValue).toLocaleString('fa-IR')} تومان</span>`;
         }
     </script>
