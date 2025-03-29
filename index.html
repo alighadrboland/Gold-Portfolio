@@ -165,8 +165,7 @@
             totalGoldValue = (goldPrice / 750) * 750 * gram;
             document.getElementById("goldOutput").innerHTML = `ارزش طلا: ${(Math.floor(totalGoldValue / 10)).toLocaleString('fa-IR')}`;
 
-            document.querySelectorAll(".gold")[1].innerHTML = `طلای آبشده (gram)`;
-
+            document.querySelectorAll(".gold")[1].innerHTML = `طلای آبشده (${gram})`;
 
             updateTotalValue();
         }
