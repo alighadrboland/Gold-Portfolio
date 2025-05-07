@@ -2,15 +2,15 @@
 <html lang="fa">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ارزش لحظه‌ای طلا و ارز</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>قیمت لحظه‌ای طلا و دلار</title>
   <style>
     body {
       margin: 0;
       padding: 0;
       font-family: 'Tahoma', sans-serif;
       direction: rtl;
-      background: linear-gradient(to bottom, #fffdf5, #fefefe);
+      background: #f9f9f9;
       color: #333;
     }
 
@@ -76,6 +76,26 @@
       color: #4d3a00;
     }
 
+    .portfolio-status {
+      max-width: 500px;
+      width: 90%;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 16px;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    .profit {
+      background-color: #4caf50;
+    }
+
+    .loss {
+      background-color: #f44336;
+    }
+
     @media (max-width: 600px) {
       .price-box {
         min-width: 140px;
@@ -86,7 +106,7 @@
 <body>
 
   <header>
-    <h1 style="text-align:center; color:#b8860b; margin-bottom:20px;">قیمت لحظه‌ای طلا و ارز</h1>
+    <h1 style="text-align:center; color:#b8860b;">قیمت لحظه‌ای طلا و ارز</h1>
     <div class="prices" id="prices">
       <div class="price-box">
         <h3>طلای ۱۸ عیار</h3>
@@ -111,6 +131,8 @@
     <div id="result">در حال محاسبه...</div>
   </div>
 
+  <div id="portfolio" class="portfolio-status">در حال بررسی سود و زیان...</div>
+
   <script>
     async function fetchPrices() {
       try {
@@ -118,7 +140,7 @@
         const data = await res.json();
 
         const gold18 = data.gold.find(item => item.symbol === "IR_GOLD_18K");
-        const usd = data.gold.find(item => item.symbol === "USD");
+        const usd = data.gold.find(item => item.name === "دلار");
         const xauusd = data.gold.find(item => item.symbol === "XAUUSD");
 
         if (gold18) {
@@ -130,6 +152,22 @@
           const value = (gold18.price / 750) * 750 * 278;
           document.getElementById('result').innerText = 
             `${Math.round(value).toLocaleString()} تومان`;
+
+          // محاسبه سود/زیان پورتفوی
+          const change = gold18.change_percent;
+          const portBox = document.getElementById("portfolio");
+          if (change > 0) {
+            portBox.classList.add("profit");
+            portBox.classList.remove("loss");
+            portBox.innerText = `✅ پورتفوی شما طی ۲۴ ساعت گذشته ${change}% سود داشته است.`;
+          } else if (change < 0) {
+            portBox.classList.add("loss");
+            portBox.classList.remove("profit");
+            portBox.innerText = `❌ پورتفوی شما طی ۲۴ ساعت گذشته ${Math.abs(change)}% زیان داشته است.`;
+          } else {
+            portBox.style.background = "#aaa";
+            portBox.innerText = "🔄 پورتفوی شما در ۲۴ ساعت گذشته تغییری نداشته است.";
+          }
         }
 
         if (usd) {
@@ -147,11 +185,12 @@
       } catch (error) {
         console.error("خطا در دریافت اطلاعات:", error);
         document.getElementById('result').innerText = "خطا در دریافت قیمت.";
+        document.getElementById('portfolio').innerText = "خطا در بررسی سود و زیان.";
       }
     }
 
     fetchPrices();
-    setInterval(fetchPrices, 60000); // به‌روزرسانی هر دقیقه
+    setInterval(fetchPrices, 60000); // هر 60 ثانیه یکبار به‌روزرسانی
   </script>
 
 </body>
