@@ -85,7 +85,22 @@
 
           const profitBox = document.getElementById("profit-box");
           profitBox.classList.remove("bg-gray-500", "bg-green-500", "bg-red-500");
-          profitBox.classList.add(change24 >= 0 ? "bg-green-500" : "bg-red-500");
+          if (change24 >= 0) {
+            profitBox.classList.add("bg-green-500");
+            animateElement("profit-box", `
+           <div>میزان سود ۲۴ ساعت اخیر:</div>
+           <div>${toPersianNumber(change24.toLocaleString())} تومان</div>
+           <div class="text-white">▲ ${toPersianNumber(percentChange24)}%</div>
+          `);
+         } else {
+           profitBox.classList.add("bg-red-500");
+           animateElement("profit-box", `
+            <div>میزان ضرر ۲۴ ساعت اخیر:</div>
+            <div>${toPersianNumber(Math.abs(change24).toLocaleString())} تومان</div>
+            <div class="text-white">▼ ${toPersianNumber(Math.abs(percentChange24))}%</div>
+          `);
+         }
+
 
           animateElement("profit-box", `
             <div>${change24 >= 0 ? 'میزان سود ۲۴ ساعت اخیر:' : 'میزان زیان ۲۴ ساعت اخیر:'}</div>
