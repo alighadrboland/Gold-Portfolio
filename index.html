@@ -84,14 +84,14 @@
           const goldPrice = gold18.price;
           const myGoldGrams = 278.44;
           const goldPurity = 750;
-          const commission = 0.008;
+          const commission = 30000;
 
           animateElement("gold-amount", toPersianNumber(myGoldGrams.toLocaleString()) + " گرم");
 
-          const totalGoldValue = goldPrice * myGoldGrams * (goldPurity / 750) * (1 - commission);
+          const totalGoldValue = ((goldPrice - commission) * goldPurity / 750 ) * myGoldGrams;
           animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()) + " تومان");
 
-          const change24 = gold18.change_value * myGoldGrams * (goldPurity / 750) * (1 - commission);
+          const change24 = gold18.change_value * myGoldGrams * (goldPurity / 750);
 
           const profitBox = document.getElementById("profit-box");
           profitBox.classList.remove("bg-gray-500", "bg-green-500", "bg-red-500");
