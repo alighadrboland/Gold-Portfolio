@@ -1,179 +1,128 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gold Portfolio</title>
-    <style>
-        @font-face {
-            font-family: 'BNazanin';
-            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/b-nazanin-font@master/fonts/BNazanin.woff2') format('woff2');
-        }
-        body {
-            font-family: 'BNazanin', Arial, sans-serif;
-            text-align: center;
-            background-color: #eef2f7;
-            padding: 20px;
-            margin: 0;
-        }
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            width: 90%;
-            margin: auto;
-            margin-bottom: 20px;
-        }
-        input, button {
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 16px;
-        }
-        #currentPrice, #goldPrice {
-            width: 60%;
-            padding: 6px;
-            font-size: 14px;
-            display: block;
-            margin: 10px auto;
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            background: #007bff;
-            color: white;
-            cursor: pointer;
-            border: none;
-            transition: background 0.3s;
-        }
-        button:hover {
-            background: #0056b3;
-        }
-        .result {
-            margin-top: 20px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-        }
-        .percentage {
-            font-size: 16px;
-            font-weight: bold;
-        }
-        .gold {
-            color: #B8860B;
-        }
-        .totalValue {
-            color: green;
-            font-size: 24px;
-        }
-        @media screen and (max-width: 480px) {
-            body {
-                padding: 10px;
-            }
-            .container {
-                max-width: 100%;
-                padding: 15px;
-            }
-            input, button {
-                font-size: 14px;
-                padding: 10px;
-            }
-            .result {
-                font-size: 16px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>ارزش طلای من</title>
+  <style>
+    body {
+      font-family: 'Tahoma', sans-serif;
+      background: linear-gradient(to bottom, #f8f9fa, #fff);
+      margin: 0;
+      padding: 0;
+      direction: rtl;
+      text-align: center;
+    }
+
+    header {
+      background-color: #fff8e1;
+      padding: 30px 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      color: #b8860b;
+      margin-bottom: 10px;
+    }
+
+    #gold-price {
+      font-size: 28px;
+      font-weight: bold;
+      color: #8b7500;
+    }
+
+    .gold-box {
+      background-color: #fff3cd;
+      border: 2px solid #e0c66c;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 500px;
+      margin: 50px auto;
+      padding: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .gold-box h2 {
+      color: #8b7500;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background-color: #ffd700;
+      color: #333;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 15px;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #e0c200;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 20px;
+      color: #4d3a00;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h2><span class="gold">صندوق طلای عیار مفید</span></h2>
-        <label for="currentPrice">(ریال) قیمت هر واحد</label>
-        <input type="number" id="currentPrice" placeholder="قیمت فعلی">
-        <button onclick="calculate()">محاسبه</button>
-        <div class="result" id="output"></div>
-        
-        <h2><span class="gold">طلای آبشده</span></h2>
-        <label for="goldPrice">(ریال) قیمت هر گرم طلا</label>
-        <input type="number" id="goldPrice" placeholder="قیمت هر گرم طلا">
-        <button onclick="calculateGoldValue()">محاسبه</button>
-        <div class="result" id="goldOutput"></div>
-        
-        <h2><span class="gold">ارزش موجودی طلا</span></h2>
-        <div class="result" id="totalValue"></div>
-    </div>
 
-    <script>
-        let totalBuyAmount = 0, totalUnits = 0, totalGoldValue = 0, totalProfitLoss = 0, currentValue = 0;
-        const GITHUB_FILE_URL = "https://raw.githubusercontent.com/alighadrboland/Gold-Porfolio/refs/heads/main/portfolio.csv";
+  <header>
+    <h1>قیمت لحظه‌ای طلای ۱۸ عیار</h1>
+    <div id="gold-price">در حال دریافت قیمت...</div>
+  </header>
 
-        document.addEventListener("DOMContentLoaded", function() {
-            loadDataFromGitHub();
-        });
+  <div class="gold-box">
+    <h2>ارزش تقریبی طلای من</h2>
+    <button onclick="calculateGoldValue()">محاسبه کن</button>
+    <div id="result">...</div>
+  </div>
 
-        function loadDataFromGitHub() {
-            fetch(GITHUB_FILE_URL)
-                .then(response => response.text())
-                .then(data => {
-                    const lines = data.split("\n");
-                    lines.forEach(line => {
-                        const [buyPrice, buyUnits, sellPrice, sellUnits] = line.split(",").map(Number);
-                        totalBuyAmount += (buyPrice * buyUnits || 0) - (sellPrice * sellUnits || 0);
-                        totalUnits += (buyUnits || 0) - (sellUnits || 0);
-                    });
-                    console.log("اطلاعات از GitHub بارگذاری شد.");
-                })
-                .catch(error => console.error("خطا در بارگذاری داده‌ها: " + error));
+  <script>
+    let currentGoldPrice = null;
+
+    async function fetchGoldPrice() {
+      try {
+        const response = await fetch('https://brsapi.ir/Api/Market/Gold_Currency.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz');
+        const data = await response.json();
+
+        if (!data.gold || !Array.isArray(data.gold)) throw new Error("ساختار داده نامعتبر است");
+
+        const gold18 = data.gold.find(item => item.symbol === "IR_GOLD_18K");
+
+        if (gold18 && gold18.price) {
+          currentGoldPrice = Number(gold18.price);
+          document.getElementById('gold-price').innerText =
+            `هر گرم: ${currentGoldPrice.toLocaleString()} تومان`;
+        } else {
+          document.getElementById('gold-price').innerText = 'قیمت یافت نشد.';
         }
 
-        function calculate() {
-            let currentPrice = parseFloat(document.getElementById("currentPrice").value);
+      } catch (error) {
+        console.error(error);
+        document.getElementById('gold-price').innerText = 'خطا در دریافت اطلاعات.';
+      }
+    }
 
-            if (isNaN(currentPrice) || totalUnits <= 0) {
-                document.getElementById("output").innerHTML = "لطفاً قیمت فعلی را وارد کنید و ابتدا اطلاعات را بارگذاری نمایید.";
-                return;
-            }
+    function calculateGoldValue() {
+      if (!currentGoldPrice) {
+        document.getElementById('result').innerText = 'قیمت هنوز بارگذاری نشده است.';
+        return;
+      }
 
-            currentValue = currentPrice * totalUnits;
-            let profit = currentValue - totalBuyAmount;
-            let percentageChange = (profit / totalBuyAmount) * 100; 
+      const totalGoldValue = (currentGoldPrice / 750) * 750 * 278;
+      document.getElementById('result').innerText =
+        `ارزش طلا: ${Math.round(totalGoldValue).toLocaleString()} تومان`;
+    }
 
-            let percentageColor = percentageChange >= 0 ? 'green' : 'red';
+    fetchGoldPrice();
+    setInterval(fetchGoldPrice, 60000);
+  </script>
 
-            totalProfitLoss = profit / 10;
-            document.getElementById("output").innerHTML = 
-                `مبلغ کل خرید: ${(Math.floor(totalBuyAmount / 10)).toLocaleString('fa-IR')}<br>
-                <span style="color: blue;">ارزش فعلی: ${(Math.floor(currentValue / 10)).toLocaleString('fa-IR')}</span><br>
-                <span style="color: ${percentageColor};">میزان سود یا زیان: ${(Math.floor(totalProfitLoss)).toLocaleString('fa-IR')}</span><br>
-                <span class="percentage" style="color: ${percentageColor};">درصد تغییرات: ${percentageChange.toFixed(2)}</span>`;
-
-            document.querySelector(".gold").innerHTML = `صندوق طلای عیار مفید (${totalUnits.toLocaleString()})`;
-
-            updateTotalValue();
-        }
-
-        function calculateGoldValue() {
-            let goldPriceInput = document.getElementById("goldPrice").value;
-            let goldPrice = parseFloat(goldPriceInput);
-
-            if (isNaN(goldPrice)) {
-                document.getElementById("goldOutput").innerHTML = "لطفاً قیمت هر گرم طلا را وارد کنید.";
-                return;
-            }
-            let gram = 438.44;
-            totalGoldValue = (goldPrice / 750) * 750 * gram;
-            document.getElementById("goldOutput").innerHTML = `ارزش طلا: ${(Math.floor(totalGoldValue / 10)).toLocaleString('fa-IR')}`;
-
-            document.querySelectorAll(".gold")[1].innerHTML = `طلای آبشده (${gram})`;
-
-            updateTotalValue();
-        }
-
-        function updateTotalValue() {
-            let totalValue = (currentValue / 10) + (totalGoldValue / 10); 
-            document.getElementById("totalValue").innerHTML = `<span class="totalValue">${Math.floor(totalValue).toLocaleString('fa-IR')}</span>`;
-        }
-    </script>
 </body>
 </html>
