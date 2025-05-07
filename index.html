@@ -140,7 +140,7 @@
         const data = await res.json();
 
         const gold18 = data.gold.find(item => item.symbol === "IR_GOLD_18K");
-        const usd = data.gold.find(item => item.name === "دلار");
+        const usd = data.gold.find(item => item.name === "USD");
         const xauusd = data.gold.find(item => item.symbol === "XAUUSD");
 
         if (gold18) {
