@@ -10,16 +10,13 @@
     body {
       font-family: 'Vazirmatn', sans-serif;
     }
-
     .persian-numbers {
       font-feature-settings: "ss01";
       direction: rtl;
     }
-
     .fade-update {
       animation: fadeIn 0.8s ease-in-out;
     }
-
     @keyframes fadeIn {
       0% { opacity: 0.2; transform: scale(0.97); }
       100% { opacity: 1; transform: scale(1); }
@@ -34,28 +31,25 @@
 
   <main class="max-w-xl mx-auto p-4 space-y-4">
     
-    <section class="bg-gradient-to-br from-yellow-400 to-yellow-100 rounded-xl shadow-md p-6 text-center">
-      <h2 class="text-2xl font-extrabold text-blue-900 mb-2 drop-shadow">قیمت طلای ۱۸ عیار</h2>
-      <p id="gold-price" class="text-2xl font-extrabold persian-numbers text-gray-800 drop-shadow">در حال بارگذاری...</p>
-      <small id="gold-change" class="block mt-1 text-base text-gray-600 persian-numbers drop-shadow">...</small>
-    </section>
+  <section class="bg-gradient-to-br from-yellow-400 to-yellow-100 rounded-xl shadow-md p-6 text-center">
+     <h2 class="text-2xl font-extrabold text-blue-900 mb-2 drop-shadow">قیمت طلای ۱۸ عیار</h2>
+     <p id="gold-price" class="text-2xl font-extrabold persian-numbers text-gray-800 drop-shadow">در حال بارگذاری...</p>
+     <small id="gold-change" class="block mt-1 text-base text-gray-600 persian-numbers drop-shadow">...</small>
+  </section>
 
-    <section class="bg-gradient-to-br from-blue-400 to-blue-100 rounded-xl shadow-md p-6 text-center">
-      <h3 class="text-xl font-extrabold text-gray-800 mb-2 drop-shadow">مقدار طلای آبشده</h3>
-      <p id="gold-amount" class="text-2xl font-extrabold persian-numbers text-gray-800 drop-shadow">...</p>
-    </section>
+  <section class="bg-gradient-to-br from-blue-400 to-blue-100 rounded-xl shadow-md p-6 text-center">
+    <h3 class="text-xl font-extrabold text-gray-800 mb-2 drop-shadow">مقدار طلای آبشده</h3>
+    <p id="gold-amount" class="text-2xl font-extrabold persian-numbers text-gray-800 drop-shadow">...</p>
+  </section>
 
-    <section class="bg-gradient-to-br from-purple-400 to-purple-100 rounded-xl shadow-md p-6 text-center">
-      <h3 class="text-xl font-extrabold text-gray-800 mb-2 drop-shadow">ارزش پورتفوی</h3>
-      <p id="portfolio-value" class="text-2xl font-extrabold persian-numbers text-gray-800 drop-shadow">...</p>
-    </section>
+  <section class="bg-gradient-to-br from-purple-400 to-purple-100 rounded-xl shadow-md p-6 text-center">
+    <h3 class="text-xl font-extrabold text-gray-800 mb-2 drop-shadow">ارزش پورتفوی</h3>
+    <p id="portfolio-value" class="text-2xl font-extrabold persian-numbers text-gray-800 drop-shadow">...</p>
+  </section>
 
-    <section id="profit-box" class="rounded-xl p-6 text-center text-white persian-numbers">
-      در حال محاسبه سود/زیان...
-    </section>
-
-    <!-- نمایش زمان به‌روزرسانی -->
-    <p id="last-update" class="text-sm text-gray-500 text-center mt-4 persian-numbers">در حال دریافت زمان...</p>
+  <section id="profit-box" class="rounded-xl p-6 text-center text-white persian-numbers">
+    در حال محاسبه سود/زیان...
+  </section>
 
   </main>
 
@@ -67,7 +61,7 @@
     function animateElement(id, content) {
       const el = document.getElementById(id);
       el.classList.remove("fade-update");
-      void el.offsetWidth; // Trigger reflow
+      void el.offsetWidth;
       el.innerHTML = content;
       el.classList.add("fade-update");
     }
@@ -86,11 +80,15 @@
 
           const goldPrice = gold18.price;
           const myGoldGrams = 278.44;
-          animateElement("gold-amount", toPersianNumber(myGoldGrams.toLocaleString()) + " گرم");
-          const totalGoldValue = (goldPrice / 750) * 750 * myGoldGrams;
-          animateElement("portfolio-value", toPersianNumber(totalGoldValue.toLocaleString()) + " تومان");
+          const goldPurity = 750;
+          const commission = 0.008;
 
-          const change24 = gold18.change_value * myGoldGrams;
+          animateElement("gold-amount", toPersianNumber(myGoldGrams.toLocaleString()) + " گرم");
+
+          const totalGoldValue = goldPrice * myGoldGrams * (goldPurity / 750) * (1 - commission);
+          animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()) + " تومان");
+
+          const change24 = gold18.change_value * myGoldGrams * (goldPurity / 750) * (1 - commission);
 
           const profitBox = document.getElementById("profit-box");
           profitBox.classList.remove("bg-gray-500", "bg-green-500", "bg-red-500");
@@ -108,12 +106,6 @@
               <div class="text-2xl font-extrabold drop-shadow">${toPersianNumber(Math.floor(Math.abs(change24)).toLocaleString())} تومان</div>
             `);
           }
-
-          // زمان به‌روزرسانی
-          const now = new Date();
-          const formattedDate = toPersianNumber(now.toLocaleDateString("fa-IR"));
-          const formattedTime = toPersianNumber(now.toLocaleTimeString("fa-IR").replace(/:\d+$/, ''));
-          document.getElementById("last-update").innerText = `آخرین به‌روزرسانی: ${formattedDate} ساعت ${formattedTime}`;
 
         } else {
           animateElement("gold-price", "اطلاعات موجود نیست");
