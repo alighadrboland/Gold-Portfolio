@@ -3,88 +3,74 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>قیمت لحظه‌ای طلا و ارز</title>
+  <title>قیمت لحظه‌ای طلا</title>
   <style>
     body {
-      font-family: sans-serif;
+      font-family: 'Tahoma', sans-serif;
       margin: 0;
-      background: #fdfdfd;
+      background: #f5f5f5;
       color: #333;
-      padding: 1rem;
+      padding: 0;
     }
 
     .header {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      align-items: center;
-      background: #f4f4f4;
+      background-color: #004080;
+      color: white;
       padding: 1rem;
-      border-radius: 1rem;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      text-align: center;
     }
 
     .price-box {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      justify-content: center;
+      background-color: #ffffff;
+      margin: 1rem auto;
+      padding: 1rem;
+      border-radius: 8px;
+      max-width: 600px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      text-align: center;
     }
 
-    .price-item {
-      background: white;
-      border-radius: 0.75rem;
-      padding: 1rem;
-      min-width: 180px;
-      box-shadow: 0 1px 8px rgba(0,0,0,0.1);
-      text-align: center;
+    .price-box h2 {
+      margin: 0 0 1rem 0;
+      color: #004080;
     }
 
     .gold-box {
       background: linear-gradient(to bottom right, #ffd700, #fff7c2);
       padding: 2rem;
-      margin-top: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin: 1rem auto;
+      border-radius: 8px;
+      max-width: 600px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       text-align: center;
     }
 
     .portfolio-box {
-      margin-top: 1rem;
+      margin: 1rem auto;
       padding: 1rem;
-      border-radius: 1rem;
+      border-radius: 8px;
+      max-width: 600px;
       text-align: center;
       color: white;
     }
 
     @media (max-width: 600px) {
-      .price-box {
-        flex-direction: column;
-        align-items: center;
+      .price-box, .gold-box, .portfolio-box {
+        margin: 1rem;
+        padding: 1rem;
       }
     }
   </style>
 </head>
 <body>
   <div class="header">
-    <h2>قیمت‌های لحظه‌ای</h2>
-    <div class="price-box">
-      <div class="price-item">
-        <strong>طلای ۱۸ عیار</strong><br>
-        <span id="gold-price">در حال بارگذاری...</span><br>
-        <small id="gold-change"></small>
-      </div>
-      <div class="price-item">
-        <strong>دلار</strong><br>
-        <span id="usd-price">در حال بارگذاری...</span><br>
-        <small id="usd-change"></small>
-      </div>
-      <div class="price-item">
-        <strong>انس طلا</strong><br>
-        <span id="xauusd-price">در حال بارگذاری...</span><br>
-        <small id="xauusd-change"></small>
-      </div>
-    </div>
+    <h1>سامانه قیمت لحظه‌ای طلا</h1>
+  </div>
+
+  <div class="price-box">
+    <h2>طلای ۱۸ عیار</h2>
+    <p id="gold-price">در حال بارگذاری...</p>
+    <small id="gold-change"></small>
   </div>
 
   <div class="gold-box">
@@ -103,50 +89,37 @@
         const data = await response.json();
 
         const items = data.gold;
-
         const gold18 = items.find(i => i.symbol === "IR_GOLD_18K");
-        const usd = items.find(i => i.symbol === "USD");
-        const xauusd = items.find(i => i.symbol === "XAUUSD");
 
-        // نمایش قیمت‌ها
         if (gold18) {
           document.getElementById("gold-price").innerText = gold18.price.toLocaleString() + " تومان";
           document.getElementById("gold-change").innerText = `${gold18.change_value.toLocaleString()} (${gold18.change_percent}%)`;
-        }
 
-        if (usd) {
-          document.getElementById("usd-price").innerText = usd.price.toLocaleString() + " تومان";
-          document.getElementById("usd-change").innerText = `${usd.change_value.toLocaleString()} (${usd.change_percent}%)`;
-        }
+          const goldPrice = gold18.price;
+          const totalGoldValue = (goldPrice / 750) * 750 * 278;
+          document.getElementById("portfolio-value").innerText = totalGoldValue.toLocaleString() + " تومان";
 
-        if (xauusd) {
-          document.getElementById("xauusd-price").innerText = xauusd.price.toLocaleString() + " دلار";
-          document.getElementById("xauusd-change").innerText = `${xauusd.change_value.toLocaleString()} (${xauusd.change_percent}%)`;
-        }
+          const change24 = gold18.change_value * 278;
+          const percentChange24 = gold18.change_percent;
 
-        // محاسبه پورتفوی
-        const goldPrice = gold18.price;
-        const totalGoldValue = (goldPrice / 750) * 750 * 278;
-        document.getElementById("portfolio-value").innerText = totalGoldValue.toLocaleString() + " تومان";
+          const profitBox = document.getElementById("profit-box");
+          profitBox.innerText = `سود/زیان ۲۴ ساعت اخیر: ${change24.toLocaleString()} تومان (${percentChange24}%)`;
 
-        // محاسبه سود/زیان 24 ساعته
-        const change24 = gold18.change_value * 278;
-        const percentChange24 = gold18.change_percent;
-
-        const profitBox = document.getElementById("profit-box");
-        profitBox.innerText = `سود/زیان ۲۴ ساعت اخیر: ${change24.toLocaleString()} تومان (${percentChange24}%)`;
-
-        if (change24 >= 0) {
-          profitBox.style.backgroundColor = "#4caf50"; // سبز
+          if (change24 >= 0) {
+            profitBox.style.backgroundColor = "#4caf50"; // سبز
+          } else {
+            profitBox.style.backgroundColor = "#f44336"; // قرمز
+          }
         } else {
-          profitBox.style.backgroundColor = "#f44336"; // قرمز
+          document.getElementById("gold-price").innerText = "اطلاعات موجود نیست";
+          document.getElementById("portfolio-value").innerText = "نامشخص";
+          document.getElementById("profit-box").innerText = "اطلاعات موجود نیست";
+          document.getElementById("profit-box").style.backgroundColor = "#999";
         }
 
       } catch (err) {
         console.error("خطا:", err);
         document.getElementById("gold-price").innerText = "خطا در دریافت";
-        document.getElementById("usd-price").innerText = "خطا در دریافت";
-        document.getElementById("xauusd-price").innerText = "خطا در دریافت";
         document.getElementById("portfolio-value").innerText = "نامشخص";
         document.getElementById("profit-box").innerText = "خطا در محاسبه سود/زیان";
         document.getElementById("profit-box").style.backgroundColor = "#999";
@@ -154,7 +127,7 @@
     }
 
     fetchData();
-    setInterval(fetchData, 1200000); // هر 60 ثانیه به‌روزرسانی
+    setInterval(fetchData, 60000); // به‌روزرسانی هر 60 ثانیه
   </script>
 </body>
 </html>
