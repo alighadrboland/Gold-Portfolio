@@ -111,9 +111,11 @@
 
 
           animateElement("profit-box", `
-            <div>${change24 >= 0 ? 'میزان سود ۲۴ ساعت اخیر:' : 'میزان زیان ۲۴ ساعت اخیر:'}</div>
-            <div>${toPersianNumber(Math.floor(Math.abs(change24)).toLocaleString())} تومان</div>
-          `);
+             <div class="text-lg font-semibold drop-shadow">${change24 >= 0 ? 'میزان سود ۲۴ ساعت اخیر:' : 'میزان ضرر ۲۴ ساعت اخیر:'}</div>
+             <div class="text-2xl font-extrabold drop-shadow">${toPersianNumber(Math.floor(Math.abs(change24)).toLocaleString())} تومان</div>
+             <div class="text-lg font-medium drop-shadow">${toPersianNumber(Math.floor(Math.abs(percentChange24)))}%</div>
+         `);
+
         } else {
           animateElement("gold-price", "اطلاعات موجود نیست");
           animateElement("portfolio-value", "نامشخص");
