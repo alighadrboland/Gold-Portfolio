@@ -58,7 +58,8 @@
 
   <script>
     function toPersianNumber(input) {
-      return input.toString().replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+    const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+    return input.toString().replace(/[0-9]/g, (d) => persianDigits[d]);
     }
 
     function animateElement(id, content) {
