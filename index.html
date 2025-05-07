@@ -98,13 +98,13 @@
               profitBox.classList.add("bg-green-500");
               animateElement("profit-box", `
                  <div class="text-2xl font-extrabold drop-shadow">میزان سود ۲۴ ساعت اخیر:</div>
-                 <div class="text-2xl font-extrabold drop-shadow">${toPersianNumber(change24.toLocaleString())} تومان</div>
+                 <div class="text-2xl font-extrabold drop-shadow">${toPersianNumber(Math.floor(change24).toLocaleString())} تومان</div>
              `);
          } else {
              profitBox.classList.add("bg-red-500");
              animateElement("profit-box", `
                 <div class="text-2xl font-extrabold drop-shadow">میزان ضرر ۲۴ ساعت اخیر:</div>
-                <div class="text-2xl font-extrabold drop-shadow">${toPersianNumber(Math.abs(change24).toLocaleString())} تومان</div>
+                <div class="text-2xl font-extrabold drop-shadow">${toPersianNumber(Math.floor(Math.abs(change24)).toLocaleString())} تومان</div>
             `);
          }
 
