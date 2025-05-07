@@ -40,6 +40,11 @@
       <small id="gold-change" class="block mt-1 text-sm text-gray-500 persian-numbers"></small>
     </section>
 
+    <section class="bg-white rounded-xl shadow-md p-6 text-center">
+      <h3 class="text-lg font-semibold text-gray-700 mb-2">مقدار طلای من</h3>
+      <p id="gold-amount" class="text-xl font-bold persian-numbers">...</p>
+    </section>
+
     <section class="bg-gradient-to-br from-yellow-400 to-yellow-100 rounded-xl shadow-md p-6 text-center">
       <h3 class="text-lg font-semibold text-gray-700 mb-2">ارزش پورتفوی من</h3>
       <p id="portfolio-value" class="text-xl font-bold persian-numbers">...</p>
@@ -77,6 +82,8 @@
           animateElement("gold-change", toPersianNumber(gold18.change_value.toLocaleString()) + " (" + toPersianNumber(gold18.change_percent) + "%)");
 
           const goldPrice = gold18.price;
+          const myGoldGrams = 278;
+          animateElement("gold-amount", toPersianNumber(myGoldGrams.toLocaleString()) + " گرم");
           const totalGoldValue = (goldPrice / 750) * 750 * 278;
           animateElement("portfolio-value", toPersianNumber(totalGoldValue.toLocaleString()) + " تومان");
 
