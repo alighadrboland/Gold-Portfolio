@@ -82,7 +82,7 @@
 
         if (gold18) {
           animateElement("gold-price", toPersianNumber(gold18.price.toLocaleString()) + " تومان");
-          animateElement("gold-change", toPersianNumber(gold18.change_value.toLocaleString()) + " (" + toPersianNumber(gold18.change_percent) + "%)");
+          animateElement("gold-change", toPersianNumber(gold18.change_value.toLocaleString()) + " (%" + toPersianNumber(gold18.change_percent) + ")");
 
           const goldPrice = gold18.price;
           const myGoldGrams = 278.44;
