@@ -110,18 +110,18 @@
 
         // نمایش قیمت‌ها
         if (gold18) {
-          document.getElementById("price").innerText = gold18.price.toLocaleString() + " تومان";
-          document.getElementById("change").innerText = `${gold18.change_value.toLocaleString()} (${gold18.change_percent}%)`;
+          document.getElementById("gold-price").innerText = gold18.price.toLocaleString() + " تومان";
+          document.getElementById("gold-change").innerText = `${gold18.change_value.toLocaleString()} (${gold18.change_percent}%)`;
         }
 
         if (usd) {
-          document.getElementById("price").innerText = usd.price.toLocaleString() + " تومان";
-          document.getElementById("change").innerText = `${usd.change_value.toLocaleString()} (${usd.change_percent}%)`;
+          document.getElementById("usd-price").innerText = usd.price.toLocaleString() + " تومان";
+          document.getElementById("usd-change").innerText = `${usd.change_value.toLocaleString()} (${usd.change_percent}%)`;
         }
 
         if (xauusd) {
-          document.getElementById("price").innerText = xauusd.price.toLocaleString() + " دلار";
-          document.getElementById("change").innerText = `${xauusd.change_value.toLocaleString()} (${xauusd.change_percent}%)`;
+          document.getElementById("xauusd-price").innerText = xauusd.price.toLocaleString() + " دلار";
+          document.getElementById("xauusd-change").innerText = `${xauusd.change_value.toLocaleString()} (${xauusd.change_percent}%)`;
         }
 
         // محاسبه پورتفوی
