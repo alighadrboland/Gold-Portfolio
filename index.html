@@ -79,8 +79,12 @@
 
         if (gold18) {
           animateElement("gold-price", toPersianNumber(gold18.price.toLocaleString()) + " تومان");
-          animateElement("gold-change", toPersianNumber(gold18.change_value.toLocaleString()) + " (%" + toPersianNumber(gold18.change_percent) + ")");
+          let value = gold18.change_value;
+          let percent = gold18.change_percent;
+          let valueText = (value < 0 ? "-" : "") + toPersianNumber(Math.abs(value).toLocaleString());
+          let percentText = (percent < 0 ? "-" : "") + toPersianNumber(Math.abs(percent));
 
+          animateElement("gold-change", valueText + " (%" + percentText + ")");
           const goldPrice = gold18.price;
           const myGoldGrams = 278.44;
           const goldPurity = 750;
