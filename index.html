@@ -143,10 +143,10 @@
         }
 
       } catch (err) {
-        console.error("Error fetching data:", err);
-        document.getElementById("gold-price").innerText = "خطا در دریافت اطلاعات";
-        document.getElementById("usd-price").innerText = "خطا";
-        document.getElementById("xauusd-price").innerText = "خطا";
+        console.error("خطا:", err);
+        document.getElementById("gold-price").innerText = "خطا در دریافت";
+        document.getElementById("usd-price").innerText = "خطا در دریافت";
+        document.getElementById("xauusd-price").innerText = "خطا در دریافت";
         document.getElementById("portfolio-value").innerText = "نامشخص";
         document.getElementById("profit-box").innerText = "خطا در محاسبه سود/زیان";
         document.getElementById("profit-box").style.backgroundColor = "#999";
@@ -154,6 +154,7 @@
     }
 
     fetchData();
+    setInterval(fetchData, 1200000); // هر 60 ثانیه به‌روزرسانی
   </script>
 </body>
 </html>
