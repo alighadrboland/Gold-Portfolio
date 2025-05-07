@@ -59,7 +59,7 @@
   <script>
     function toPersianNumber(input) {
     const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
-    return input.toString().replace(/[0-9]/g, (d) => persianDigits[d]);
+    return input.toString().replace(/\d/g, d => persianDigits[d]);
     }
 
     function animateElement(id, content) {
@@ -82,10 +82,12 @@
           animateElement("gold-price", toPersianNumber(gold18.price.toLocaleString()) + " تومان");
           let value = gold18.change_value;
           let percent = gold18.change_percent;
-          let valueText = (value < 0 ? "-" : "") + toPersianNumber(Math.abs(value).toLocaleString());
-          let percentText = (percent < 0 ? "-" : "") + toPersianNumber(Math.abs(percent));
-
+          let valueStr = (value < 0 ? "-" : "") + Math.abs(value).toLocaleString();
+          let percentStr = (percent < 0 ? "-" : "") + Math.abs(percent);
+          let valueText = toPersianNumber(valueStr);
+          let percentText = toPersianNumber(percentStr);
           animateElement("gold-change", valueText + " (%" + percentText + ")");
+          
           const goldPrice = gold18.price;
           const myGoldGrams = 278.44;
           const goldPurity = 750;
