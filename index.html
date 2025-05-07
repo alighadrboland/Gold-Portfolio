@@ -41,12 +41,12 @@
   </section>
 
   <section class="bg-gradient-to-br from-blue-400 to-blue-100 rounded-xl shadow-md p-6 text-center">
-    <h3 class="text-xl font-extrabold text-gray-800 mb-2 drop-shadow">مقدار طلای من</h3>
+    <h3 class="text-xl font-extrabold text-gray-800 mb-2 drop-shadow">مقدار طلای آبشده</h3>
     <p id="gold-amount" class="text-2xl font-extrabold persian-numbers text-gray-800 drop-shadow">...</p>
   </section>
 
   <section class="bg-gradient-to-br from-purple-400 to-purple-100 rounded-xl shadow-md p-6 text-center">
-    <h3 class="text-xl font-extrabold text-gray-800 mb-2 drop-shadow">ارزش پورتفوی من</h3>
+    <h3 class="text-xl font-extrabold text-gray-800 mb-2 drop-shadow">ارزش پورتفوی</h3>
     <p id="portfolio-value" class="text-2xl font-extrabold persian-numbers text-gray-800 drop-shadow">...</p>
   </section>
 
@@ -88,7 +88,7 @@
           const totalGoldValue = (goldPrice / 750) * 750 * myGoldGrams;
           animateElement("portfolio-value", toPersianNumber(totalGoldValue.toLocaleString()) + " تومان");
 
-          const change24 = gold18.change_value * 278;
+          const change24 = gold18.change_value * myGoldGrams;
           const percentChange24 = gold18.change_percent;
 
           const profitBox = document.getElementById("profit-box");
@@ -97,13 +97,13 @@
           if (change24 >= 0) {
               profitBox.classList.add("bg-green-500");
               animateElement("profit-box", `
-                 <div class="text-xl font-extrabold drop-shadow">میزان سود ۲۴ ساعت اخیر:</div>
+                 <div class="text-2xl font-extrabold drop-shadow">میزان سود ۲۴ ساعت اخیر:</div>
                  <div class="text-2xl font-extrabold drop-shadow">${toPersianNumber(change24.toLocaleString())} تومان</div>
              `);
          } else {
              profitBox.classList.add("bg-red-500");
              animateElement("profit-box", `
-                <div class="text-xl font-extrabold drop-shadow">میزان ضرر ۲۴ ساعت اخیر:</div>
+                <div class="text-2xl font-extrabold drop-shadow">میزان ضرر ۲۴ ساعت اخیر:</div>
                 <div class="text-2xl font-extrabold drop-shadow">${toPersianNumber(Math.abs(change24).toLocaleString())} تومان</div>
             `);
          }
