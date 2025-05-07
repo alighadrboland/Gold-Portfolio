@@ -39,6 +39,12 @@
   </main>
 
   <script>
+    // تابع تبدیل اعداد انگلیسی به فارسی
+    function toPersianNumber(num) {
+      const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+      return num.toString().replace(/\d/g, (digit) => persianDigits[digit]);
+    }
+
     async function fetchData() {
       try {
         const response = await fetch("https://brsapi.ir/Api/Market/Gold_Currency.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz");
@@ -48,12 +54,12 @@
         const gold18 = items.find(i => i.symbol === "IR_GOLD_18K");
 
         if (gold18) {
-          document.getElementById("gold-price").innerText = gold18.price.toLocaleString() + " تومان";
-          document.getElementById("gold-change").innerText = `${gold18.change_value.toLocaleString()} (${gold18.change_percent}%)`;
+          document.getElementById("gold-price").innerText = toPersianNumber(gold18.price.toLocaleString()) + " تومان";
+          document.getElementById("gold-change").innerText = `${toPersianNumber(gold18.change_value.toLocaleString())} (${toPersianNumber(gold18.change_percent)}%)`;
 
           const goldPrice = gold18.price;
           const totalGoldValue = (goldPrice / 750) * 750 * 278;
-          document.getElementById("portfolio-value").innerText = totalGoldValue.toLocaleString() + " تومان";
+          document.getElementById("portfolio-value").innerText = toPersianNumber(totalGoldValue.toLocaleString()) + " تومان";
 
           const change24 = gold18.change_value * 278;
           const percentChange24 = gold18.change_percent;
