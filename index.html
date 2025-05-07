@@ -108,10 +108,10 @@
                 <div class="text-2xl font-extrabold drop-shadow">میزان ضرر ۲۴ ساعت اخیر:</div>
                 <div class="text-2xl font-extrabold drop-shadow">${toPersianNumber(Math.floor(Math.abs(change24)).toLocaleString())} تومان</div>
             `);
-          const now = new Date();
-          document.getElementById("last-update").innerText =
-             "آخرین به‌روزرسانی: " + toPersianNumber(now.toLocaleDateString("fa-IR")) + " " + toPersianNumber(now.toLocaleTimeString("fa-IR").replace(/:\d+$/, ''));
-
+           const now = new Date();
+           const formattedDate = toPersianNumber(now.toLocaleDateString("fa-IR"));
+           const formattedTime = toPersianNumber(now.toLocaleTimeString("fa-IR").replace(/:\d+$/, ''));
+           document.getElementById("last-update").innerText = `آخرین به‌روزرسانی: ${formattedDate} ساعت ${formattedTime}`;
          }
 
 
