@@ -55,6 +55,8 @@
       در حال محاسبه سود/زیان...
     </section>
 
+    <p id="last-update" class="text-sm text-gray-500 text-center mt-4 persian-numbers">در حال دریافت زمان...</p>
+
   </main>
 
   <script>
@@ -106,6 +108,10 @@
                 <div class="text-2xl font-extrabold drop-shadow">میزان ضرر ۲۴ ساعت اخیر:</div>
                 <div class="text-2xl font-extrabold drop-shadow">${toPersianNumber(Math.floor(Math.abs(change24)).toLocaleString())} تومان</div>
             `);
+          const now = new Date();
+          document.getElementById("last-update").innerText =
+             "آخرین به‌روزرسانی: " + toPersianNumber(now.toLocaleDateString("fa-IR")) + " " + toPersianNumber(now.toLocaleTimeString("fa-IR").replace(/:\d+$/, ''));
+
          }
 
 
