@@ -101,7 +101,7 @@
           animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()) + " تومان");
 
           const profitBox = document.getElementById("profit-box");
-          profitBox.className = "rounded-xl p-6 text-center text-white bg-purple-500 persian-numbers";
+          profitBox.className = "bg-gradient-to-br from-yellow-400 to-yellow-100 rounded-xl shadow-md p-6 text-center";
           try {
                 const total = 10000;
                 const ayarResponse = await fetch("https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz&type=1");
@@ -115,10 +115,10 @@
                     animateElement("gold-amount", toPersianNumber(Math.floor(combined).toLocaleString()) + " تومان");
 
                    // مقدار پورتفوی با گرم در پرانتز
-                   animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()) + " تومان" + " (" + toPersianNumber(myGoldGrams.toLocaleString()) + " گرم)");
+                   animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()) + " تومان");
 
                    animateElement("profit-box", `
-                        <div class="text-2xl font-extrabold drop-shadow">ارزش دارایی معادل ${toPersianNumber(total)} واحد:</div>
+                        <div class="text-2xl font-extrabold drop-shadow">ارزش صندوق عیار معادل ${toPersianNumber(total)} واحد:</div>
                         <div class="text-2xl font-extrabold drop-shadow">${toPersianNumber(result.toLocaleString())} تومان</div>
                    `);
              } else {
