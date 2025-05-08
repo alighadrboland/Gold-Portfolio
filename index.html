@@ -103,7 +103,7 @@
           const goldPurity = 750;
           const commission = 30000;
           
-          document.getElementById("portfolio-title").innerText = `ارزش طلای آبشده معادل ${toPersianNumber(myGoldGrams.toLocaleString())} گرم:`;
+          document.getElementById("portfolio-title").innerText = `ارزش طلای آبشده معادل ${toPersianNumber(myGoldGrams.toLocaleString())} گرم`;
           animateElement("gold-amount");
           const totalGoldValue = ((goldPrice - commission) * goldPurity / 750 ) * myGoldGrams;
           animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()) + " تومان");
@@ -127,7 +127,7 @@
 
                    animateElement("profit-box", `
                         <div class="text-xl font-extrabold drop-shadow text-white">
-                              ارزش صندوق عیار معادل ${toPersianNumber(total.toLocaleString())} واحد:
+                              ارزش صندوق عیار معادل ${toPersianNumber(total.toLocaleString())} واحد
                         </div>
                         <div class="text-xl font-extrabold drop-shadow">${toPersianNumber(result.toLocaleString())} تومان</div>
                    `);
