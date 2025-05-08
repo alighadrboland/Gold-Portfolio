@@ -51,8 +51,6 @@
     <p id="gold-amount" class="text-2xl font-extrabold persian-numbers text-gray-800 drop-shadow">...</p>
   </section>
 
-  
-
   <!-- نمایش زمان به‌روزرسانی -->
   <p id="last-update" class="text-sm text-gray-500 text-center mt-4 persian-numbers">در حال دریافت زمان...</p>
 
@@ -60,8 +58,8 @@
 
   <script>
     function toPersianNumber(input) {
-    const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
-    return input.toString().replace(/\d/g, d => persianDigits[d]);
+      const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+      return input.toString().replace(/\d/g, d => persianDigits[d]);
     }
 
     function animateElement(id, content) {
@@ -89,12 +87,12 @@
           let valueText = toPersianNumber(valueStr);
           let percentText = toPersianNumber(percentStr);
           animateElement("gold-change", valueText + " (%" + percentText + ")");
-          
+
           const goldPrice = gold18.price;
           const myGoldGrams = 438.44;
           const goldPurity = 750;
           const commission = 30000;
-          
+
           document.getElementById("portfolio-title").innerText = `ارزش طلای آبشده معادل ${toPersianNumber(myGoldGrams.toLocaleString())} گرم:`;
           animateElement("gold-amount");
           const totalGoldValue = ((goldPrice - commission) * goldPurity / 750 ) * myGoldGrams;
@@ -110,17 +108,38 @@
                 if (ayar && ayar.pc) {
                     const result = total * ayar.pc;
 
-                   // مقدار ترکیبی برای نمایش در مقدار طلای آبشده
+                    // مقدار ترکیبی برای نمایش در مقدار طلای آبشده
                     const combined = totalGoldValue + result;
                     animateElement("gold-amount", toPersianNumber(Math.floor(combined).toLocaleString()) + " تومان");
 
-                   // مقدار پورتفوی با گرم در پرانتز
-                   animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()) + " تومان");
+                    // مقدار پورتفوی با گرم در پرانتز
+                    animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()) + " تومان");
 
-                   animateElement("profit-box", `
+                    // اضافه کردن باکس سوم
+                    animateElement("profit-box", `
                         <div class="text-2xl font-extrabold drop-shadow">ارزش صندوق عیار معادل ${toPersianNumber(total)} واحد:</div>
                         <div class="text-2xl font-extrabold drop-shadow">${toPersianNumber(result.toLocaleString())} تومان</div>
-                   `);
+                    `);
+
+                    // درصد تغییر نسبت به روز قبل
+                    const prevAyar = ayar.pc_previous_day;  // فرض می‌کنیم که داده مربوط به روز قبل از API دریافت می‌شود
+                    if (prevAyar) {
+                        const changePercent = ((ayar.pc - prevAyar) / prevAyar) * 100;
+                        const changeText = `(${toPersianNumber(changePercent.toFixed(2))}%)`;
+                        animateElement("profit-box", `
+                            <div class="text-2xl font-extrabold drop-shadow">تغییر نسبت به روز گذشته: ${changeText}</div>
+                        `);
+                    }
+
+                    // تغییر رنگ باکس دارایی کل بر اساس تغییرات
+                    const goldAmountBox = document.getElementById("gold-amount");
+                    if (combined > totalGoldValue) {
+                        goldAmountBox.parentElement.classList.add("bg-green-500");
+                        goldAmountBox.parentElement.classList.remove("bg-red-500");
+                    } else if (combined < totalGoldValue) {
+                        goldAmountBox.parentElement.classList.add("bg-red-500");
+                        goldAmountBox.parentElement.classList.remove("bg-green-500");
+                    }
              } else {
                        animateElement("profit-box", "صندوق عیار یافت نشد");
              }
