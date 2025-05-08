@@ -81,7 +81,7 @@
         const gold18 = items.find(i => i.symbol === "IR_GOLD_18K");
 
         if (gold18) {
-          animateElement("gold-price", toPersianNumber(gold18.price.toLocaleString()) + " تومان");
+          animateElement("gold-price", toPersianNumber(gold18.price.toLocaleString()));
           let value = gold18.change_value;
           let percent = gold18.change_percent;
           let valueStr = Math.abs(value).toLocaleString();  // حذف علامت منفی
@@ -106,7 +106,7 @@
           document.getElementById("portfolio-title").innerText = `ارزش طلای آبشده (${toPersianNumber(myGoldGrams.toLocaleString())} گرم)`;
           animateElement("gold-amount");
           const totalGoldValue = ((goldPrice - commission) * goldPurity / 750 ) * myGoldGrams;
-          animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()) + " تومان");
+          animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
 
           const profitBox = document.getElementById("profit-box");
           profitBox.className = "bg-gradient-to-br from-blue-700 to-blue-300 rounded-xl shadow-md p-6 text-center";
@@ -120,17 +120,17 @@
 
                    // مقدار ترکیبی برای نمایش در مقدار طلای آبشده
                     const combined = totalGoldValue + result;
-                    animateElement("gold-amount", toPersianNumber(Math.floor(combined).toLocaleString()) + " تومان");
+                    animateElement("gold-amount", toPersianNumber(Math.floor(combined).toLocaleString()));
 
                    // مقدار پورتفوی با گرم در پرانتز
-                   animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()) + " تومان");
+                   animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
 
                    animateElement("profit-box", `
                         <div class="text-xl font-extrabold drop-shadow text-white">
                            ارزش صندوق عیار (${toPersianNumber(total.toLocaleString())} واحد)
                         </div>
                         <div class="text-2xl font-extrabold drop-shadow mt-2">
-                            ${toPersianNumber(Math.floor(result).toLocaleString())} تومان
+                            ${toPersianNumber(Math.floor(result).toLocaleString())}
                         </div>
                    `);
              } else {
