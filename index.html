@@ -129,7 +129,7 @@
                         <div class="text-xl font-extrabold drop-shadow text-white">
                               ارزش صندوق عیار معادل ${toPersianNumber(total.toLocaleString())} واحد
                         </div>
-                        <div class="text-xl font-extrabold drop-shadow">${toPersianNumber(result.toLocaleString())} تومان</div>
+                          <div class="text-xl font-extrabold drop-shadow">${toPersianNumber(Math.floor(result).toLocaleString())} تومان</div>
                    `);
              } else {
                        animateElement("profit-box", "صندوق عیار یافت نشد");
