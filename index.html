@@ -116,7 +116,7 @@
                 const symbols = await ayarResponse.json();
                 const ayar = symbols.find(i => i.l18 === "عیار");
                 if (ayar && ayar.pc) {
-                    const result = total * (ayar.pc / 10);
+                    const result = (total * (ayar.pc / 10)).toLocaleString();
 
                    // مقدار ترکیبی برای نمایش در مقدار طلای آبشده
                     const combined = totalGoldValue + result;
