@@ -5,14 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>پورتفوی طلا</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn-font@v33.003/font-face.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://rbank724.github.io/beta/fonts/vazirmatn-font-face.css" />
   <style>
-    * {
-      font-family: 'Vazirmatn', sans-serif !important;
+    body {
+      font-family: 'Vazirmatn', sans-serif;
     }
     .persian-numbers {
       font-feature-settings: "ss01";
       direction: rtl;
+      unicode-bidi: isolate;
+      font-family: 'Vazirmatn', sans-serif !important;
     }
     .fade-update {
       animation: fadeIn 0.8s ease-in-out;
@@ -82,13 +84,12 @@
           animateElement("gold-price", toPersianNumber(gold18.price.toLocaleString()));
           let value = gold18.change_value;
           let percent = gold18.change_percent;
-          let valueStr = Math.abs(value).toLocaleString();  // حذف علامت منفی
-          let percentStr = Math.abs(percent).toFixed(2);     // حذف علامت منفی و محدود به دو رقم اعشار
+          let valueStr = Math.abs(value).toLocaleString();
+          let percentStr = Math.abs(percent).toFixed(2);
           let valueText = toPersianNumber(valueStr);
           let percentText = toPersianNumber(percentStr);
           animateElement("gold-change", valueText + " (%" + percentText + ")");
 
-           // تغییر رنگ باکس بر اساس مثبت یا منفی بودن درصد
           const goldBox = document.getElementById("gold-box");
           if (percent >= 0) {
              goldBox.className = "bg-gradient-to-br from-green-800 to-green-400 rounded-xl shadow-md p-6 text-center";
@@ -115,15 +116,10 @@
                 const ayar = symbols.find(i => i.l18 === "عیار");
                 if (ayar && ayar.pc) {
                     const result = total * (ayar.pc / 10);
-
-                   // مقدار ترکیبی برای نمایش در مقدار طلای آبشده
                     const combined = totalGoldValue + result;
                     animateElement("gold-amount", toPersianNumber(Math.floor(combined).toLocaleString()));
-
-                   // مقدار پورتفوی با گرم در پرانتز
-                   animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
-
-                   animateElement("profit-box", `
+                    animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
+                    animateElement("profit-box", `
                         <div class="text-xl font-extrabold drop-shadow text-yellow-300">
                            ارزش صندوق عیار (${toPersianNumber(total.toLocaleString())} واحد)
                         </div>
