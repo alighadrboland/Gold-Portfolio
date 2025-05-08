@@ -40,12 +40,16 @@
   <section class="bg-gradient-to-br from-purple-400 to-purple-100 rounded-xl shadow-md p-6 text-center">
     <h3 id="portfolio-title" class="text-xl font-extrabold text-gray-800 mb-2 drop-shadow">ارزش طلای آبشده</h3>
     <p id="portfolio-value" class="text-2xl font-extrabold persian-numbers text-gray-800 drop-shadow">...</p>
-    <!-- سطر جدید برای نمایش قیمت پایانی و درصد تغییر -->
-    <div id="price-change" class="mt-2 text-gray-600 text-lg"></div>
   </section>
 
   <section id="profit-box" class="rounded-xl p-6 text-center text-white persian-numbers">
     در حال محاسبه سود/زیان...
+  </section>
+
+  <!-- اضافه کردن سطر جدید برای نمایش قیمت پایانی و درصد تغییر -->
+  <section class="bg-gradient-to-br from-green-400 to-green-100 rounded-xl shadow-md p-6 text-center">
+    <h3 class="text-xl font-extrabold text-gray-800 mb-2 drop-shadow">قیمت پایانی و درصد تغییر</h3>
+    <div id="final-price-change" class="text-2xl font-extrabold persian-numbers text-gray-800 drop-shadow">...</div>
   </section>
 
   <section class="bg-gradient-to-br from-blue-400 to-blue-100 rounded-xl shadow-md p-6 text-center">
@@ -88,7 +92,9 @@
           let percent = gold18.change_percent;
           let valueStr = (value < 0 ? "-" : "") + Math.abs(value).toLocaleString();
           let percentStr = (percent < 0 ? "-" : "") + Math.abs(percent);
-          animateElement("gold-change", valueStr + " (%" + percentStr + ")");
+          let valueText = toPersianNumber(valueStr);
+          let percentText = toPersianNumber(percentStr);
+          animateElement("gold-change", valueText + " (%" + percentText + ")");
           
           const goldPrice = gold18.price;
           const myGoldGrams = 438.44;
@@ -99,6 +105,21 @@
           animateElement("gold-amount");
           const totalGoldValue = ((goldPrice - commission) * goldPurity / 750 ) * myGoldGrams;
           animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()) + " تومان");
+
+          // اضافه کردن سطر جدید برای قیمت پایانی و درصد تغییر
+          const ayarResponse = await fetch("https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz&type=1");
+          const symbols = await ayarResponse.json();
+          const ayar = symbols.find(i => i.l18 === "عیار");
+          if (ayar && ayar.pc) {
+            let pc = ayar.pc;
+            let pcPercent = ayar.pc_percent;
+            animateElement("final-price-change", `
+              <div>قیمت پایانی: ${toPersianNumber(pc.toLocaleString())} تومان</div>
+              <div>درصد تغییر: ${toPersianNumber(pcPercent.toLocaleString())}%</div>
+            `);
+          } else {
+            animateElement("final-price-change", "اطلاعات قیمت پایانی موجود نیست");
+          }
 
           const profitBox = document.getElementById("profit-box");
           profitBox.className = "bg-gradient-to-br from-yellow-400 to-yellow-100 rounded-xl shadow-md p-6 text-center";
@@ -128,12 +149,6 @@
                console.error("خطا در دریافت اطلاعات صندوق عیار:", err);
                animateElement("profit-box", "خطا در دریافت قیمت صندوق");
            }
-
-          // نمایش قیمت پایانی و درصد تغییر نسبت به روز گذشته در سطر جدید
-          const finalPrice = gold18.pc;
-          const changePercent = gold18.change_percent;
-          const priceChangeText = `قیمت پایانی: ${toPersianNumber(finalPrice.toLocaleString())} تومان | درصد تغییر: ${toPersianNumber(changePercent.toFixed(2))}%`;
-          animateElement("price-change", priceChangeText);
 
           const now = new Date();
           const formattedDate = toPersianNumber(now.toLocaleDateString("fa-IR"));
