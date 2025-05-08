@@ -26,18 +26,18 @@
 <body class="bg-gray-100 text-gray-800">
 
   <header class="bg-blue-900 text-white py-4 text-center">
-    <h1 class="text-2xl font-bold">پورتفوی طلای آبشده</h1>
+    <h1 class="text-xl font-bold">پورتفوی طلای آبشده و صندوق عیار</h1>
   </header>
 
   <main class="max-w-xl mx-auto p-4 space-y-4">
     
-     <section id="gold-box" class="bg-gradient-to-br from-yellow-700 to-yellow-100 rounded-xl shadow-md p-6 text-center">
-     <h2 class="text-xl font-extrabold text-black mb-2 drop-shadow">قیمت هر گرم طلای ۱۸ عیار</h2>
+     <section id="gold-box" class="bg-gradient-to-br from-yellow-700 to-yellow-200 rounded-xl shadow-md p-6 text-center">
+     <h2 class="text-xl font-extrabold text-white mb-2 drop-shadow">قیمت هر گرم طلای ۱۸ عیار</h2>
      <p id="gold-price" class="text-xl font-extrabold persian-numbers text-gray-800 drop-shadow">در حال بارگذاری...</p>
      <small id="gold-change" class="block mt-1 text-base text-gray-600 persian-numbers drop-shadow">...</small>
   </section>
 
-  <section class="bg-gradient-to-br from-purple-700 to-purple-100 rounded-xl shadow-md p-6 text-center">
+  <section class="bg-gradient-to-br from-purple-700 to-purple-200 rounded-xl shadow-md p-6 text-center">
     <h3 id="portfolio-title" class="text-xl font-extrabold text-white mb-2 drop-shadow">ارزش طلای آبشده</h3>
     <p id="portfolio-value" class="text-xl font-extrabold persian-numbers text-gray-800 drop-shadow">...</p>
   </section>
@@ -46,8 +46,8 @@
     در حال محاسبه سود/زیان...
   </section>
 
-  <section class="bg-gradient-to-br from-yellow-600 to-yellow-100 rounded-xl shadow-md p-6 text-center">
-    <h3 class="text-xl font-extrabold text-gray-800 mb-2 drop-shadow">دارایی کل</h3>
+  <section class="bg-gradient-to-br from-yellow-700 to-yellow-200 rounded-xl shadow-md p-6 text-center">
+    <h3 class="text-xl font-extrabold text-white mb-2 drop-shadow">دارایی کل</h3>
     <p id="gold-amount" class="text-xl font-extrabold persian-numbers text-gray-800 drop-shadow">...</p>
   </section>
 
@@ -93,9 +93,9 @@
            // تغییر رنگ باکس بر اساس مثبت یا منفی بودن درصد
           const goldBox = document.getElementById("gold-box");
           if (percent >= 0) {
-             goldBox.className = "bg-gradient-to-br from-green-700 to-green-100 rounded-xl shadow-md p-6 text-center";
+             goldBox.className = "bg-gradient-to-br from-green-700 to-green-200 rounded-xl shadow-md p-6 text-center";
           } else {
-             goldBox.className = "bg-gradient-to-br from-red-700 to-red-100 rounded-xl shadow-md p-6 text-center";
+             goldBox.className = "bg-gradient-to-br from-red-700 to-red-200 rounded-xl shadow-md p-6 text-center";
           }
           
           const goldPrice = gold18.price;
