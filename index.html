@@ -32,22 +32,22 @@
   <main class="max-w-xl mx-auto p-4 space-y-4">
     
      <section id="gold-box" class="bg-gradient-to-br from-yellow-700 to-yellow-300 rounded-xl shadow-md p-6 text-center">
-     <h2 class="text-xl font-extrabold text-white mb-2 drop-shadow">قیمت هر گرم طلای ۱۸ عیار</h2>
+     <h2 class="text-xl font-extrabold text-yellow mb-2 drop-shadow">قیمت هر گرم طلای ۱۸ عیار</h2>
      <p id="gold-price" class="text-2xl font-extrabold persian-numbers text-black drop-shadow">در حال بارگذاری...</p>
      <small id="gold-change" class="block mt-1 text-base text-black persian-numbers drop-shadow">...</small>
   </section>
 
   <section class="bg-gradient-to-br from-purple-700 to-purple-300 rounded-xl shadow-md p-6 text-center">
-    <h3 id="portfolio-title" class="text-xl font-extrabold text-white mb-2 drop-shadow">ارزش طلای آبشده</h3>
+    <h3 id="portfolio-title" class="text-xl font-extrabold text-yellow mb-2 drop-shadow">ارزش طلای آبشده</h3>
     <p id="portfolio-value" class="text-2xl font-extrabold persian-numbers text-black drop-shadow">...</p>
   </section>
 
-  <section id="profit-box" class="rounded-xl p-6 text-center text-white persian-numbers">
+  <section id="profit-box" class="rounded-xl p-6 text-center text-yellow persian-numbers">
     در حال محاسبه سود/زیان...
   </section>
 
-  <section class="bg-gradient-to-br from-yellow-700 to-yellow-300 rounded-xl shadow-md p-6 text-center">
-    <h3 class="text-xl font-extrabold text-white mb-2 drop-shadow">دارایی کل</h3>
+  <section class="bg-white rounded-xl shadow-md p-6 text-center">
+    <h3 class="text-xl font-extrabold text-black mb-2 drop-shadow">دارایی کل</h3>
     <p id="gold-amount" class="text-2xl font-extrabold persian-numbers text-black drop-shadow">...</p>
   </section>
 
@@ -126,7 +126,7 @@
                    animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
 
                    animateElement("profit-box", `
-                        <div class="text-xl font-extrabold drop-shadow text-white">
+                        <div class="text-xl font-extrabold drop-shadow text-yellow">
                            ارزش صندوق عیار (${toPersianNumber(total.toLocaleString())} واحد)
                         </div>
                         <div class="text-2xl font-extrabold drop-shadow mt-2">
