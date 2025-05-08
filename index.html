@@ -25,7 +25,7 @@
 </head>
 <body class="bg-gray-100 text-gray-800">
 
-  <header class="bg-blue-1000 text-white py-4 text-center">
+  <header class="bg-blue-900 text-white py-4 text-center">
     <h1 class="text-2xl font-bold">پورتفوی طلای آبشده</h1>
   </header>
 
@@ -118,7 +118,7 @@
                    animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()) + " تومان");
 
                    animateElement("profit-box", `
-                        <div class="text-2xl font-extrabold drop-shadow">ارزش صندوق عیار معادل ${toPersianNumber(total).toLocaleString()} واحد:</div>
+                        <div class="text-2xl font-extrabold drop-shadow">ارزش صندوق عیار معادل ${toPersianNumber(total.toLocaleString())} واحد:</div>
                         <div class="text-2xl font-extrabold drop-shadow">${toPersianNumber(result.toLocaleString())} تومان</div>
                    `);
              } else {
