@@ -33,13 +33,13 @@
     
   <section class="bg-gradient-to-br from-yellow-400 to-yellow-100 rounded-xl shadow-md p-6 text-center">
      <h2 class="text-xl font-extrabold text-blue-900 mb-2 drop-shadow">قیمت هر گرم طلای ۱۸ عیار</h2>
-     <p id="gold-price" class="text-2xl font-extrabold persian-numbers text-gray-800 drop-shadow">در حال بارگذاری...</p>
+     <p id="gold-price" class="text-xl font-extrabold persian-numbers text-gray-800 drop-shadow">در حال بارگذاری...</p>
      <small id="gold-change" class="block mt-1 text-base text-gray-600 persian-numbers drop-shadow">...</small>
   </section>
 
   <section class="bg-gradient-to-br from-purple-400 to-purple-100 rounded-xl shadow-md p-6 text-center">
     <h3 id="portfolio-title" class="text-xl font-extrabold text-gray-800 mb-2 drop-shadow">ارزش طلای آبشده</h3>
-    <p id="portfolio-value" class="text-2xl font-extrabold persian-numbers text-gray-800 drop-shadow">...</p>
+    <p id="portfolio-value" class="text-xl font-extrabold persian-numbers text-gray-800 drop-shadow">...</p>
   </section>
 
   <section id="profit-box" class="rounded-xl p-6 text-center text-white persian-numbers">
@@ -118,8 +118,8 @@
                    animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()) + " تومان");
 
                    animateElement("profit-box", `
-                        <div class="text-2xl font-extrabold drop-shadow">ارزش صندوق عیار معادل ${toPersianNumber(total.toLocaleString())} واحد:</div>
-                        <div class="text-2xl font-extrabold drop-shadow">${toPersianNumber(result.toLocaleString())} تومان</div>
+                        <div class="text-xl font-extrabold drop-shadow">ارزش صندوق عیار معادل ${toPersianNumber(total.toLocaleString())} واحد:</div>
+                        <div class="text-xl font-extrabold drop-shadow">${toPersianNumber(result.toLocaleString())} تومان</div>
                    `);
              } else {
                        animateElement("profit-box", "صندوق عیار یافت نشد");
