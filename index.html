@@ -46,12 +46,6 @@
     در حال محاسبه سود/زیان...
   </section>
 
-  <!-- اضافه کردن سطر جدید برای نمایش قیمت پایانی و درصد تغییر -->
-  <section class="bg-gradient-to-br from-green-400 to-green-100 rounded-xl shadow-md p-6 text-center">
-    <h3 class="text-xl font-extrabold text-gray-800 mb-2 drop-shadow">قیمت پایانی و درصد تغییر</h3>
-    <div id="final-price-change" class="text-2xl font-extrabold persian-numbers text-gray-800 drop-shadow">...</div>
-  </section>
-
   <section class="bg-gradient-to-br from-blue-400 to-blue-100 rounded-xl shadow-md p-6 text-center">
     <h3 class="text-xl font-extrabold text-gray-800 mb-2 drop-shadow">دارایی کل</h3>
     <p id="gold-amount" class="text-2xl font-extrabold persian-numbers text-gray-800 drop-shadow">...</p>
@@ -106,21 +100,6 @@
           const totalGoldValue = ((goldPrice - commission) * goldPurity / 750 ) * myGoldGrams;
           animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()) + " تومان");
 
-          // اضافه کردن سطر جدید برای قیمت پایانی و درصد تغییر
-          const ayarResponse = await fetch("https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz&type=1");
-          const symbols = await ayarResponse.json();
-          const ayar = symbols.find(i => i.l18 === "عیار");
-          if (ayar && ayar.pc) {
-            let pc = ayar.pc;
-            let pcPercent = ayar.pc_percent;
-            animateElement("final-price-change", `
-              <div>قیمت پایانی: ${toPersianNumber(pc.toLocaleString())} تومان</div>
-              <div>درصد تغییر: ${toPersianNumber(pcPercent.toLocaleString())}%</div>
-            `);
-          } else {
-            animateElement("final-price-change", "اطلاعات قیمت پایانی موجود نیست");
-          }
-
           const profitBox = document.getElementById("profit-box");
           profitBox.className = "bg-gradient-to-br from-yellow-400 to-yellow-100 rounded-xl shadow-md p-6 text-center";
           try {
@@ -138,7 +117,7 @@
                    // مقدار پورتفوی با گرم در پرانتز
                    animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()) + " تومان");
 
-                   animateElement("profit-box", `  
+                   animateElement("profit-box", `
                         <div class="text-2xl font-extrabold drop-shadow">ارزش صندوق عیار معادل ${toPersianNumber(total)} واحد:</div>
                         <div class="text-2xl font-extrabold drop-shadow">${toPersianNumber(result.toLocaleString())} تومان</div>
                    `);
