@@ -182,39 +182,45 @@ try {
   const globalResponse = await fetch("https://brsapi.ir/Api/Market/Gold_Currency.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz");
   const globalData = await globalResponse.json();
 
+  // بررسی صحت داده
   if (!globalData.currency || !Array.isArray(globalData.currency)) {
-    throw new Error("پاسخ معتبر نیست");
+    throw new Error("داده‌ای در currency یافت نشد");
   }
 
   const currency = globalData.currency;
-  const globalGold = currency.find(i => i.symbol === "XAUUSD");
+  const gold = currency.find(i => i.symbol === "XAUUSD");
   const usd = currency.find(i => i.symbol === "USD");
 
-  if (globalGold) {
-    const price = globalGold.price?.toFixed(2) ?? "0.00";
-    const change = typeof globalGold.change_percent === 'number' ? globalGold.change_percent : 0;
-    animateElement("xauusd-price", toPersianNumber(price));
+  // قیمت و تغییر طلا
+  if (gold) {
+    const goldPrice = gold.price.toFixed(2);
+    const goldChange = gold.change_percent.toFixed(2);
+    animateElement("xauusd-price", toPersianNumber(goldPrice));
     animateElement(
       "xauusd-change",
-      `<span class="${change >= 0 ? 'text-green-300' : 'text-red-300'}">(${toPersianNumber(change.toFixed(2))}%)</span>`
+      `<span class="${gold.change_percent >= 0 ? 'text-green-300' : 'text-red-300'}">(${toPersianNumber(goldChange)}%)</span>`
     );
   } else {
     animateElement("xauusd-price", "نامشخص");
     animateElement("xauusd-change", "نامشخص");
   }
 
+  // قیمت و تغییر دلار
   if (usd) {
-    const price = usd.price.toFixed(2);
-    const change = usd.change_percent;
-    animateElement("usd-price", toPersianNumber(price));
-    animateElement("usd-change", `<span class="${change >= 0 ? 'text-green-300' : 'text-red-300'}">(${toPersianNumber(change.toFixed(2))}%)</span>`);
+    const usdPrice = usd.price.toFixed(2);
+    const usdChange = usd.change_percent.toFixed(2);
+    animateElement("usd-price", toPersianNumber(usdPrice));
+    animateElement(
+      "usd-change",
+      `<span class="${usd.change_percent >= 0 ? 'text-green-300' : 'text-red-300'}">(${toPersianNumber(usdChange)}%)</span>`
+    );
   } else {
     animateElement("usd-price", "نامشخص");
     animateElement("usd-change", "نامشخص");
   }
 
 } catch (error) {
-  console.error("خطا در دریافت قیمت جهانی طلا و دلار:", error);
+  console.error("خطا در دریافت قیمت:", error);
   animateElement("xauusd-price", "نامشخص");
   animateElement("xauusd-change", "نامشخص");
   animateElement("usd-price", "نامشخص");
