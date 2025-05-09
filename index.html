@@ -189,8 +189,8 @@ try {
   if (globalGold) {
     const price = globalGold.price.toFixed(2);
     const change = globalGold.change_percent;
-    animateElement("xau-price", toPersianNumber(price));
-    animateElement("xau-change", `<span class="${change >= 0 ? 'text-green-300' : 'text-red-300'}">(${toPersianNumber(change.toFixed(2))}%)</span>`);
+    animateElement("xauusd-price", toPersianNumber(price));
+    animateElement("xauusd-change", `<span class="${change >= 0 ? 'text-green-300' : 'text-red-300'}">(${toPersianNumber(change.toFixed(2))}%)</span>`);
   }
 
   if (usd) {
