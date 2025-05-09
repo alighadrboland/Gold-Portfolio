@@ -161,8 +161,9 @@
             `);
           }
           
+          // نمایش قیمت دلار (USD)
           const usd = items.find(i => i.symbol === "USD");
-          if (xauusd) {
+          if (usd) {
             const usdPrice = usd.price;
             const usdChange = usd.change_value;
             const usdPercent = usd.change_percent;
@@ -205,7 +206,7 @@
     }
 
     fetchData();
-  </script>
+</script>
 
 </body>
 </html>
