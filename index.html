@@ -87,7 +87,7 @@
 
         const items = data.gold;
         const usd = data.currency.find(i => i.symbol === "USD");
-        const globalGold = data.global.find(i => i.symbol === "gold_ounce");
+        const globalGold = data.global.find(i => i.symbol === "XAUUSD");
         const gold18 = items.find(i => i.symbol === "IR_GOLD_18K");
 
         if (gold18) {
@@ -146,12 +146,12 @@
 
           if (usd) {
             document.getElementById("usd-price").innerHTML =
-              "دلار: " + toPersianNumber(Number(usd.price).toLocaleString()) + " " + formatPercentColor(usd.change_percent);
+              "دلار: " + toPersianNumber(Number(USD.price).toLocaleString()) + " " + formatPercentColor(usd.change_percent);
           }
 
           if (globalGold) {
             document.getElementById("global-gold").innerHTML =
-              "طلای جهانی: " + toPersianNumber(Number(globalGold.price).toLocaleString()) + " " + formatPercentColor(globalGold.change_percent);
+              "طلای جهانی: " + toPersianNumber(Number(XAUUSD.price).toLocaleString()) + " " + formatPercentColor(globalGold.change_percent);
           }
 
           const now = new Date();
