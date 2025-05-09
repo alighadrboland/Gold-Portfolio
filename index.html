@@ -40,7 +40,7 @@
       <small id="gold-change" class="block mt-1 text-base persian-numbers drop-shadow">...</small>
     </section>
 
-    <section class="bg-gradient-to-br from-purple-800 to-purple-400 rounded-xl shadow-md p-6 text-center">
+    <section class="bg-purple-800 rounded-xl shadow-md p-6 text-center">
       <h3 id="portfolio-title" class="text-xl font-extrabold text-yellow-300 mb-2 drop-shadow">ارزش طلای آبشده</h3>
       <p id="portfolio-value" class="text-2xl font-extrabold persian-numbers text-white drop-shadow">...</p>
     </section>
@@ -108,7 +108,7 @@
           animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
 
           const profitBox = document.getElementById("profit-box");
-          profitBox.className = "bg-gradient-to-br from-blue-800 to-blue-400 rounded-xl shadow-md p-6 text-center";
+          profitBox.className = "bg-blue-800 rounded-xl shadow-md p-6 text-center";
           try {
             const total = 4524;
             const ayarResponse = await fetch("https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz&type=1");
