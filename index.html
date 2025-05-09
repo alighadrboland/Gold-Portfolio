@@ -84,8 +84,9 @@
         const xauusd = items.find(i => i.symbol === "XAUUSD");
 
         if (usd) {
-          const color = usd.change_value > 0 ? 'green' : usd.change_value < 0 ? 'red' : 'black';
-          animateElement("usd-box", `<span style="color:${color}">دلار: ${toPersianNumber(usd.price.toLocaleString())} (${toPersianNumber(Math.abs(usd.change_value))} | ${toPersianNumber(Math.abs(usd.change_percent.toFixed(2)))}%)</span>`);
+        const usdColor = getColorClass(usd.change_percent);
+        const usdText = `<span class="${usdColor}">دلار: ${toPersianNumber(usd.price.toLocaleString())} (${toPersianNumber(Math.abs(usd.change_percent).toFixed(2))}%)</span>`;
+        animateElement("usd-info", usdText);
         }
 
         if (xauusd) {
