@@ -107,7 +107,7 @@
           animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
 
           const profitBox = document.getElementById("profit-box");
-          profitBox.className = "bg-gradient-to-br from-blue-800 to-blue-300 rounded-xl shadow-md p-6 text-center";
+          profitBox.className = "bg-gradient-to-br from-blue-800 to-blue-400 rounded-xl shadow-md p-6 text-center";
           try {
                 const total = 4524;
                 const ayarResponse = await fetch("https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz&type=1");
