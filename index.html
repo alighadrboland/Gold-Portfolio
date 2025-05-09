@@ -21,12 +21,18 @@
       0% { opacity: 0.2; transform: scale(0.97); }
       100% { opacity: 1; transform: scale(1); }
     }
+    #market-info {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
   </style>
 </head>
 <body class="bg-gray-300 text-gray-800">
 
   <header class="bg-blue-900 text-white py-4 text-center">
     <h1 class="text-xl font-bold">پورتفوی طلای آبشده و صندوق عیار</h1>
+    <div id="market-info" class="mt-2 text-sm text-yellow-200 flex flex-col sm:flex-row justify-center gap-4 persian-numbers"></div>
   </header>
 
   <main class="max-w-xl mx-auto p-4 space-y-4">
@@ -75,6 +81,28 @@
         const response = await fetch("https://brsapi.ir/Api/Market/Gold_Currency.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz");
         const data = await response.json();
 
+        // نمایش XAUUSD و USD
+        const xauusd = data.currency.find(i => i.symbol === "XAUUSD");
+        const usd = data.currency.find(i => i.symbol === "USD");
+
+        let infoHTML = "";
+
+        if (xauusd) {
+          const price = toPersianNumber(xauusd.price.toLocaleString());
+          const change = toPersianNumber(Math.abs(xauusd.change_percent).toFixed(2));
+          const color = xauusd.change_percent >= 0 ? "text-green-300" : "text-red-300";
+          infoHTML += `<span class="${color}">انس: ${price} (${change}%)</span>`;
+        }
+
+        if (usd) {
+          const price = toPersianNumber(usd.price.toLocaleString());
+          const change = toPersianNumber(Math.abs(usd.change_percent).toFixed(2));
+          const color = usd.change_percent >= 0 ? "text-green-300" : "text-red-300";
+          infoHTML += `<span class="${color}">دلار: ${price} (${change}%)</span>`;
+        }
+
+        document.getElementById("market-info").innerHTML = infoHTML;
+
         const items = data.gold;
         const gold18 = items.find(i => i.symbol === "IR_GOLD_18K");
 
@@ -82,25 +110,24 @@
           animateElement("gold-price", toPersianNumber(gold18.price.toLocaleString()));
           let value = gold18.change_value;
           let percent = gold18.change_percent;
-          let valueStr = Math.abs(value).toLocaleString();  // حذف علامت منفی
-          let percentStr = Math.abs(percent).toFixed(2);     // حذف علامت منفی و محدود به دو رقم اعشار
+          let valueStr = Math.abs(value).toLocaleString();
+          let percentStr = Math.abs(percent).toFixed(2);
           let valueText = toPersianNumber(valueStr);
           let percentText = toPersianNumber(percentStr);
           animateElement("gold-change", valueText + " (%" + percentText + ")");
 
-           // تغییر رنگ باکس بر اساس مثبت یا منفی بودن درصد
           const goldBox = document.getElementById("gold-box");
           if (percent >= 0) {
              goldBox.className = "bg-gradient-to-br from-green-800 to-green-400 rounded-xl shadow-md p-6 text-center";
           } else {
              goldBox.className = "bg-gradient-to-br from-red-800 to-red-400 rounded-xl shadow-md p-6 text-center";
           }
-          
+
           const goldPrice = gold18.price;
           const myGoldGrams = 438.44;
           const goldPurity = 750;
           const commission = 30000;
-          
+
           document.getElementById("portfolio-title").innerText = `ارزش طلای آبشده (${toPersianNumber(myGoldGrams.toLocaleString())} گرم)`;
           animateElement("gold-amount");
           const totalGoldValue = ((goldPrice - commission) * goldPurity / 750 ) * myGoldGrams;
@@ -115,15 +142,10 @@
                 const ayar = symbols.find(i => i.l18 === "عیار");
                 if (ayar && ayar.pc) {
                     const result = total * (ayar.pc / 10);
-
-                   // مقدار ترکیبی برای نمایش در مقدار طلای آبشده
                     const combined = totalGoldValue + result;
                     animateElement("gold-amount", toPersianNumber(Math.floor(combined).toLocaleString()));
-
-                   // مقدار پورتفوی با گرم در پرانتز
-                   animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
-
-                   animateElement("profit-box", `
+                    animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
+                    animateElement("profit-box", `
                         <div class="text-xl font-extrabold drop-shadow text-yellow-300">
                            ارزش صندوق عیار (${toPersianNumber(total.toLocaleString())} واحد)
                         </div>
