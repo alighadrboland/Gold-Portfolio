@@ -1,4 +1,65 @@
-<!-- بخش جاوااسکریپت -->
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>پورتفوی طلا</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn-font@v33.003/font-face.css" rel="stylesheet" />
+  <style>
+    * {
+      font-family: 'Vazirmatn', sans-serif !important;
+    }
+    .persian-numbers {
+      font-feature-settings: "ss01";
+      direction: rtl;
+    }
+    .fade-update {
+      animation: fadeIn 0.8s ease-in-out;
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0.2; transform: scale(0.97); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body class="bg-gray-300 text-gray-800">
+
+  <header class="bg-blue-900 text-white py-4 text-center">
+    <h1 class="text-xl font-bold">پورتفوی طلای آبشده و صندوق عیار</h1>
+    <div class="text-sm mt-2 persian-numbers">
+      <span id="usd-info">دلار: ...</span> | <span id="xauusd-info">انس: ...</span>
+    </div>
+  </header>
+
+  <main class="max-w-xl mx-auto p-4 space-y-4">
+    
+     <section id="gold-box" class="bg-gradient-to-br from-yellow-800 to-yellow-400 rounded-xl shadow-md p-6 text-center">
+     <h2 class="text-xl font-extrabold text-yellow-300 mb-2 drop-shadow">قیمت هر گرم طلای ۱۸ عیار</h2>
+     <p id="gold-price" class="text-2xl font-extrabold persian-numbers text-white drop-shadow">در حال بارگذاری...</p>
+     <small id="gold-change" class="block mt-1 text-base text-white persian-numbers drop-shadow">...</small>
+  </section>
+
+  <section class="bg-gradient-to-br from-purple-800 to-purple-400 rounded-xl shadow-md p-6 text-center">
+    <h3 id="portfolio-title" class="text-xl font-extrabold text-yellow-300 mb-2 drop-shadow">ارزش طلای آبشده</h3>
+    <p id="portfolio-value" class="text-2xl font-extrabold persian-numbers text-white drop-shadow">...</p>
+  </section>
+
+  <section id="profit-box" class="rounded-xl p-6 text-center text-yellow-400 persian-numbers">
+    در حال محاسبه سود/زیان...
+  </section>
+
+  <section class="bg-white rounded-xl shadow-md p-6 text-center">
+    <h3 class="text-xl font-extrabold text-blue-700 mb-2 drop-shadow">دارایی کل</h3>
+    <p id="gold-amount" class="text-2xl font-extrabold persian-numbers text-black drop-shadow">...</p>
+  </section>
+
+  <!-- نمایش زمان به‌روزرسانی -->
+  <p id="last-update" class="text-sm text-gray-500 text-center mt-4 persian-numbers">در حال دریافت زمان...</p>
+
+  </main>
+
+  <!-- بخش جاوااسکریپت -->
 <script>
   function toPersianNumber(input) {
     const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
@@ -124,3 +185,6 @@
 
   fetchData();
 </script>
+
+</body>
+</html>
