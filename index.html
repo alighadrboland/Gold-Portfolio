@@ -187,10 +187,15 @@ try {
   const usd = currency.find(i => i.symbol === "USD");
 
   if (globalGold) {
-    const price = globalGold.price.toFixed(2);
-    const change = globalGold.change_percent;
-    animateElement("xauusd-price", toPersianNumber(price));
-    animateElement("xauusd-change", `<span class="${change >= 0 ? 'text-green-300' : 'text-red-300'}">(${toPersianNumber(change.toFixed(2))}%)</span>`);
+  const price = globalGold.price?.toFixed(2);
+  const change = typeof globalGold.change_percent === 'number' ? globalGold.change_percent : 0;
+  animateElement("xauusd-price", toPersianNumber(price));
+  animateElement(
+    "xauusd-change",
+    `<span class="${change >= 0 ? 'text-green-300' : 'text-red-300'}">(${toPersianNumber(change.toFixed(2))}%)</span>`
+    );
+  } else {
+  animateElement("xauusd-change", "(نامشخص)");
   }
 
   if (usd) {
