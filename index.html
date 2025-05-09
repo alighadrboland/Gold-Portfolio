@@ -25,18 +25,17 @@
 </head>
 <body class="bg-gray-300 text-gray-800">
 
-  <header class="bg-blue-900 text-white py-4 text-center space-y-2">
+  <header class="bg-black text-white py-4 text-center space-y-2">
     <h1 class="text-xl font-bold">پورتفوی طلای آبشده و صندوق عیار</h1>
     <div class="text-sm font-bold space-y-1 persian-numbers">
       <div id="usd-box">دلار: ...</div>
-      <div id="xauusd-box">انس: ...</div>
     </div>
   </header>
 
   <main class="max-w-xl mx-auto p-4 space-y-4">
     
-    <section id="gold-box" class="bg-gradient-to-br from-green-800 to-green-400 rounded-xl shadow-md p-6 text-center">
-      <h2 class="text-xl font-extrabold text-yellow-300 mb-2 drop-shadow">قیمت هر گرم طلای ۱۸ عیار</h2>
+    <section id="gold-box" class="bg-yellow-600 rounded-xl shadow-md p-6 text-center">
+      <h2 class="text-xl font-extrabold text-white mb-2 drop-shadow">قیمت هر گرم طلای ۱۸ عیار</h2>
       <p id="gold-price" class="text-2xl font-extrabold persian-numbers text-white drop-shadow">در حال بارگذاری...</p>
       <small id="gold-change" class="block mt-1 text-base persian-numbers drop-shadow">...</small>
     </section>
@@ -86,11 +85,6 @@
         if (usd) {
           const color = usd.change_value > 0 ? 'green' : usd.change_value < 0 ? 'red' : 'black';
           animateElement("usd-box", `<span style="color:${color}">دلار: ${toPersianNumber(usd.price.toLocaleString())} (${toPersianNumber(Math.abs(usd.change_value))} | ${toPersianNumber(Math.abs(usd.change_percent.toFixed(2)))}%)</span>`);
-        }
-
-        if (xauusd) {
-          const color = xauusd.change_value > 0 ? 'green' : xauusd.change_value < 0 ? 'red' : 'black';
-          animateElement("xauusd-box", `<span style="color:${color}">انس طلا: ${toPersianNumber(xauusd.price.toLocaleString())} (${toPersianNumber(Math.abs(xauusd.change_value))} | ${toPersianNumber(Math.abs(xauusd.change_percent.toFixed(2)))}%)</span>`);
         }
 
         if (gold18) {
