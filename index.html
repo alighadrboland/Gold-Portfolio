@@ -89,7 +89,7 @@
       const gold18 = items.find(i => i.symbol === "IR_GOLD_18K");
 
       const usd = data.currency.find(i => i.symbol === "USD");
-      const xauusd = data.currency.find(i => i.symbol === "XAUUSD");
+      const xauusd = data.currency.find(i => i.symbol === "XAUUSD"); // اطمینان از دریافت داده‌های XAUUSD
 
       if (usd) {
         const usdColor = getColorClass(usd.change_percent);
@@ -100,7 +100,7 @@
       if (xauusd) {
         const xauColor = getColorClass(xauusd.change_percent);
         const xauText = `<span class="${xauColor}">انس طلا: ${toPersianNumber(xauusd.price.toLocaleString())} (${toPersianNumber(Math.abs(xauusd.change_percent).toFixed(2))}%)</span>`;
-        animateElement("xauusd-info", xauText); // اینجا اصلاح شد
+        animateElement("xauusd-info", xauText); // نمایش قیمت انس طلا در اینجا
       }
 
       if (gold18) {
