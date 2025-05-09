@@ -99,8 +99,8 @@
 
       if (xauusd) {
         const xauColor = getColorClass(xauusd.change_percent);
-        const xauText = `<span class="${xauColor}">انس: ${toPersianNumber(xauusd.price.toLocaleString())} (${toPersianNumber(Math.abs(xauusd.change_percent).toFixed(2))}%)</span>`;
-        animateElement("xauusd-info", xauText);
+        const xauText = `<span class="${xauColor}">انس طلا: ${toPersianNumber(xauusd.price.toLocaleString())} (${toPersianNumber(Math.abs(xauusd.change_percent).toFixed(2))}%)</span>`;
+        animateElement("xauusd-info", xauText); // اینجا اصلاح شد
       }
 
       if (gold18) {
@@ -116,7 +116,6 @@
 
         animateElement("gold-change", `<span class="${goldChangeColor}">${valueText} (%${percentText})</span>`);
 
-        // رنگ ثابت برای باکس طلا
         const goldBox = document.getElementById("gold-box");
         goldBox.className = "bg-gradient-to-br from-green-800 to-green-400 rounded-xl shadow-md p-6 text-center";
 
@@ -168,7 +167,7 @@
       } else {
         animateElement("gold-price", "اطلاعات موجود نیست");
         animateElement("portfolio-value", "نامشخص");
-        const profitBox = document.getElementById("");
+        const profitBox = document.getElementById("profit-box");
         profitBox.className = "rounded-xl p-6 text-center text-white bg-gray-500 persian-numbers";
         animateElement("profit-box", "اطلاعات موجود نیست");
       }
