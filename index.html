@@ -95,7 +95,7 @@
           let valueText = toPersianNumber(valueStr);
           let percentText = toPersianNumber(percentStr);
           let color = percent > 0 ? 'green' : percent < 0 ? 'red' : 'black';
-          animateElement("gold-change", `<span style="color:${color}">(${toPersianNumber(valueStr)} | ${toPersianNumber(percentStr)}%)</span>`);
+          animateElement("gold-change", `<span style="color:${color}">(${toPersianNumber(valueStr)} | ${toPersianNumber(Math.abs(gold18.change_percent.toFixed(2)))}%)</span>`);
           
           const goldPrice = gold18.price;
           const myGoldGrams = 438.44;
