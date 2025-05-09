@@ -182,20 +182,25 @@ try {
   const globalResponse = await fetch("https://brsapi.ir/Api/Market/Gold_Currency.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz");
   const globalData = await globalResponse.json();
 
+  if (!globalData.currency || !Array.isArray(globalData.currency)) {
+    throw new Error("پاسخ معتبر نیست");
+  }
+
   const currency = globalData.currency;
   const globalGold = currency.find(i => i.symbol === "XAUUSD");
   const usd = currency.find(i => i.symbol === "USD");
 
   if (globalGold) {
-  const price = globalGold.price?.toFixed(2);
-  const change = typeof globalGold.change_percent === 'number' ? globalGold.change_percent : 0;
-  animateElement("xauusd-price", toPersianNumber(price));
-  animateElement(
-    "xauusd-change",
-    `<span class="${change >= 0 ? 'text-green-300' : 'text-red-300'}">(${toPersianNumber(change.toFixed(2))}%)</span>`
+    const price = globalGold.price?.toFixed(2) ?? "0.00";
+    const change = typeof globalGold.change_percent === 'number' ? globalGold.change_percent : 0;
+    animateElement("xauusd-price", toPersianNumber(price));
+    animateElement(
+      "xauusd-change",
+      `<span class="${change >= 0 ? 'text-green-300' : 'text-red-300'}">(${toPersianNumber(change.toFixed(2))}%)</span>`
     );
   } else {
-  animateElement("xauusd-change", "(نامشخص)");
+    animateElement("xauusd-price", "نامشخص");
+    animateElement("xauusd-change", "نامشخص");
   }
 
   if (usd) {
@@ -203,15 +208,18 @@ try {
     const change = usd.change_percent;
     animateElement("usd-price", toPersianNumber(price));
     animateElement("usd-change", `<span class="${change >= 0 ? 'text-green-300' : 'text-red-300'}">(${toPersianNumber(change.toFixed(2))}%)</span>`);
-     }
-
-    } catch (error) {
-  console.error("خطا در دریافت قیمت جهانی طلا و دلار:", error);
-  animateElement("xau-price", "نامشخص");
-  animateElement("usd-price", "نامشخص");
-   }
+  } else {
+    animateElement("usd-price", "نامشخص");
+    animateElement("usd-change", "نامشخص");
   }
 
+} catch (error) {
+  console.error("خطا در دریافت قیمت جهانی طلا و دلار:", error);
+  animateElement("xauusd-price", "نامشخص");
+  animateElement("xauusd-change", "نامشخص");
+  animateElement("usd-price", "نامشخص");
+  animateElement("usd-change", "نامشخص");
+}
     fetchData();
   </script>
 
