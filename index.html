@@ -80,7 +80,6 @@
         const items = data.gold;
         const gold18 = items.find(i => i.symbol === "IR_GOLD_18K");
         const usd = data.currency.find(i => i.symbol === "USD");
-        const xauusd = data.currency.find(i => i.symbol === "XAUUSD");
 
         if (usd) {
           const color = usd.change_value > 0 ? 'green' : usd.change_value < 0 ? 'red' : 'black';
@@ -96,8 +95,8 @@
           let valueText = toPersianNumber(valueStr);
           let percentText = toPersianNumber(percentStr);
           let color = percent > 0 ? 'green' : percent < 0 ? 'red' : 'black';
-          animateElement("gold-change", `<span style="color:${color}">${valueText} (%${percentText})</span>`);
-
+          animateElement("gold-change", `<span style="color:${color}">(${toPersianNumber(valueStr)} | ${toPersianNumber(percentStr)}%)</span>`);
+          
           const goldPrice = gold18.price;
           const myGoldGrams = 438.44;
           const goldPurity = 750;
