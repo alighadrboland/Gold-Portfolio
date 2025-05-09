@@ -160,6 +160,26 @@
               <span class="${xauColor}"> (${xauChangeText} | ${xauPercentText}%)</span>
             `);
           }
+          
+          const usd = items.find(i => i.symbol === "USD");
+          if (xauusd) {
+            const usdPrice = usd.price;
+            const usdChange = usd.change_value;
+            const usdPercent = usd.change_percent;
+
+            const usdPriceText = toPersianNumber(usdPrice.toLocaleString());
+            const usdChangeText = toPersianNumber(Math.abs(usdChange).toLocaleString());
+            const usdPercentText = toPersianNumber(Math.abs(usdPercent).toFixed(2));
+
+            let usdColor = "text-black";
+            if (usdPercent > 0) usdColor = "text-green-600";
+            else if (usdPercent < 0) usdColor = "text-red-600";
+
+            animateElement("usd-info", `
+              <span>دلار: ${usdPriceText}</span>
+              <span class="${usdColor}"> (${usdChangeText} | ${usdPercentText}%)</span>
+            `);
+          }
 
           const now = new Date();
           const formattedDate = toPersianNumber(now.toLocaleDateString("fa-IR"));
