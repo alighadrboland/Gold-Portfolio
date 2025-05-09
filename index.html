@@ -30,6 +30,20 @@
   </header>
 
   <main class="max-w-xl mx-auto p-4 space-y-4">
+
+  <!-- نمایش قیمت جهانی طلا و دلار -->
+  <section id="global-prices" class="bg-gradient-to-br from-gray-800 to-gray-500 rounded-xl shadow-md p-4 text-center text-white space-y-2">
+    <div>
+      <span class="font-bold">طلا جهانی (XAU/AUD): </span>
+      <span id="xau-price" class="persian-numbers">...</span>
+      <small id="xau-change" class="persian-numbers block mt-1">...</small>
+    </div>
+    <div>
+      <span class="font-bold">دلار آمریکا (USD): </span>
+      <span id="usd-price" class="persian-numbers">...</span>
+      <small id="usd-change" class="persian-numbers block mt-1">...</small>
+    </div>
+  </section>
     
      <section id="gold-box" class="bg-gradient-to-br from-yellow-800 to-yellow-400 rounded-xl shadow-md p-6 text-center">
      <h2 class="text-xl font-extrabold text-yellow-300 mb-2 drop-shadow">قیمت هر گرم طلای ۱۸ عیار</h2>
@@ -163,7 +177,35 @@
         profitBox.className = "rounded-xl p-6 text-center text-white bg-gray-500 persian-numbers";
         animateElement("profit-box", "خطا در محاسبه سود/زیان");
       }
-    }
+      // دریافت قیمت طلا جهانی و دلار
+try {
+  const globalResponse = await fetch("https://brsapi.ir/Api/Market/Gold_Currency.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz");
+  const globalData = await globalResponse.json();
+
+  const currency = globalData.currency;
+  const globalGold = currency.find(i => i.symbol === "XAUUSD");
+  const usd = currency.find(i => i.symbol === "USD");
+
+  if (globalGold) {
+    const price = globalGold.price.toFixed(2);
+    const change = globalGold.change_percent;
+    animateElement("xau-price", toPersianNumber(price));
+    animateElement("xau-change", `<span class="${change >= 0 ? 'text-green-300' : 'text-red-300'}">(${toPersianNumber(change.toFixed(2))}%)</span>`);
+  }
+
+  if (usd) {
+    const price = usd.price.toFixed(2);
+    const change = usd.change_percent;
+    animateElement("usd-price", toPersianNumber(price));
+    animateElement("usd-change", `<span class="${change >= 0 ? 'text-green-300' : 'text-red-300'}">(${toPersianNumber(change.toFixed(2))}%)</span>`);
+     }
+
+    } catch (error) {
+  console.error("خطا در دریافت قیمت جهانی طلا و دلار:", error);
+  animateElement("xau-price", "نامشخص");
+  animateElement("usd-price", "نامشخص");
+   }
+  }
 
     fetchData();
   </script>
