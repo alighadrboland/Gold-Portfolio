@@ -29,9 +29,8 @@
     <h1 class="text-2xl font-bold">پورتفوی دارایی ها</h1>
     <div class="text-base font-bold space-y-1 persian-numbers">
       <div id="usd-box">دلار: ...</div>
-      <div id="usdt-box">تتر: ...</div>
+      <div id="usdt-box">تتر: ...</div> <!-- اضافه شد -->
       <div id="gold18-box">طلای ۱۸ عیار: ...</div>
-      <div id="fund-price-box">صندوق عیار: ...</div>
       <p id="gold-price" class="hidden"></p>
       <small id="gold-change" class="hidden"></small>
     </div>
@@ -85,6 +84,7 @@
       let totalIrt = 0;
 
       try {
+        // Step 1: Get crypto prices
         const coingeckoRes = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,filecoin,tether&vs_currencies=usd");
         const cryptoData = await coingeckoRes.json();
         const btcUsd = cryptoData.bitcoin.usd;
@@ -94,6 +94,7 @@
 
         const totalUsd = (btcAmount * btcUsd) + (ethAmount * ethUsd) + (filAmount * filUsd);
 
+        // Step 2: Get USDT to IRT rate
         const rateRes = await fetch("https://brsapi.ir/Api/Market/Gold_Currency.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz");
         const rateData = await rateRes.json();
         const usdtObj = rateData.currency.find(i => i.symbol === "USDT_IRT");
@@ -109,12 +110,14 @@
             <div>BTC: ${toPersianNumber(btcAmount)} × ${toPersianNumber(btcUsd.toLocaleString())} = $${toPersianNumber((btcAmount * btcUsd).toFixed(2))}</div>
             <div>ETH: ${toPersianNumber(ethAmount)} × ${toPersianNumber(ethUsd.toLocaleString())} = $${toPersianNumber((ethAmount * ethUsd).toFixed(2))}</div>
             <div>FIL: ${toPersianNumber(filAmount)} × ${toPersianNumber(filUsd.toLocaleString())} = $${toPersianNumber((filAmount * filUsd).toFixed(2))}</div>
+
             <p class="text-2xl font-extrabold persian-numbers text-white drop-shadow mt-2">
-              ${toPersianNumber(totalIrt.toLocaleString())}
+                    ${toPersianNumber(totalIrt.toLocaleString())}
             </p>          
           </div>
         `);
 
+        // Step 3: Display USDT price and change
         animateElement("usdt-box", `
           <span style="color:${usdtChangePercent > 0 ? 'green' : usdtChangePercent < 0 ? 'red' : 'black'}">
             تتر: ${toPersianNumber(usdtPrice.toLocaleString())} 
@@ -166,20 +169,15 @@
             if (ayar && ayar.pc) {
               const result = fundUnits * (ayar.pc / 10);
               const combined = totalGoldValue + result + totalIrt;
-
-              animateElement("fund-price-box", `
-                <span style="color:${ayar.pcp > 0 ? 'green' : ayar.pcp < 0 ? 'red' : 'black'}">
-                  صندوق عیار: ${toPersianNumber(Number(ayar.pc).toLocaleString())} 
-                  (${toPersianNumber(Math.abs(Number(ayar.pcp)).toFixed(2))}%)
-                </span>
-              `);
-
               animateElement("gold-amount", toPersianNumber(Math.floor(combined).toLocaleString()));
               animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
               animateElement("profit-box", `
                 <div class="text-xl font-extrabold drop-shadow text-yellow-300">
                   دارایی صندوق عیار (${toPersianNumber(fundUnits.toLocaleString())} واحد)
                 </div>
+                <small class="block mt-1 text-base text-white persian-numbers drop-shadow">
+                  قیمت پایانی: ${toPersianNumber(Number(ayar.pc).toLocaleString())} (${toPersianNumber(Number(ayar.pcp).toFixed(2))}%)
+                </small>
                 <div class="text-2xl font-extrabold drop-shadow text-white mt-2">
                   ${toPersianNumber(Math.floor(result).toLocaleString())}
                 </div>
