@@ -37,10 +37,6 @@
 
   <main class="max-w-xl mx-auto p-4 space-y-4">
 
-    <section id="crypto-box" class="bg-slate-800 rounded-xl shadow-md p-6 text-center text-white persian-numbers">
-      در حال دریافت اطلاعات رمزارزها...
-    </section>
-
     <section class="bg-purple-800 rounded-xl shadow-md p-6 text-center">
       <h3 id="portfolio-title" class="text-xl font-extrabold text-yellow-300 mb-2 drop-shadow">ارزش طلای آبشده</h3>
       <p id="portfolio-value" class="text-2xl font-extrabold persian-numbers text-white drop-shadow">...</p>
@@ -48,6 +44,10 @@
 
     <section id="profit-box" class="rounded-xl p-6 text-center text-yellow-400 persian-numbers">
       در حال محاسبه سود/زیان...
+    </section>
+
+    <section id="crypto-box" class="bg-slate-800 rounded-xl shadow-md p-6 text-center text-white persian-numbers">
+      در حال دریافت اطلاعات رمزارزها...
     </section>
 
     <section class="bg-yellow-600 rounded-xl shadow-md p-6 text-center">
@@ -62,9 +62,9 @@
   <script>
     const myGoldGrams = 438.44;
     const fundUnits = 4524;
-    const btcAmount = 0.0021;
-    const ethAmount = 0.12;
-    const filAmount = 4.6;
+    const btcAmount = 0.0426721;
+    const ethAmount = 0.3754664;
+    const filAmount = 8.2325135;
 
     function toPersianNumber(input) {
       const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
@@ -107,7 +107,7 @@
             <div>BTC: ${toPersianNumber(btcAmount)} × ${toPersianNumber(btcUsd.toLocaleString())} = ${toPersianNumber((btcAmount * btcUsd).toFixed(2))} $</div>
             <div>ETH: ${toPersianNumber(ethAmount)} × ${toPersianNumber(ethUsd.toLocaleString())} = ${toPersianNumber((ethAmount * ethUsd).toFixed(2))} $</div>
             <div>FIL: ${toPersianNumber(filAmount)} × ${toPersianNumber(filUsd.toLocaleString())} = ${toPersianNumber((filAmount * filUsd).toFixed(2))} $</div>
-            <div class="mt-2">ارزش کل رمزارزها به تومان: <span class="font-extrabold text-white">${toPersianNumber(totalIrt.toLocaleString())}</span></div>
+            <div class="mt-2">ارزش کل رمزارزها: <span class="font-extrabold text-white">${toPersianNumber(totalIrt.toLocaleString())}</span></div>
           </div>
         `);
       } catch (err) {
