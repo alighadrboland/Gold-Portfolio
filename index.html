@@ -34,12 +34,6 @@
 
   <main class="max-w-xl mx-auto p-4 space-y-4">
     
-    <section id="gold-box" class="bg-white rounded-xl shadow-md p-6 text-center">
-      <h2 class="text-xl font-extrabold text-blue-700 mb-2 drop-shadow">قیمت هر گرم طلای ۱۸ عیار</h2>
-      <p id="gold-price" class="text-2xl font-extrabold persian-numbers text-black drop-shadow">در حال بارگذاری...</p>
-      <small id="gold-change" class="block mt-1 text-base persian-numbers drop-shadow">...</small>
-    </section>
-
     <section class="bg-purple-800 rounded-xl shadow-md p-6 text-center">
       <h3 id="portfolio-title" class="text-xl font-extrabold text-yellow-300 mb-2 drop-shadow">ارزش طلای آبشده</h3>
       <p id="portfolio-value" class="text-2xl font-extrabold persian-numbers text-white drop-shadow">...</p>
@@ -83,8 +77,17 @@
 
         if (usd) {
           const color = usd.change_value > 0 ? 'green' : usd.change_value < 0 ? 'red' : 'black';
-          animateElement("usd-box", `<span style="color:${color}">دلار: ${toPersianNumber(usd.price.toLocaleString())} (${toPersianNumber(Math.abs(usd.change_value))} | ${toPersianNumber(Math.abs(usd.change_percent.toFixed(2)))}%)</span>`);
+          let usdHtml = `<span style="color:${color}">دلار: ${toPersianNumber(usd.price.toLocaleString())} (${toPersianNumber(Math.abs(usd.change_value))} | ${toPersianNumber(Math.abs(usd.change_percent.toFixed(2)))}%)</span>`;
+
+          if (gold18) {
+             const goldColor = gold18.change_percent > 0 ? 'green' : gold18.change_percent < 0 ? 'red' : 'black';
+             const goldPriceStr = toPersianNumber(gold18.price.toLocaleString());
+             const goldChangeStr = `(${toPersianNumber(Math.abs(gold18.change_value).toLocaleString())} | ٪${toPersianNumber(Math.abs(gold18.change_percent.toFixed(2)))})`;
+             usdHtml += `<div class="mt-1 text-sm" style="color:${goldColor}">طلای ۱۸ عیار: ${goldPriceStr} ${goldChangeStr}</div>`;
+          }
+          animateElement("usd-box", usdHtml);
         }
+
 
         if (gold18) {
           animateElement("gold-price", toPersianNumber(gold18.price.toLocaleString()));
