@@ -160,7 +160,7 @@
               // گرفتن نرخ تتر به تومان از API ایرانی
               const usdtRes = await fetch("https://brsapi.ir/Api/Market/Gold_Currency.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz");
               const usdtData = await usdtRes.json();
-              const usdtInfo = usdtData.currency.find(i => i.symbol === "USDT");
+              const usdtInfo = usdtData.currency.find(i => i.symbol === "USDT_IRT");
 
               const usdtPrice = usdtInfo ? usdtInfo.price : 0;
               const totalIrt = Math.floor(totalUsd * usdtPrice);
