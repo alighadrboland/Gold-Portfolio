@@ -1,125 +1,155 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>پورتفوی طلا</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn-font@v33.003/font-face.css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ارزش طلا و صندوق عیار</title>
   <style>
-    * {
-      font-family: 'Vazirmatn', sans-serif !important;
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: Tahoma, sans-serif;
+      text-align: center;
+      padding: 20px;
     }
-    .persian-numbers {
-      font-feature-settings: "ss01";
-      direction: rtl;
-    }
-    .fade-update {
-      animation: fadeIn 0.8s ease-in-out;
+    .fade-in {
+      animation: fadeIn 1s ease-in-out;
     }
     @keyframes fadeIn {
-      0% { opacity: 0.2; transform: scale(0.97); }
-      100% { opacity: 1; transform: scale(1); }
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    .persian-numbers {
+      direction: rtl;
+      font-family: 'Vazir', Tahoma, sans-serif;
     }
   </style>
 </head>
-<body class="bg-gray-300 text-gray-800">
-
-  <header class="bg-black text-white py-4 text-center space-y-2">
-    <h1 class="text-xl font-bold">پورتفوی طلای آبشده و صندوق عیار</h1>
-    <div class="text-base font-bold space-y-1 persian-numbers">
-      <div id="usd-box">دلار: ...</div>
-    </div>
-  </header>
-
-  <main class="max-w-xl mx-auto p-4 space-y-4">
-    
-    <section class="bg-purple-800 rounded-xl shadow-md p-6 text-center">
-      <h3 id="portfolio-title" class="text-xl font-extrabold text-yellow-300 mb-2 drop-shadow">ارزش طلای آبشده</h3>
-      <p id="portfolio-value" class="text-2xl font-extrabold persian-numbers text-white drop-shadow">...</p>
-    </section>
-
-    <section id="profit-box" class="rounded-xl p-6 text-center text-yellow-400 persian-numbers">
-      در حال محاسبه سود/زیان...
-    </section>
-
-    <section class="bg-yellow-600 rounded-xl shadow-md p-6 text-center">
-      <h3 class="text-xl font-extrabold text-black mb-2 drop-shadow">دارایی کل</h3>
-      <p id="gold-amount" class="text-2xl font-extrabold persian-numbers text-white drop-shadow">...</p>
-    </section>
-
-    <p id="last-update" class="text-sm text-gray-500 text-center mt-4 persian-numbers">در حال دریافت زمان...</p>
-
-  </main>
+<body>
+  <h1>قیمت لحظه‌ای طلا و صندوق عیار</h1>
+  <div>
+    <h2>قیمت هر گرم طلای ۱۸ عیار:</h2>
+    <div id="gold-price" class="persian-numbers text-2xl">...</div>
+    <div id="gold-change" class="persian-numbers text-lg mt-1">...</div>
+  </div>
+  <hr style="margin: 20px 0; border-color: #555;">
+  <div>
+    <h2 id="portfolio-title">ارزش طلای آبشده</h2>
+    <div id="portfolio-value" class="persian-numbers text-2xl">...</div>
+  </div>
+  <hr style="margin: 20px 0; border-color: #555;">
+  <div>
+    <div id="profit-box" class="persian-numbers"></div>
+  </div>
+  <hr style="margin: 20px 0; border-color: #555;">
+  <div>
+    <h2>ارزش کل دارایی:</h2>
+    <div id="gold-amount" class="persian-numbers text-3xl">...</div>
+  </div>
 
   <script>
-const myGoldGrams = 438.44; // وزن طلای آبشده شما
-const ayarUnits = 4524;     // تعداد واحدهای صندوق عیار شما
-let totalGoldValue = 0;
+    const myGoldGrams = 438.44;
+    const ayarUnits = 4524;
 
-const toPersianNumber = (n) => n?.toString()?.replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+    let totalGoldValue = 0;
 
-const animateElement = (id, html) => {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.classList.remove("fade-in");
-  void el.offsetWidth;
-  el.classList.add("fade-in");
-  el.innerHTML = html;
-};
-
-async function fetchData() {
-  try {
-    const response = await fetch("https://brsapi.ir/api/Gold/Market");
-    const data = await response.json();
-
-    const gold18 = data.find(i => i.code === "geram18");
-    if (gold18) {
-      animateElement("gold-price", toPersianNumber(gold18.price.toLocaleString()));
-
-      const value = gold18.change_value;
-      const percent = gold18.change_percent;
-      const valueStr = Math.abs(value).toLocaleString();
-      const percentStr = Math.abs(percent).toFixed(2);
-      const color = percent > 0 ? 'green' : percent < 0 ? 'red' : 'black';
-      animateElement("gold-change", `<span style="color:${color}">(${toPersianNumber(valueStr)} | ٪${toPersianNumber(percentStr)})</span>`);
-
-      const goldPrice = gold18.price;
-      const goldPurity = 750;
-      const commission = 30000;
-      totalGoldValue = ((goldPrice - commission) * goldPurity / 750) * myGoldGrams;
-
-      document.getElementById("portfolio-title").innerText = `ارزش طلای آبشده (${toPersianNumber(myGoldGrams.toLocaleString())} گرم)`;
-      animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
+    function toPersianNumber(n) {
+      return n?.toString()?.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[d]);
     }
 
-    const ayarResponse = await fetch("https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz&type=1");
-    const symbols = await ayarResponse.json();
-    const ayar = symbols.find(i => i.l18 === "عیار");
-    if (ayar && ayar.pc) {
-      const result = ayarUnits * (ayar.pc / 10);
-      const combined = totalGoldValue + result;
-
-      animateElement("gold-amount", toPersianNumber(Math.floor(combined).toLocaleString()));
-      animateElement("profit-box", `
-        <div class="text-xl font-extrabold drop-shadow text-yellow-300">
-          ارزش صندوق عیار (${toPersianNumber(ayarUnits.toLocaleString())} واحد)
-        </div>
-        <div class="text-2xl font-extrabold drop-shadow text-white mt-2">
-          ${toPersianNumber(Math.floor(result).toLocaleString())}
-        </div>
-        <small class="block mt-1 text-base text-white persian-numbers drop-shadow">
-          قیمت پایانی: ${toPersianNumber(Number(ayar.pc).toLocaleString())} (${toPersianNumber(Number(ayar.pcp).toFixed(2))}%)
-        </small>
-      `);
+    function animateElement(id, html) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.remove("fade-in");
+      void el.offsetWidth;
+      el.classList.add("fade-in");
+      el.innerHTML = html;
     }
 
-  } catch (error) {
-    console.error("خطا در دریافت اطلاعات:", error);
-  }
-}
+    async function fetchData() {
+      try {
+        const response = await fetch("https://brsapi.ir/api/Gold/Market");
+        const data = await response.json();
 
-fetchData();
-</script>
+        const gold18 = data.find((i) => i.code === "geram18");
+
+        if (gold18) {
+          animateElement(
+            "gold-price",
+            toPersianNumber(gold18.price.toLocaleString())
+          );
+
+          const value = gold18.change_value;
+          const percent = gold18.change_percent;
+          const valueStr = Math.abs(value).toLocaleString();
+          const percentStr = Math.abs(percent).toFixed(2);
+
+          let color = "white";
+          if (percent > 0) color = "green";
+          else if (percent < 0) color = "red";
+
+          animateElement(
+            "gold-change",
+            `<span style="color:${color}">(${toPersianNumber(
+              valueStr
+            )} | ٪${toPersianNumber(percentStr)})</span>`
+          );
+
+          const goldPrice = gold18.price;
+          const goldPurity = 750;
+          const commission = 30000;
+
+          totalGoldValue =
+            ((goldPrice - commission) * goldPurity) / 750 * myGoldGrams;
+
+          document.getElementById("portfolio-title").innerText =
+            "ارزش طلای آبشده (" + toPersianNumber(myGoldGrams.toLocaleString()) + " گرم)";
+          animateElement(
+            "portfolio-value",
+            toPersianNumber(Math.floor(totalGoldValue).toLocaleString())
+          );
+        }
+
+        const ayarResponse = await fetch(
+          "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz&type=1"
+        );
+        const symbols = await ayarResponse.json();
+
+        const ayar = symbols.find((i) => i.l18 === "عیار");
+
+        if (ayar && ayar.pc) {
+          const result = ayarUnits * (ayar.pc / 10);
+          const combined = totalGoldValue + result;
+
+          animateElement(
+            "gold-amount",
+            toPersianNumber(Math.floor(combined).toLocaleString())
+          );
+
+          animateElement(
+            "profit-box",
+            `
+            <div class="text-xl font-extrabold drop-shadow text-yellow-300">
+              ارزش صندوق عیار (${toPersianNumber(ayarUnits.toLocaleString())} واحد)
+            </div>
+            <div class="text-2xl font-extrabold drop-shadow text-white mt-2">
+              ${toPersianNumber(Math.floor(result).toLocaleString())}
+            </div>
+            <small class="block mt-1 text-base text-white persian-numbers drop-shadow">
+              قیمت پایانی: ${toPersianNumber(
+                Number(ayar.pc).toLocaleString()
+              )} (${toPersianNumber(Number(ayar.pcp).toFixed(2))}%)
+            </small>
+          `
+          );
+        }
+      } catch (error) {
+        console.error("خطا در دریافت اطلاعات:", error);
+      }
+    }
+
+    fetchData();
+    setInterval(fetchData, 90000);
+  </script>
 </body>
 </html>
