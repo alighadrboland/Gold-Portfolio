@@ -121,6 +121,13 @@
 
           const profitBox = document.getElementById("profit-box");
           profitBox.className = "bg-blue-800 rounded-xl shadow-md p-6 text-center";
+          // اطمینان از اینکه totalGoldValue مقداردهی شده
+          if (!gold18) return;
+          const goldPrice = gold18.price;
+          const myGoldGrams = 438.44;
+          const goldPurity = 750;
+          const commission = 30000;
+          const totalGoldValue = ((goldPrice - commission) * goldPurity / 750 ) * myGoldGrams;
           try {
             const total = 4524;
             const ayarResponse = await fetch("https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz&type=1");
