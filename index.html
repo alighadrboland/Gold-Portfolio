@@ -50,9 +50,9 @@
       در حال دریافت اطلاعات رمزارزها...
     </section>
 
-    <section class="bg-yellow-600 rounded-xl shadow-md p-6 text-center">
-      <h3 class="text-xl font-extrabold text-black mb-2 drop-shadow">دارایی کل</h3>
-      <p id="gold-amount" class="text-2xl font-extrabold persian-numbers text-white drop-shadow">...</p>
+    <section class="bg-white rounded-xl shadow-md p-6 text-center">
+      <h3 class="text-xl font-extrabold text-yellow-300 mb-2 drop-shadow">دارایی کل</h3>
+      <p id="gold-amount" class="text-2xl font-extrabold persian-numbers text-blue-700 drop-shadow">...</p>
     </section>
 
     <p id="last-update" class="text-sm text-gray-500 text-center mt-4 persian-numbers">در حال دریافت زمان...</p>
@@ -143,7 +143,7 @@
           const commission = 30000;
           const totalGoldValue = ((goldPrice - commission) * 750 / 750 ) * myGoldGrams;
 
-          document.getElementById("portfolio-title").innerText = `ارزش طلای آبشده (${toPersianNumber(myGoldGrams.toLocaleString())} گرم)`;
+          document.getElementById("portfolio-title").innerText = `دارایی طلای آبشده (${toPersianNumber(myGoldGrams.toLocaleString())} گرم)`;
           animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
 
           const profitBox = document.getElementById("profit-box");
