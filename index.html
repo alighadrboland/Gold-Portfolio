@@ -28,15 +28,18 @@
   <header class="bg-black text-white py-4 text-center space-y-2">
     <h1 class="text-xl font-bold">پورتفوی طلای آبشده و صندوق عیار</h1>
     <div class="text-base font-bold space-y-1 persian-numbers">
-       <div id="usd-box">دلار: ...</div>
-       <div id="gold18-box">طلای ۱۸ عیار: ...</div> <!-- این خط را اضافه کنید -->
-       <p id="gold-price" class="hidden"></p>
-       <small id="gold-change" class="hidden"></small>
+      <div id="usd-box">دلار: ...</div>
+      <div id="gold18-box">طلای ۱۸ عیار: ...</div>
+      <p id="gold-price" class="hidden"></p>
+      <small id="gold-change" class="hidden"></small>
     </div>
-
   </header>
 
   <main class="max-w-xl mx-auto p-4 space-y-4">
+
+    <section id="crypto-box" class="bg-slate-800 rounded-xl shadow-md p-6 text-center text-white persian-numbers">
+      در حال دریافت اطلاعات رمزارزها...
+    </section>
 
     <section class="bg-purple-800 rounded-xl shadow-md p-6 text-center">
       <h3 id="portfolio-title" class="text-xl font-extrabold text-yellow-300 mb-2 drop-shadow">ارزش طلای آبشده</h3>
@@ -45,13 +48,6 @@
 
     <section id="profit-box" class="rounded-xl p-6 text-center text-yellow-400 persian-numbers">
       در حال محاسبه سود/زیان...
-    </section>
-
-    <section class="bg-green-700 rounded-xl shadow-md p-6 text-center">
-       <h3 class="text-xl font-extrabold text-white mb-2 drop-shadow">دارایی رمزارزها</h3>
-      <div id="crypto-box" class="text-white persian-numbers space-y-1 text-lg">
-         در حال دریافت اطلاعات...
-     </div>
     </section>
 
     <section class="bg-yellow-600 rounded-xl shadow-md p-6 text-center">
@@ -66,6 +62,9 @@
   <script>
     const myGoldGrams = 438.44;
     const fundUnits = 4524;
+    const btcAmount = 0.0021;
+    const ethAmount = 0.12;
+    const filAmount = 4.6;
 
     function toPersianNumber(input) {
       const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
@@ -81,6 +80,41 @@
     }
 
     async function fetchData() {
+      let totalIrt = 0;
+
+      try {
+        // Step 1: Get crypto prices
+        const coingeckoRes = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,filecoin,tether&vs_currencies=usd");
+        const cryptoData = await coingeckoRes.json();
+        const btcUsd = cryptoData.bitcoin.usd;
+        const ethUsd = cryptoData.ethereum.usd;
+        const filUsd = cryptoData.filecoin.usd;
+        const usdtUsd = cryptoData.tether.usd;
+
+        const totalUsd = (btcAmount * btcUsd) + (ethAmount * ethUsd) + (filAmount * filUsd);
+
+        // Step 2: Get USDT to IRT rate
+        const rateRes = await fetch("https://brsapi.ir/Api/Market/Gold_Currency.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz");
+        const rateData = await rateRes.json();
+        const usdtObj = rateData.currency.find(i => i.symbol === "USDT_IRT");
+        const usdtPrice = usdtObj?.price || 0;
+
+        totalIrt = Math.floor(totalUsd * usdtPrice);
+
+        animateElement("crypto-box", `
+          <div class="text-yellow-300 text-xl font-bold mb-2">دارایی رمزارزها</div>
+          <div class="space-y-1">
+            <div>BTC: ${toPersianNumber(btcAmount)} × ${toPersianNumber(btcUsd.toLocaleString())} = ${toPersianNumber((btcAmount * btcUsd).toFixed(2))} $</div>
+            <div>ETH: ${toPersianNumber(ethAmount)} × ${toPersianNumber(ethUsd.toLocaleString())} = ${toPersianNumber((ethAmount * ethUsd).toFixed(2))} $</div>
+            <div>FIL: ${toPersianNumber(filAmount)} × ${toPersianNumber(filUsd.toLocaleString())} = ${toPersianNumber((filAmount * filUsd).toFixed(2))} $</div>
+            <div class="mt-2">ارزش کل رمزارزها به تومان: <span class="font-extrabold text-white">${toPersianNumber(totalIrt.toLocaleString())}</span></div>
+          </div>
+        `);
+      } catch (err) {
+        console.error("خطا در دریافت اطلاعات رمزارز:", err);
+        animateElement("crypto-box", "خطا در دریافت قیمت رمزارزها");
+      }
+
       try {
         const response = await fetch("https://brsapi.ir/Api/Market/Gold_Currency.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz");
         const data = await response.json();
@@ -103,9 +137,8 @@
           animateElement("gold18-box", `<span style="color:${color}">طلای ۱۸ عیار: ${toPersianNumber(gold18.price.toLocaleString())} (${toPersianNumber(valueStr)} | ${toPersianNumber(percentStr)}%)</span>`);
 
           const goldPrice = gold18.price;
-          const goldPurity = 750;
           const commission = 30000;
-          const totalGoldValue = ((goldPrice - commission) * goldPurity / 750 ) * myGoldGrams;
+          const totalGoldValue = ((goldPrice - commission) * 750 / 750 ) * myGoldGrams;
 
           document.getElementById("portfolio-title").innerText = `ارزش طلای آبشده (${toPersianNumber(myGoldGrams.toLocaleString())} گرم)`;
           animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
@@ -120,7 +153,7 @@
 
             if (ayar && ayar.pc) {
               const result = fundUnits * (ayar.pc / 10);
-              const combined = totalGoldValue + result;
+              const combined = totalGoldValue + result + totalIrt;
               animateElement("gold-amount", toPersianNumber(Math.floor(combined).toLocaleString()));
               animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
               animateElement("profit-box", `
@@ -137,47 +170,6 @@
             } else {
               animateElement("profit-box", "صندوق عیار یافت نشد");
             }
-          const cryptoHoldings = {
-          bitcoin: 0.0031,
-          ethereum: 0.12,
-          filecoin: 22
-          };
-
-          try {
-              const coinRes = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,filecoin,tether&vs_currencies=usd");
-              const coinData = await coinRes.json();
-
-              const btcUsd = coinData.bitcoin.usd;
-              const ethUsd = coinData.ethereum.usd;
-              const filUsd = coinData.filecoin.usd;
-
-              const btcVal = cryptoHoldings.bitcoin * btcUsd;
-              const ethVal = cryptoHoldings.ethereum * ethUsd;
-              const filVal = cryptoHoldings.filecoin * filUsd;
-
-              const totalUsd = btcVal + ethVal + filVal;
-
-              // گرفتن نرخ تتر به تومان از API ایرانی
-              const usdtRes = await fetch("https://brsapi.ir/Api/Market/Gold_Currency.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz");
-              const usdtData = await usdtRes.json();
-              const usdtInfo = usdtData.currency.find(i => i.symbol === "USDT_IRT");
-
-              const usdtPrice = usdtInfo ? usdtInfo.price : 0;
-              const totalIrt = Math.floor(totalUsd * usdtPrice);
-
-              animateElement("crypto-box", `
-                   <div>بیت‌کوین (${toPersianNumber(cryptoHoldings.bitcoin)}): ${toPersianNumber(btcVal.toFixed(2))} دلار</div>
-                   <div>اتریوم (${toPersianNumber(cryptoHoldings.ethereum)}): ${toPersianNumber(ethVal.toFixed(2))} دلار</div>
-                   <div>فایل‌کوین (${toPersianNumber(cryptoHoldings.filecoin)}): ${toPersianNumber(filVal.toFixed(2))} دلار</div>
-                   <div class="mt-2 text-xl text-yellow-300">مجموع: ${toPersianNumber(totalUsd.toFixed(2))} دلار</div>
-                   <div class="mt-1 text-lg text-white">معادل تقریبی: ${toPersianNumber(totalIrt.toLocaleString())} تومان</div>
-              `);
-
-          } catch (cryptoErr) {
-              console.error("خطا در دریافت اطلاعات رمزارز:", cryptoErr);
-              animateElement("crypto-box", "خطا در دریافت اطلاعات رمزارزها");
-          }
-
           } catch (err) {
             console.error("خطا در دریافت اطلاعات صندوق عیار:", err);
             animateElement("profit-box", "خطا در دریافت قیمت صندوق");
