@@ -84,6 +84,15 @@
              const goldPriceStr = toPersianNumber(gold18.price.toLocaleString());
              const goldChangeStr = `(${toPersianNumber(Math.abs(gold18.change_value).toLocaleString())} | ٪${toPersianNumber(Math.abs(gold18.change_percent.toFixed(2)))})`;
              usdHtml += `<div class="mt-1 text-sm" style="color:${goldColor}">طلای ۱۸ عیار: ${goldPriceStr} ${goldChangeStr}</div>`;
+             // ادامه پردازش با gold18 برای محاسبه ارزش طلای آبشده
+             const goldPrice = gold18.price;
+             const myGoldGrams = 438.44;
+             const goldPurity = 750;
+             const commission = 30000;
+             const totalGoldValue = ((goldPrice - commission) * goldPurity / 750 ) * myGoldGrams;
+             document.getElementById("portfolio-title").innerText = `ارزش طلای آبشده (${toPersianNumber(myGoldGrams.toLocaleString())} گرم)`;
+             animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
+
           }
           animateElement("usd-box", usdHtml);
         }
