@@ -162,7 +162,8 @@
           profitBox.className = "bg-blue-800 rounded-xl shadow-md p-6 text-center";
 
           try {
-            const ayarResponse = await fetch("https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz&type=1");
+            //const ayarResponse = await fetch("https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz&type=1");
+            const ayarResponse = await fetch("https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreezhPfvWeEOGOPucTWsPukkDazGzTQ&type=1");
             const symbols = await ayarResponse.json();
             const ayar = symbols.find(i => i.l18 === "عیار");
 
