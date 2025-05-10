@@ -25,7 +25,7 @@
 </head>
 <body class="bg-gray-300 text-gray-800">
 
-  <header class="bg-black text-white py-3 text-center space-y-2">
+  <header class="bg-white text-black py-3 text-center space-y-2">
     <h1 class="text-xl font-bold">پورتفوی دارایی ها</h1>
     <div class="text-base font-bold space-y-1 persian-numbers">
       <div id="usd-box">دلار: ...</div>
@@ -147,7 +147,7 @@
           animateElement("gold-price", toPersianNumber(gold18.price.toLocaleString()));
           let valueStr = Math.abs(gold18.change_value).toLocaleString();
           let percentStr = Math.abs(gold18.change_percent).toFixed(2);
-          const color = gold18.change_percent > 0 ? 'green-400' : gold18.change_percent < 0 ? 'red' : 'black';
+          const color = gold18.change_percent > 0 ? 'green' : gold18.change_percent < 0 ? 'red' : 'black';
           animateElement("gold-change", `<span style="color:${color}">(${toPersianNumber(valueStr)} | ٪${toPersianNumber(percentStr)})</span>`);
           animateElement("gold18-box", `<span style="color:${color}">طلای ۱۸ عیار: ${toPersianNumber(gold18.price.toLocaleString())} (${toPersianNumber(valueStr)} | ${toPersianNumber(percentStr)}%)</span>`);
 
