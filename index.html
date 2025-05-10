@@ -103,6 +103,8 @@
 
         animateElement("crypto-box", `
           <div class="text-yellow-300 text-xl font-bold mb-2">دارایی رمزارزها</div>
+          const color = usdtObj.change_value > 0 ? 'green' : usdtObj.change_value < 0 ? 'red' : 'black';
+          animateElement("crypto-box", `<span style="color:${color}">تتر: ${toPersianNumber(usdtObj.price.toLocaleString())} (${toPersianNumber(Math.abs(usdtObj.change_value))} | ${toPersianNumber(Math.abs(usdtObj.change_percent.toFixed(2)))}%)</span>`);
           <div class="space-y-1">
             <div>BTC: ${toPersianNumber(btcAmount)} × ${toPersianNumber(btcUsd.toLocaleString())} = $${toPersianNumber((btcAmount * btcUsd).toFixed(2))}</div>
             <div>ETH: ${toPersianNumber(ethAmount)} × ${toPersianNumber(ethUsd.toLocaleString())} = $${toPersianNumber((ethAmount * ethUsd).toFixed(2))}</div>
