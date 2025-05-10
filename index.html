@@ -29,6 +29,7 @@
     <h1 class="text-xl font-bold">پورتفوی دارایی ها</h1>
     <div class="text-base font-bold space-y-1 persian-numbers">
       <div id="usd-box">دلار: ...</div>
+      <div id="usdt-box">تتر: ...</div> <!-- اضافه شد -->
       <div id="gold18-box">طلای ۱۸ عیار: ...</div>
       <p id="gold-price" class="hidden"></p>
       <small id="gold-change" class="hidden"></small>
@@ -98,6 +99,8 @@
         const rateData = await rateRes.json();
         const usdtObj = rateData.currency.find(i => i.symbol === "USDT_IRT");
         const usdtPrice = usdtObj?.price || 0;
+        const usdtChangeValue = usdtObj?.change_value || 0;
+        const usdtChangePercent = usdtObj?.change_percent || 0;
 
         totalIrt = Math.floor(totalUsd * usdtPrice);
 
@@ -113,6 +116,15 @@
             </p>          
           </div>
         `);
+
+        // Step 3: Display USDT price and change
+        animateElement("usdt-box", `
+          <span style="color:${usdtChangePercent > 0 ? 'green' : usdtChangePercent < 0 ? 'red' : 'black'}">
+            تتر: ${toPersianNumber(usdtPrice.toLocaleString())} 
+            (${toPersianNumber(Math.abs(usdtChangeValue))} | ${toPersianNumber(Math.abs(usdtChangePercent.toFixed(2)))}%)
+          </span>
+        `);
+
       } catch (err) {
         console.error("خطا در دریافت اطلاعات رمزارز:", err);
         animateElement("crypto-box", "خطا در دریافت قیمت رمزارزها");
