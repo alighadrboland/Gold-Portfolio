@@ -136,8 +136,16 @@
         const usd = data.currency.find(i => i.symbol === "USD");
 
         if (usd) {
-          const color = usd.change_value > 0 ? 'green' : usd.change_value < 0 ? 'red' : 'black';
-          animateElement("usd-box", `<span style="color:${color}">دلار: ${toPersianNumber(usd.price.toLocaleString())} (${toPersianNumber(Math.abs(usd.change_value))} | ${toPersianNumber(Math.abs(usd.change_percent.toFixed(2)))}%)</span>`);
+            const color = usd.change_value > 0 ? 'green' : usd.change_value < 0 ? 'red' : 'black';
+            const shadowColor = usd.change_value > 0 ? 'limegreen' : usd.change_value < 0 ? 'crimson' : 'gray';
+
+            animateElement(
+             "usd-box",
+             `<span style="color: ${color}; filter: drop-shadow(1px 1px 1.5px ${shadowColor});">
+    دلار: ${toPersianNumber(usd.price.toLocaleString())}  
+             (${toPersianNumber(Math.abs(usd.change_value))} | ${toPersianNumber(Math.abs(usd.change_percent.toFixed(2)))}%)
+             </span>`
+            );
         }
 
         if (gold18) {
