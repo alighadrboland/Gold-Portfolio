@@ -159,39 +159,40 @@
           const randomUrl = urls[Math.floor(Math.random() * urls.length)];
 
           try {
-            const ayarRes = await fetch(randomUrl);
-            const symbols = await ayarRes.json();
-            const ayar = symbols.find(i => i.l18 === "عیار");
-            const ayarpr = ((ayar.pc - avgayarPrice) / avgayarPrice) * 100;
+                const ayarRes = await fetch(randomUrl);
+                const symbols = await ayarRes.json();
+                const ayar = symbols.find(i => i.l18 === "عیار");
+                const ayarpr = ((ayar.pc - avgayarPrice) / avgayarPrice) * 100;
 
+                if (ayar && ayar.pc) {
+                    const result = fundUnits * (ayar.pc / 10);
+                    const combined = totalGoldValue + result + totalIrt;
+                    const color = ayar.pcp > 0 ? 'green' : ayar.pcp < 0 ? 'red' : 'black';
 
-            if (ayar && ayar.pc) {
-              const result = fundUnits * (ayar.pc / 10);
-              const combined = totalGoldValue + result + totalIrt;
-              const color = ayar.pcp > 0 ? 'green' : ayar.pcp < 0 ? 'red' : 'black';
-              
-              animateElement("fund-price-box", `<span style="color:${color}">صندوق عیار: ${toPersianNumber(ayar.pc.toLocaleString())} (${toPersianNumber(Math.abs(ayar.pcc))} | ${toPersianNumber(Math.abs(ayar.pcp.toFixed(2)))}%)</span>`);
-              animateElement("gold-amount", toPersianNumber(Math.floor(combined).toLocaleString()));
+                    animateElement("fund-price-box", `<span style="color:${color}">صندوق عیار: ${toPersianNumber(ayar.pc.toLocaleString())} (${toPersianNumber(Math.abs(ayar.pcc))} | ${toPersianNumber(Math.abs(ayar.pcp.toFixed(2)))}%)</span>`);
+                    animateElement("gold-amount", toPersianNumber(Math.floor(combined).toLocaleString()));
 
-              animateElement("profit-box", `
-                <div class="text-xl font-extrabold drop-shadow text-yellow-300">دارایی صندوق عیار (${toPersianNumber(fundUnits.toLocaleString())} واحد)</div>
-                <div class="text-2xl font-extrabold drop-shadow text-white mt-2">${toPersianNumber(Math.floor(result).toLocaleString())}</div>
-                document.querySelector("#portfolio-value").insertAdjacentHTML(
-                  "afterend",
-                  `<div class="text-sm font-bold text-yellow-300 mt-1 persian-numbers">
-                          قیمت سر به سر: ${toPersianNumber(Math.floor(avgayarPrice).toLocaleString())} 
-                          (${toPersianNumber(Number(ayarpr.toFixed(2)).toLocaleString())}٪)
-                  </div>`
-                );
+                    animateElement("profit-box", `
+                          <div class="text-xl font-extrabold drop-shadow text-yellow-300">دارایی صندوق عیار (${toPersianNumber(fundUnits.toLocaleString())} واحد)</div>
+                          <div class="text-2xl font-extrabold drop-shadow text-white mt-2">${toPersianNumber(Math.floor(result).toLocaleString())}</div>
+                    `);
 
-            `);
-            } else {
-              animateElement("profit-box", "صندوق عیار یافت نشد");
-            }
+                    document.querySelector("#portfolio-value").insertAdjacentHTML(
+                      "afterend",
+                      `<div class="text-sm font-bold text-yellow-300 mt-1 persian-numbers">
+                           قیمت سر به سر: ${toPersianNumber(Math.floor(avgayarPrice).toLocaleString())} 
+                           (${toPersianNumber(Number(ayarpr.toFixed(2)).toLocaleString())}٪)
+                      </div>`
+                    );
+
+             } else {
+                   animateElement("profit-box", "صندوق عیار یافت نشد");
+             }
           } catch (err) {
-            console.error("خطا در دریافت اطلاعات صندوق:", err);
-            animateElement("profit-box", "خطا در دریافت قیمت صندوق");
+                 console.error("خطا در دریافت اطلاعات صندوق:", err);
+                 animateElement("profit-box", "خطا در دریافت قیمت صندوق");
           }
+
 
           const now = new Date();
           const formattedDate = toPersianNumber(now.toLocaleDateString("fa-IR"));
