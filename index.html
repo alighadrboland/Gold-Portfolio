@@ -176,7 +176,7 @@
             const ayarResponse = await fetch(randomUrl);
             const symbols = await ayarResponse.json();
             const ayar = symbols.find(i => i.l18 === "عیار");
-            const ayarpr = ((ayar.pc - avgayarPrice) / avgayarPrice) / 100;
+            const ayarpr = ((ayar.pc - avgayarPrice) / avgayarPrice)) / 100;
 
             if (ayar && ayar.pc) {
               const result = fundUnits * (ayar.pc / 10);
