@@ -202,12 +202,12 @@
                     const rowColorClass = isProfitPositive ? "text-green-700" : "text-red-700";
 
                     document.querySelector("#profit-box").insertAdjacentHTML(
-                      "beforeend",
-                      `<div class="text-sm font-bold mt-1 persian-numbers ${rowColorClass} p-1 rounded">
-                             ${toPersianNumber(Math.floor(ayarmoney).toLocaleString())} 
-                             (${ayarprText})
-                       </div>`
-                     );
+                       "beforeend",
+                       `<div class="text-sm font-bold mt-1 persian-numbers ${rowColorClass} p-1 rounded">
+                            ${formattedAyarMoney} (${ayarprText})
+                        </div>`
+                    );
+
 
              } else {
                    animateElement("profit-box", "صندوق عیار یافت نشد");
