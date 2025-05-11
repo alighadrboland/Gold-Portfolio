@@ -181,11 +181,13 @@
                 const symbols = await ayarRes.json();
                 const ayar = symbols.find(i => i.l18 === "عیار");
                 const ayarpr = ((ayar.pc - avgayarPrice) / avgayarPrice) * 100;
-
+                const ayarmoney = (ayar.pc - avgayarPrice) * fundUnits ;
+                
                 if (ayar && ayar.pc) {
                     const result = fundUnits * (ayar.pc / 10);
                     const combined = totalGoldValue + result + totalIrt;
                     const color = ayar.pcp > 0 ? 'green' : ayar.pcp < 0 ? 'red' : 'black';
+                    
 
                     animateElement("fund-price-box", `<span style="color:${color}">صندوق عیار: ${toPersianNumber(ayar.pc.toLocaleString())} (${toPersianNumber(Math.abs(ayar.pcc))} | ${toPersianNumber(Math.abs(ayar.pcp.toFixed(2)))}%)</span>`);
                     animateElement("gold-amount", toPersianNumber(Math.floor(combined).toLocaleString()));
@@ -202,7 +204,7 @@
                     document.querySelector("#profit-box").insertAdjacentHTML(
                        "beforeend",
                        `<div class="text-sm font-bold text-yellow-300 mt-1 persian-numbers">
-                            قیمت سر به سر: ${toPersianNumber(Math.floor(avgayarPrice).toLocaleString())} 
+                             ${toPersianNumber(Math.floor(ayarmoney).toLocaleString())} 
                             (${ayarprText}٪)
                        </div>`
                     );
