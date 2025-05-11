@@ -196,17 +196,21 @@
                           <div class="text-2xl font-extrabold drop-shadow text-white mt-2">${toPersianNumber(Math.floor(result).toLocaleString())}</div>
                     `);
 
-                    const ayarprText = ayarpr < 0
-                        ? `${toPersianNumber(Math.abs(ayarpr).toFixed(2))}-`
-                        : toPersianNumber(ayarpr.toFixed(2));
+                    const isProfitPositive = ayarmoney >= 0;
+
+                    // فرمت کردن درصد بدون علامت منفی
+                    const ayarprText = `${toPersianNumber(Math.abs(ayarpr).toFixed(2))}٪`;
+
+                    // رنگ سطر بر اساس مثبت یا منفی بودن
+                    const rowColorClass = isProfitPositive ? "bg-green-700 text-white" : "bg-red-700 text-white";
 
                     document.querySelector("#profit-box").insertAdjacentHTML(
-                       "beforeend",
-                       `<div class="text-sm font-bold text-yellow-300 mt-1 persian-numbers">
-                            ${toPersianNumber(Math.floor(ayarmoney).toLocaleString())} 
-                            (${ayarprText}٪)
+                      "beforeend",
+                      `<div class="text-sm font-bold mt-1 persian-numbers ${rowColorClass} p-1 rounded">
+                             ${toPersianNumber(Math.floor(ayarmoney).toLocaleString())} 
+                             (${ayarprText})
                        </div>`
-                    );
+                     );
 
              } else {
                    animateElement("profit-box", "صندوق عیار یافت نشد");
