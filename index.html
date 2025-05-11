@@ -144,12 +144,13 @@
           document.getElementById("portfolio-title").innerText = `دارایی طلای آبشده (${toPersianNumber(myGoldGrams.toLocaleString())} گرم)`;
           animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
           document.querySelector("#portfolio-value").insertAdjacentHTML(
-              "afterend",
-              `<span style="color:yellow-300">
-              میانگین قیمت خرید: ${toPersianNumber(avgGoldPrice.toLocaleString())} 
-             (${toPersianNumber(Goldpr.toFixed(0).toLocaleString())}٪)
-             </span>`
+            "afterend",
+            `<span class="text-yellow-300">
+                میانگین قیمت خرید: ${toPersianNumber(avgGoldPrice.toLocaleString())} 
+               (${toPersianNumber(Goldpr.toFixed(2).toLocaleString())}٪)
+            </span>`
           );
+
 
           const urls = [
             "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz&type=1",
