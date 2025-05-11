@@ -98,20 +98,24 @@
         const { bitcoin, ethereum, filecoin, tether } = cryptoData;
 
         const totalUsd = (btcAmount * bitcoin.usd) + (ethAmount * ethereum.usd) + (filAmount * filecoin.usd);
-
+        
         const rateRes = await fetch("https://brsapi.ir/Api/Market/Gold_Currency.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz");
         const rateData = await rateRes.json();
         const usdtObj = rateData.currency.find(i => i.symbol === "USDT_IRT") || {};
 
         const usdtPrice = usdtObj.price || 0;
         totalIrt = Math.floor(totalUsd * usdtPrice);
+        const btcpr = (btcAmount * bitcoin.usd) * usdtPrice;
+        const ethpr = (ethAmount * ethereum.usd) * usdtPrice;
+        const filpr = (filAmount * filecoin.usd) * usdtPrice;
+
 
         animateElement("crypto-box", `
           <div class="text-yellow-300 text-xl font-bold mb-2">دارایی رمزارزها</div>
           <div class="space-y-1">
-            <div>BTC: ${toPersianNumber(btcAmount)} × ${toPersianNumber(bitcoin.usd.toLocaleString())} = $${toPersianNumber((btcAmount * bitcoin.usd).toFixed(2))}</div>
-            <div>ETH: ${toPersianNumber(ethAmount)} × ${toPersianNumber(ethereum.usd.toLocaleString())} = $${toPersianNumber((ethAmount * ethereum.usd).toFixed(2))}</div>
-            <div>FIL: ${toPersianNumber(filAmount)} × ${toPersianNumber(filecoin.usd.toLocaleString())} = $${toPersianNumber((filAmount * filecoin.usd).toFixed(2))}</div>
+            <div>BTC: ${toPersianNumber(bitcoin.usd.toLocaleString())} = $${toPersianNumber((btcAmount * bitcoin.usd).toFixed(2))} = ${toPersianNumber(btcpr)}</div>
+            <div>ETH: ${toPersianNumber(ethereum.usd.toLocaleString())} = $${toPersianNumber((ethAmount * ethereum.usd).toFixed(2))} = ${toPersianNumber(ethpr)}</div>
+            <div>FIL: ${toPersianNumber(filecoin.usd.toLocaleString())} = $${toPersianNumber((filAmount * filecoin.usd).toFixed(2))} = ${toPersianNumber(filpr)}</div>
             <p class="text-2xl font-extrabold persian-numbers text-white drop-shadow mt-2">${toPersianNumber(totalIrt.toLocaleString())}</p>
           </div>
         `);
