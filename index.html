@@ -107,7 +107,7 @@
         const ethpr = (ethAmount * ethereum.usd) * usdtPrice;
         const filpr = (filAmount * filecoin.usd) * usdtPrice;
 
-        const getColor = (change) => change > 0 ? 'green-500' : change < 0 ? 'red-500' : 'black';
+        const getColor = (change) => change > 0 ? 'green' : change < 0 ? 'red' : 'black';
 
         animateElement("crypto-box", `
           <div class="text-purple-800 text-xl font-bold drop-shadow mb-2">رمزارزها</div>
