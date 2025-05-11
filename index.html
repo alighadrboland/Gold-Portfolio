@@ -142,7 +142,7 @@
 
         if (gold18) {
           const changeColor = gold18.change_percent > 0 ? 'green' : gold18.change_percent < 0 ? 'red' : 'black';
-          animateElement("gold18-box", `<span style="color:${changeColor}">طلای ۱۸ عیار: ${toPersianNumber(gold18.price.toLocaleString())} (${toPersianNumber(Math.abs(gold18.change_value))} | ${toPersianNumber(Math.abs(gold18.change_percent.toFixed(2)))}%)</span>`);
+          animateElement("gold18-box", `<span style="color:${changeColor}">طلای ۱۸ عیار: ${toPersianNumber(gold18.price.toLocaleString())} (${toPersianNumber(Math.abs(gold18.change_value).toLocaleString())} | ${toPersianNumber(Math.abs(gold18.change_percent.toFixed(2)))}%)</span>`);
 
           const goldPrice = gold18.price;
           const commision = goldPrice - 30000;
