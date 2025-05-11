@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -144,7 +142,7 @@
 
         if (gold18) {
           const changeColor = gold18.change_percent > 0 ? 'green' : gold18.change_percent < 0 ? 'red' : 'black';
-          animateElement("gold18-box", `<span style="color:${changeColor}">طلای ۱۸ عیار: ${toPersianNumber(gold18.price.toLocaleString())} (${toPersianNumber(Math.abs(gold18.change_value).toLocaleString())} | ${toPersianNumber(Math.abs(gold18.change_percent).toFixed(2))}%)</span>`);
+          animateElement("gold18-box", `<span style="color:${changeColor}">طلای ۱۸ عیار: ${toPersianNumber(gold18.price.toLocaleString())} (${toPersianNumber(Math.abs(gold18.change_value))} | ${toPersianNumber(Math.abs(gold18.change_percent.toFixed(2)))}%)</span>`);
 
           const goldPrice = gold18.price;
           const commision = goldPrice - 30000;
@@ -192,7 +190,7 @@
                     const combined = totalGoldValue + result + totalIrt;
                     const color = ayar.pcp > 0 ? 'green' : ayar.pcp < 0 ? 'red' : 'black';
 
-                    animateElement("fund-price-box", `<span style="color:${color}">صندوق عیار: ${toPersianNumber(ayar.pc.toLocaleString())} (${toPersianNumber(Math.abs(ayar.pcc.toLocaleString()))} | ${toPersianNumber(Math.abs(ayar.pcp.toFixed(2)))}%)</span>`);
+                    animateElement("fund-price-box", `<span style="color:${color}">صندوق عیار: ${toPersianNumber(ayar.pc.toLocaleString())} (${toPersianNumber(Math.abs(ayar.pcc))} | ${toPersianNumber(Math.abs(ayar.pcp.toFixed(2)))}%)</span>`);
                     animateElement("gold-amount", toPersianNumber(Math.floor(combined).toLocaleString()));
 
                     animateElement("profit-box", `
