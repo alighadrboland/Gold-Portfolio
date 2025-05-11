@@ -151,13 +151,19 @@
                  ? `${toPersianNumber(Math.abs(Goldpr).toFixed(2))}-`
                  : toPersianNumber(Goldpr.toFixed(2));
 
-          document.querySelector("#portfolio-value").insertAdjacentHTML(
-              "afterend",
-              `<div class="text-sm font-bold text-yellow-300 mt-1 persian-numbers">
-                     میانگین قیمت خرید: ${toPersianNumber(Math.floor(avgGoldPrice).toLocaleString())} 
-                     (${goldprText}٪)
-              </div>`
-          );
+          const existingAvgGoldPriceRow = document.querySelector("#portfolio-value + .text-sm");
+          if (existingAvgGoldPriceRow) {
+              existingAvgGoldPriceRow.remove();
+          }
+
+         // حالا سطر جدید را اضافه کنید
+         document.querySelector("#portfolio-value").insertAdjacentHTML(
+           "afterend",
+           `<div class="text-sm font-bold text-yellow-300 mt-1 persian-numbers">
+               میانگین قیمت خرید: ${toPersianNumber(Math.floor(avgGoldPrice).toLocaleString())} 
+               (${goldprText}٪)
+           </div>`
+         );
           
 
           const urls = [
