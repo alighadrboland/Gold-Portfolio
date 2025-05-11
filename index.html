@@ -115,7 +115,7 @@
              <div style="color:${getColor(bitcoin.usd_24h_change)}">BTC: ${toPersianNumber(bitcoin.usd.toLocaleString())} = $${toPersianNumber((btcAmount * bitcoin.usd).toFixed(2))} = ${toPersianNumber(Math.floor(btcpr).toLocaleString())}</div>
              <div style="color:${getColor(ethereum.usd_24h_change)}">ETH: ${toPersianNumber(ethereum.usd.toLocaleString())} = $${toPersianNumber((ethAmount * ethereum.usd).toFixed(2))} = ${toPersianNumber(Math.floor(ethpr).toLocaleString())}</div>
              <div style="color:${getColor(filecoin.usd_24h_change)}">FIL: ${toPersianNumber(filecoin.usd.toLocaleString())} = $${toPersianNumber((filAmount * filecoin.usd).toFixed(2))} = ${toPersianNumber(Math.floor(filpr).toLocaleString())}</div>
-             <p class="text-2xl font-extrabold persian-numbers text-blue-800 drop-shadow mt-2">${toPersianNumber(totalIrt.toLocaleString())}</p>
+             <p class="text-2xl font-extrabold persian-numbers text-black drop-shadow mt-2">${toPersianNumber(totalIrt.toLocaleString())}</p>
          </div>
        `);
 
@@ -194,7 +194,7 @@
 
                     animateElement("profit-box", `
                           <div class="text-xl font-extrabold drop-shadow text-purple-800">صندوق عیار (${toPersianNumber(fundUnits.toLocaleString())} واحد)</div>
-                          <div class="text-2xl font-extrabold drop-shadow text-blue-800 mt-2">${toPersianNumber(Math.floor(result).toLocaleString())}</div>
+                          <div class="text-2xl font-extrabold drop-shadow text-black mt-2">${toPersianNumber(Math.floor(result).toLocaleString())}</div>
                     `);
 
                     const isProfitPositive = ayarmoney >= 0;
