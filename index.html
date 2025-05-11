@@ -143,14 +143,19 @@
 
           document.getElementById("portfolio-title").innerText = `دارایی طلای آبشده (${toPersianNumber(myGoldGrams.toLocaleString())} گرم)`;
           animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
-          document.querySelector("#portfolio-value").insertAdjacentHTML(
-            "afterend",
-            `<span class="text-sm font-bold text-yellow-300 mt-1 persian-numbers">
-               میانگین قیمت خرید: ${toPersianNumber(Math.floor(avgGoldPrice).toLocaleString())} 
-               (${toPersianNumber(Goldpr.toFixed(2).toLocaleString())}٪)
-            </span>`
-          );
 
+          const ayarprText = ayarpr < 0
+                 ? `${toPersianNumber(Math.abs(ayarpr).toFixed(2))}-`
+                 : toPersianNumber(ayarpr.toFixed(2));
+
+          document.querySelector("#portfolio-value").insertAdjacentHTML(
+              "afterend",
+              `<div class="text-sm font-bold text-yellow-300 mt-1 persian-numbers">
+                     میانگین قیمت خرید: ${toPersianNumber(Math.floor(avgGoldPrice).toLocaleString())} 
+                     (${Goldpr}٪)
+              </div>`
+          );
+          
 
           const urls = [
             "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz&type=1",
