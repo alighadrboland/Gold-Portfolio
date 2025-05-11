@@ -158,7 +158,7 @@
 
           document.querySelector("#portfolio-value").insertAdjacentHTML("afterend", `
           <div class="text-sm text-yellow-300 mt-1 persian-numbers">
-                 میانگین قیمت خرید: ${toPersianNumber(avgGoldPrice.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }))} (%${toPersianNumber(Goldpr.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }))})
+                 میانگین قیمت خرید: ${toPersianNumber(avgGoldPrice.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }))} (${toPersianNumber(Goldpr.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }%))})
           </div>
           `);
 
@@ -176,6 +176,7 @@
             const ayarResponse = await fetch(randomUrl);
             const symbols = await ayarResponse.json();
             const ayar = symbols.find(i => i.l18 === "عیار");
+            const ayarpr = ((ayar.pc - avgayarPrice) / avgayarPrice) / 100;
 
             if (ayar && ayar.pc) {
               const result = fundUnits * (ayar.pc / 10);
@@ -194,8 +195,9 @@
                   ${toPersianNumber(Math.floor(result).toLocaleString())}
                 </div>
               `);
-              document.querySelector("#profit-box").insertAdjacentHTML("beforeend", `
-                  <div class="text-sm text-yellow-300 mt-1 persian-numbers">قیمت سر به سر: ${toPersianNumber(avgayarPrice.toLocaleString())}</div>
+              <div class="text-sm text-yellow-300 mt-1 persian-numbers">
+                  قیمت سر به سر: ${toPersianNumber(avgayarPrice.toLocaleString())} (${toPersianNumber(ayarpr.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }%))})
+              </div>
               `);
 
             } else {
