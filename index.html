@@ -199,18 +199,22 @@
 
                     const ayarprText = toPersianNumber(Math.abs(ayarpr).toFixed(2));
 
-                    const ayarprText = ayarpr < 0
-                        ? ${toPersianNumber(Math.abs(ayarpr).toFixed(2))}-
-                        : toPersianNumber(ayarpr.toFixed(2));
+                    const ayarprText = toPersianNumber(Math.abs(ayarpr).toFixed(2));
+
+                    const colorClass = ayarmoney < 0
+                         ? "text-red-500"
+                         : ayarmoney > 0
+                         ? "text-green-500"
+                         : "text-black";
 
                     document.querySelector("#profit-box").insertAdjacentHTML(
-                       "beforeend",
-                       <div class="text-sm font-bold text-yellow-300 mt-1 persian-numbers">
-                             ${toPersianNumber(Math.floor((ayarmoney / 10)).toLocaleString())} 
-                            (${ayarprText}٪)
-                       </div>
+                    "beforeend",
+                       `<div class="text-sm font-bold ${colorClass} mt-1 persian-numbers">
+                               ${toPersianNumber(Math.floor(ayarmoney).toLocaleString())} 
+                               (${ayarprText}٪)
+                        </div>`
+                    );
 
-                 );
 
              } else {
                    animateElement("profit-box", "صندوق عیار یافت نشد");
