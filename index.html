@@ -40,7 +40,7 @@
     </section>
 
     <section class="bg-white rounded-xl shadow-md p-3 text-center persian-numbers">
-      <h3 id="portfolio-title" class="text-xl font-extrabold text-yellow-300 mb-2 drop-shadow">دارایی طلای آبشده</h3>
+      <h3 id="portfolio-title" class="text-xl font-extrabold text-purple-800 mb-2 drop-shadow">دارایی طلای آبشده</h3>
       <p id="portfolio-value" class="text-2xl font-extrabold persian-numbers text-blue-800 drop-shadow">...</p>
     </section>
 
@@ -51,9 +51,9 @@
     <section id="crypto-box" class="bg-white rounded-xl shadow-md p-3 text-center text-black persian-numbers">
       در حال دریافت اطلاعات رمزارزها...
     </section>
-    <h3 class="text-xl font-extrabold text-white mb-2 drop-shadow">دارایی کل</h3>
+    <h3 class="text-xl font-extrabold text-center text-white mb-2 drop-shadow">دارایی کل</h3>
     <section class="bg-purple-800 rounded-xl shadow-md p-3 text-center">
-      <p id="gold-amount" class="text-2xl font-extrabold persian-numbers text-yellow-800 drop-shadow">...</p>
+      <p id="gold-amount" class="text-2xl font-extrabold persian-numbers text-white drop-shadow">...</p>
     </section>
 
     <p id="last-update" class="text-sm text-black text-center mt-4 persian-numbers">در حال دریافت زمان...</p>
@@ -110,7 +110,7 @@
 
 
         animateElement("crypto-box", `
-          <div class="text-yellow-300 text-xl font-bold mb-2">دارایی رمزارزها</div>
+          <div class="text-purple-800 text-xl font-bold mb-2">دارایی رمزارزها</div>
           <div class="space-y-1">
             <div>BTC: ${toPersianNumber(bitcoin.usd.toLocaleString())} = $${toPersianNumber((btcAmount * bitcoin.usd).toFixed(2))} = ${toPersianNumber(Math.floor(btcpr).toLocaleString())}</div>
             <div>ETH: ${toPersianNumber(ethereum.usd.toLocaleString())} = $${toPersianNumber((ethAmount * ethereum.usd).toFixed(2))} = ${toPersianNumber(Math.floor(ethpr).toLocaleString())}</div>
@@ -162,7 +162,7 @@
          // حالا سطر جدید را اضافه کنید
          document.querySelector("#portfolio-value").insertAdjacentHTML(
            "afterend",
-           `<div class="text-sm font-bold text-yellow-300 mt-1 persian-numbers">
+           `<div class="text-sm font-bold text-purple-800 mt-1 persian-numbers">
                میانگین قیمت خرید: ${toPersianNumber(Math.floor(avgGoldPrice).toLocaleString())} 
                (${goldprText}٪)
            </div>`
@@ -191,7 +191,7 @@
                     animateElement("gold-amount", toPersianNumber(Math.floor(combined).toLocaleString()));
 
                     animateElement("profit-box", `
-                          <div class="text-xl font-extrabold drop-shadow text-yellow-300">دارایی صندوق عیار (${toPersianNumber(fundUnits.toLocaleString())} واحد)</div>
+                          <div class="text-xl font-extrabold drop-shadow text-purple-800">دارایی صندوق عیار (${toPersianNumber(fundUnits.toLocaleString())} واحد)</div>
                           <div class="text-2xl font-extrabold drop-shadow text-blue-800 mt-2">${toPersianNumber(Math.floor(result).toLocaleString())}</div>
                     `);
 
