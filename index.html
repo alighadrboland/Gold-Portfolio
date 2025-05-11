@@ -62,6 +62,8 @@
   <script>
     const myGoldGrams = 438.44;
     const fundUnits = 4524;
+    const avgayarPrice = 34;
+    const avgGoldPrice = 34;
     const btcAmount = 0.0426721;
     const ethAmount = 0.3754664;
     const filAmount = 8.2325135;
@@ -153,6 +155,11 @@
           document.getElementById("portfolio-title").innerText = `دارایی طلای آبشده (${toPersianNumber(myGoldGrams.toLocaleString())} گرم)`;
           animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
 
+          document.querySelector("#portfolio-value").insertAdjacentHTML("afterend", `
+                 <div class="text-sm font-bold text-white mt-1 persian-numbers">میانگین قیمت خرید: ${toPersianNumber(avgGoldPrice)}</div>
+          `);
+
+
           const profitBox = document.getElementById("profit-box");
           profitBox.className = "bg-blue-800 rounded-xl shadow-md p-6 text-center";
 
@@ -184,6 +191,10 @@
                   ${toPersianNumber(Math.floor(result).toLocaleString())}
                 </div>
               `);
+              document.querySelector("#profit-box").insertAdjacentHTML("beforeend", `
+                  <div class="text-sm font-bold text-yellow-300 mt-1 persian-numbers">میانگین قیمت خرید: ${toPersianNumber(avgayarPrice)}</div>
+              `);
+
             } else {
               animateElement("profit-box", "صندوق عیار یافت نشد");
             }
