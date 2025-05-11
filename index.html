@@ -113,9 +113,9 @@
         animateElement("crypto-box", `
           <div class="text-yellow-300 text-xl font-bold mb-2">دارایی رمزارزها</div>
           <div class="space-y-1">
-            <div>BTC: ${toPersianNumber(bitcoin.usd.toLocaleString())} = $${toPersianNumber((btcAmount * bitcoin.usd).toFixed(2))} = ${toPersianNumber(btcpr)}</div>
-            <div>ETH: ${toPersianNumber(ethereum.usd.toLocaleString())} = $${toPersianNumber((ethAmount * ethereum.usd).toFixed(2))} = ${toPersianNumber(ethpr)}</div>
-            <div>FIL: ${toPersianNumber(filecoin.usd.toLocaleString())} = $${toPersianNumber((filAmount * filecoin.usd).toFixed(2))} = ${toPersianNumber(filpr)}</div>
+            <div>BTC: ${toPersianNumber(bitcoin.usd.toLocaleString())} = $${toPersianNumber((btcAmount * bitcoin.usd).toFixed(2))} = ${toPersianNumber(Math.floor(btcpr).toLocaleString())}</div>
+            <div>ETH: ${toPersianNumber(ethereum.usd.toLocaleString())} = $${toPersianNumber((ethAmount * ethereum.usd).toFixed(2))} = ${toPersianNumber(Math.floor(ethpr).toLocaleString())}</div>
+            <div>FIL: ${toPersianNumber(filecoin.usd.toLocaleString())} = $${toPersianNumber((filAmount * filecoin.usd).toFixed(2))} = ${toPersianNumber(Math.floor(filpr).toLocaleString())}</div>
             <p class="text-2xl font-extrabold persian-numbers text-white drop-shadow mt-2">${toPersianNumber(totalIrt.toLocaleString())}</p>
           </div>
         `);
