@@ -156,8 +156,8 @@
           animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
 
           document.querySelector("#portfolio-value").insertAdjacentHTML("afterend", `
-          <div class="text-sm font-bold text-yellow-300 mt-1 persian-numbers">
-                 میانگین قیمت خرید: ${toPersianNumber(avgGoldPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }))}
+          <div class="text-sm text-yellow-300 mt-1 persian-numbers">
+                 میانگین قیمت خرید: ${toPersianNumber(avgGoldPrice.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }))}
           </div>
           `);
 
@@ -194,7 +194,7 @@
                 </div>
               `);
               document.querySelector("#profit-box").insertAdjacentHTML("beforeend", `
-                  <div class="text-sm font-bold text-yellow-300 mt-1 persian-numbers">میانگین قیمت خرید: ${toPersianNumber(avgayarPrice.toLocaleString())}</div>
+                  <div class="text-sm text-yellow-300 mt-1 persian-numbers">قیمت سر به سر: ${toPersianNumber(avgayarPrice.toLocaleString())}</div>
               `);
 
             } else {
