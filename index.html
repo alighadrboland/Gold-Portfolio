@@ -197,11 +197,8 @@
                     `);
 
                     const isProfitPositive = ayarmoney >= 0;
-
-                    // فرمت کردن درصد بدون علامت منفی
+                    const formattedAyarMoney = toPersianNumber(Math.floor(Math.abs(ayarmoney)).toLocaleString());
                     const ayarprText = `${toPersianNumber(Math.abs(ayarpr).toFixed(2))}٪`;
-
-                    // رنگ سطر بر اساس مثبت یا منفی بودن
                     const rowColorClass = isProfitPositive ? "text-green-700" : "text-red-700";
 
                     document.querySelector("#profit-box").insertAdjacentHTML(
