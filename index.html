@@ -178,11 +178,11 @@
                     `);
 
                     const ayarprText = ayarpr < 0
-                        ? `-${toPersianNumber(Math.abs(ayarpr).toFixed(2))}`
+                        ? `${toPersianNumber(Math.abs(ayarpr).toFixed(2))}-`
                         : toPersianNumber(ayarpr.toFixed(2));
 
                     document.querySelector("#profit-box").insertAdjacentHTML(
-                       "afterend",
+                       "beforeend",
                        `<div class="text-sm font-bold text-yellow-300 mt-1 persian-numbers">
                             قیمت سر به سر: ${toPersianNumber(Math.floor(avgayarPrice).toLocaleString())} 
                             (${ayarprText}٪)
