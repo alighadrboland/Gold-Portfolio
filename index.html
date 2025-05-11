@@ -146,7 +146,7 @@
           document.querySelector("#portfolio-value").insertAdjacentHTML(
              "afterend",
              `میانگین قیمت خرید: ${toPersianNumber(avgGoldPrice.toFixed(0).toLocaleString())} 
-             (<span style="color: yellow-300;">${toPersianNumber(Goldpr.toFixed(2).toLocaleString())}٪</span>)`
+             (<span style="text-yellow-300;">${toPersianNumber(Goldpr.toLocaleString().toFixed(2))}٪</span>)`
           );
           const urls = [
             "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz&type=1",
