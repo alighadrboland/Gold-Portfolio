@@ -41,7 +41,7 @@
 
     <section class="bg-white rounded-xl shadow-md p-3 text-center persian-numbers">
       <h3 id="portfolio-title" class="text-xl font-extrabold text-purple-800 mb-2 drop-shadow">دارایی طلای آبشده</h3>
-      <p id="portfolio-value" class="text-2xl font-extrabold persian-numbers text-blue-800 drop-shadow">...</p>
+      <p id="portfolio-value" class="text-2xl font-extrabold persian-numbers text-black drop-shadow">...</p>
     </section>
 
     <section id="profit-box" class="bg-white rounded-xl shadow-md p-3 text-center text-yellow-400 persian-numbers">
@@ -164,7 +164,7 @@
          // حالا سطر جدید را اضافه کنید
          document.querySelector("#portfolio-value").insertAdjacentHTML(
            "afterend",
-           `<div class="text-sm font-bold text-black mt-1 persian-numbers">
+           `<div class="text-sm font-bold text-purple-800 mt-1 persian-numbers">
                میانگین قیمت خرید: ${toPersianNumber(Math.floor(avgGoldPrice).toLocaleString())} 
                (${goldprText}%)
            </div>`
