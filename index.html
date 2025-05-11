@@ -151,14 +151,14 @@
           const goldPrice = gold18.price;
           const commission = 30000;
           const totalGoldValue = ((goldPrice - commission) * 750 / 750 ) * myGoldGrams;
-          const Goldpr = ((gold18.price + avgGoldPrice) / avgGoldPrice) * 100;
+          const Goldpr = ((gold18.price - avgGoldPrice) / avgGoldPrice) * 100;
 
           document.getElementById("portfolio-title").innerText = `دارایی طلای آبشده (${toPersianNumber(myGoldGrams.toLocaleString())} گرم)`;
           animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
 
           document.querySelector("#portfolio-value").insertAdjacentHTML("afterend", `
           <div class="text-sm text-yellow-300 mt-1 persian-numbers">
-                 میانگین قیمت خرید: ${toPersianNumber(avgGoldPrice.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }))} (%${toPersianNumber(Goldpr)})
+                 میانگین قیمت خرید: ${toPersianNumber(avgGoldPrice.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }))} (%${toPersianNumber(Goldpr.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }))})
           </div>
           `);
 
