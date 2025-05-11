@@ -150,7 +150,10 @@
           const goldprText = Goldpr < 0
                  ? `${toPersianNumber(Math.abs(Goldpr).toFixed(2))}-`
                  : toPersianNumber(Goldpr.toFixed(2));
-
+          const existingDiv = document.querySelector("#gold-average-info");
+          if (existingDiv) {
+                 existingDiv.remove();
+          }
           document.querySelector("#portfolio-value").insertAdjacentHTML(
               "afterend",
               `<div class="text-sm font-bold text-yellow-300 mt-1 persian-numbers">
