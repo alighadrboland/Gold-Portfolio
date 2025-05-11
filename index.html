@@ -39,16 +39,16 @@
       </div>
     </section>
 
-    <section class="bg-purple-800 rounded-xl shadow-md p-3 text-center persian-numbers">
+    <section class="bg-white rounded-xl shadow-md p-3 text-center persian-numbers">
       <h3 id="portfolio-title" class="text-xl font-extrabold text-yellow-300 mb-2 drop-shadow">دارایی طلای آبشده</h3>
       <p id="portfolio-value" class="text-2xl font-extrabold persian-numbers text-white drop-shadow">...</p>
     </section>
 
-    <section id="profit-box" class="bg-blue-800 rounded-xl shadow-md p-3 text-center text-yellow-400 persian-numbers">
+    <section id="profit-box" class="bg-white rounded-xl shadow-md p-3 text-center text-yellow-400 persian-numbers">
       در حال محاسبه سود/زیان...
     </section>
 
-    <section id="crypto-box" class="bg-green-800 rounded-xl shadow-md p-3 text-center text-white persian-numbers">
+    <section id="crypto-box" class="bg-white rounded-xl shadow-md p-3 text-center text-white persian-numbers">
       در حال دریافت اطلاعات رمزارزها...
     </section>
 
@@ -116,7 +116,7 @@
             <div>BTC: ${toPersianNumber(bitcoin.usd.toLocaleString())} = $${toPersianNumber((btcAmount * bitcoin.usd).toFixed(2))} = ${toPersianNumber(Math.floor(btcpr).toLocaleString())}</div>
             <div>ETH: ${toPersianNumber(ethereum.usd.toLocaleString())} = $${toPersianNumber((ethAmount * ethereum.usd).toFixed(2))} = ${toPersianNumber(Math.floor(ethpr).toLocaleString())}</div>
             <div>FIL: ${toPersianNumber(filecoin.usd.toLocaleString())} = $${toPersianNumber((filAmount * filecoin.usd).toFixed(2))} = ${toPersianNumber(Math.floor(filpr).toLocaleString())}</div>
-            <p class="text-2xl font-extrabold persian-numbers text-white drop-shadow mt-2">${toPersianNumber(totalIrt.toLocaleString())}</p>
+            <p class="text-2xl font-extrabold persian-numbers text-blue-800 drop-shadow mt-2">${toPersianNumber(totalIrt.toLocaleString())}</p>
           </div>
         `);
 
@@ -193,7 +193,7 @@
 
                     animateElement("profit-box", `
                           <div class="text-xl font-extrabold drop-shadow text-yellow-300">دارایی صندوق عیار (${toPersianNumber(fundUnits.toLocaleString())} واحد)</div>
-                          <div class="text-2xl font-extrabold drop-shadow text-white mt-2">${toPersianNumber(Math.floor(result).toLocaleString())}</div>
+                          <div class="text-2xl font-extrabold drop-shadow text-blue-800 mt-2">${toPersianNumber(Math.floor(result).toLocaleString())}</div>
                     `);
 
                     const isProfitPositive = ayarmoney >= 0;
