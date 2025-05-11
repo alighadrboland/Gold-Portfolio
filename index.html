@@ -145,8 +145,9 @@
           animateElement("gold18-box", `<span style="color:${changeColor}">طلای ۱۸ عیار: ${toPersianNumber(gold18.price.toLocaleString())} (${toPersianNumber(Math.abs(gold18.change_value))} | ${toPersianNumber(Math.abs(gold18.change_percent.toFixed(2)))}%)</span>`);
 
           const goldPrice = gold18.price;
-          const totalGoldValue = (goldPrice - 30000) * myGoldGrams;
-          const Goldpr = ((gold18.price - avgGoldPrice) / avgGoldPrice) * 100;
+          const commision = goldPrice - 30000;
+          const totalGoldValue = ((myGoldGrams * 750) / 750) * commision;
+          const Goldpr = ((goldPrice - avgGoldPrice) / avgGoldPrice) * 100;
 
           document.getElementById("portfolio-title").innerText = `طلای آبشده (${toPersianNumber(myGoldGrams.toLocaleString())} گرم)`;
           animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
