@@ -145,9 +145,9 @@
           animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
           document.querySelector("#portfolio-value").insertAdjacentHTML(
             "afterend",
-            `<span class="text-yellow-300">
-                میانگین قیمت خرید: ${toPersianNumber(avgGoldPrice.toLocaleString())} 
-               (${toPersianNumber(Goldpr.toFixed(0).toLocaleString())}٪)
+            `<span class="text-sm font-bold text-yellow-300 mt-1 persian-numbers">
+                میانگین قیمت خرید: ${toPersianNumber(avgGoldPrice..toFixed(0).toLocaleString())} 
+               (${toPersianNumber(Goldpr.toFixed(2).toLocaleString())}٪)
             </span>`
           );
 
