@@ -21,28 +21,13 @@
       0% { opacity: 0.2; transform: scale(0.97); }
       100% { opacity: 1; transform: scale(1); }
     }
-    .update-button {
-      background-color: #22c55e; /* سبز */
-      color: white;
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 1.2rem;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    .update-button:hover {
-      background-color: #16a34a;
-    }
   </style>
 </head>
 <body class="bg-yellow-500 text-gray-800">
   <main class="max-w-xl mx-auto p-2 space-y-4">
-    <!-- دکمه بروزرسانی -->
-    <section>
-      <button class="update-button" onclick="fetchData()">بروزرسانی</button>
+    <section class="bg-green-600 rounded-xl shadow-md p-4 text-center">
+       <button onclick="fetchData()" class="text-white text-lg font-bold w-full">🔄 بروزرسانی اطلاعات</button>
     </section>
-
     <section class="bg-white rounded-xl shadow-md p-4 text-center">
       <div class="text-base font-bold space-y-1 persian-numbers">
         <div id="usd-box">دلار: ...</div>
@@ -161,6 +146,70 @@
 
           document.getElementById("portfolio-title").innerText = `دارایی طلای آبشده (${toPersianNumber(myGoldGrams.toLocaleString())} گرم)`;
           animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
+
+          const goldprText = Goldpr < 0
+                 ? `${toPersianNumber(Math.abs(Goldpr).toFixed(2))}-`
+                 : toPersianNumber(Goldpr.toFixed(2));
+
+          document.querySelector("#portfolio-value").insertAdjacentHTML(
+              "afterend",
+              `<div class="text-sm font-bold text-yellow-300 mt-1 persian-numbers">
+                     میانگین قیمت خرید: ${toPersianNumber(Math.floor(avgGoldPrice).toLocaleString())} 
+                     (${goldprText}٪)
+              </div>`
+          );
+          
+
+          const urls = [
+            "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz&type=1",
+            "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreezhPfvWeEOGOPucTWsPukkDazGzTQ&type=1"
+          ];
+          const randomUrl = urls[Math.floor(Math.random() * urls.length)];
+
+          try {
+                const ayarRes = await fetch(randomUrl);
+                const symbols = await ayarRes.json();
+                const ayar = symbols.find(i => i.l18 === "عیار");
+                const ayarpr = ((ayar.pc - avgayarPrice) / avgayarPrice) * 100;
+
+                if (ayar && ayar.pc) {
+                    const result = fundUnits * (ayar.pc / 10);
+                    const combined = totalGoldValue + result + totalIrt;
+                    const color = ayar.pcp > 0 ? 'green' : ayar.pcp < 0 ? 'red' : 'black';
+
+                    animateElement("fund-price-box", `<span style="color:${color}">صندوق عیار: ${toPersianNumber(ayar.pc.toLocaleString())} (${toPersianNumber(Math.abs(ayar.pcc))} | ${toPersianNumber(Math.abs(ayar.pcp.toFixed(2)))}%)</span>`);
+                    animateElement("gold-amount", toPersianNumber(Math.floor(combined).toLocaleString()));
+
+                    animateElement("profit-box", `
+                          <div class="text-xl font-extrabold drop-shadow text-yellow-300">دارایی صندوق عیار (${toPersianNumber(fundUnits.toLocaleString())} واحد)</div>
+                          <div class="text-2xl font-extrabold drop-shadow text-white mt-2">${toPersianNumber(Math.floor(result).toLocaleString())}</div>
+                    `);
+
+                    const ayarprText = ayarpr < 0
+                        ? `${toPersianNumber(Math.abs(ayarpr).toFixed(2))}-`
+                        : toPersianNumber(ayarpr.toFixed(2));
+
+                    document.querySelector("#profit-box").insertAdjacentHTML(
+                       "beforeend",
+                       `<div class="text-sm font-bold text-yellow-300 mt-1 persian-numbers">
+                            قیمت سر به سر: ${toPersianNumber(Math.floor(avgayarPrice).toLocaleString())} 
+                            (${ayarprText}٪)
+                       </div>`
+                    );
+
+             } else {
+                   animateElement("profit-box", "صندوق عیار یافت نشد");
+             }
+          } catch (err) {
+                 console.error("خطا در دریافت اطلاعات صندوق:", err);
+                 animateElement("profit-box", "خطا در دریافت قیمت صندوق");
+          }
+
+
+          const now = new Date();
+          const formattedDate = toPersianNumber(now.toLocaleDateString("fa-IR"));
+          const formattedTime = toPersianNumber(now.toLocaleTimeString("fa-IR").replace(/:\d+$/, ''));
+          document.getElementById("last-update").innerText = `آخرین بروزرسانی: ${formattedDate} - ${formattedTime}`;
         }
 
       } catch (err) {
