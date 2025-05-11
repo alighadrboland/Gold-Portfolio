@@ -91,12 +91,12 @@
       let totalIrt = 0;
 
       try {
-        const coingeckoRes = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,filecoin,tether&vs_currencies=usd");
+        const coingeckoRes = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,filecoin,tether&vs_currencies=usd&include_24hr_change=true");
         const cryptoData = await coingeckoRes.json();
         const { bitcoin, ethereum, filecoin, tether } = cryptoData;
 
         const totalUsd = (btcAmount * bitcoin.usd) + (ethAmount * ethereum.usd) + (filAmount * filecoin.usd);
-        
+  
         const rateRes = await fetch("https://brsapi.ir/Api/Market/Gold_Currency.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz");
         const rateData = await rateRes.json();
         const usdtObj = rateData.currency.find(i => i.symbol === "USDT_IRT") || {};
@@ -107,24 +107,26 @@
         const ethpr = (ethAmount * ethereum.usd) * usdtPrice;
         const filpr = (filAmount * filecoin.usd) * usdtPrice;
 
+        const getColor = (change) => change > 0 ? 'green' : change < 0 ? 'red' : 'black';
 
         animateElement("crypto-box", `
           <div class="text-purple-800 text-xl font-bold mb-2">رمزارزها</div>
           <div class="space-y-1">
-            <div>BTC: ${toPersianNumber(bitcoin.usd.toLocaleString())} = $${toPersianNumber((btcAmount * bitcoin.usd).toFixed(2))} = ${toPersianNumber(Math.floor(btcpr).toLocaleString())}</div>
-            <div>ETH: ${toPersianNumber(ethereum.usd.toLocaleString())} = $${toPersianNumber((ethAmount * ethereum.usd).toFixed(2))} = ${toPersianNumber(Math.floor(ethpr).toLocaleString())}</div>
-            <div>FIL: ${toPersianNumber(filecoin.usd.toLocaleString())} = $${toPersianNumber((filAmount * filecoin.usd).toFixed(2))} = ${toPersianNumber(Math.floor(filpr).toLocaleString())}</div>
-            <p class="text-2xl font-extrabold persian-numbers text-blue-800 drop-shadow mt-2">${toPersianNumber(totalIrt.toLocaleString())}</p>
-          </div>
-        `);
+             <div style="color:${getColor(bitcoin.usd_24h_change)}">BTC: ${toPersianNumber(bitcoin.usd.toLocaleString())} = $${toPersianNumber((btcAmount * bitcoin.usd).toFixed(2))} = ${toPersianNumber(Math.floor(btcpr).toLocaleString())}</div>
+             <div style="color:${getColor(ethereum.usd_24h_change)}">ETH: ${toPersianNumber(ethereum.usd.toLocaleString())} = $${toPersianNumber((ethAmount * ethereum.usd).toFixed(2))} = ${toPersianNumber(Math.floor(ethpr).toLocaleString())}</div>
+             <div style="color:${getColor(filecoin.usd_24h_change)}">FIL: ${toPersianNumber(filecoin.usd.toLocaleString())} = $${toPersianNumber((filAmount * filecoin.usd).toFixed(2))} = ${toPersianNumber(Math.floor(filpr).toLocaleString())}</div>
+             <p class="text-2xl font-extrabold persian-numbers text-blue-800 drop-shadow mt-2">${toPersianNumber(totalIrt.toLocaleString())}</p>
+         </div>
+       `);
 
         const percentColor = usdtObj.change_percent > 0 ? 'green' : usdtObj.change_percent < 0 ? 'red' : 'black';
         animateElement("usdt-box", `<span style="color:${percentColor}">تتر: ${toPersianNumber(usdtPrice.toLocaleString())} (${toPersianNumber(Math.abs(usdtObj.change_value))} | ${toPersianNumber(Math.abs(usdtObj.change_percent.toFixed(2)))}%)</span>`);
 
-      } catch (err) {
-        console.error("خطا در دریافت اطلاعات رمزارز:", err);
-        animateElement("crypto-box", "خطا در دریافت قیمت رمزارزها");
-      }
+    } catch (err) {
+       console.error("خطا در دریافت اطلاعات رمزارز:", err);
+       animateElement("crypto-box", "خطا در دریافت قیمت رمزارزها");
+    }
+
 
       try {
         const response = await fetch("https://brsapi.ir/Api/Market/Gold_Currency.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz");
