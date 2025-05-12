@@ -44,7 +44,7 @@
       <p id="portfolio-value" class="text-2xl font-extrabold persian-numbers text-black drop-shadow">...</p>
     </section>
 
-    <section id="profit-box" class="bg-white rounded-xl shadow-md p-4 text-center text-black persian-numbers">
+    <section id="profit-box" class="bg-white rounded-xl shadow-md p-4 text-center text-black mt-3 persian-numbers">
       در حال محاسبه سود/زیان...
     </section>
 
@@ -167,7 +167,7 @@
          // حالا سطر جدید را اضافه کنید
          document.querySelector("#portfolio-value").insertAdjacentHTML(
            "afterend",
-           `<div class="text-base font-bold text-purple-800 mt-1 persian-numbers">
+           `<div class="text-base font-bold text-purple-800 mt-3 persian-numbers">
                میانگین قیمت خرید: ${toPersianNumber(Math.floor(avgGoldPrice).toLocaleString())} 
                (${goldprText}%)
            </div>`
