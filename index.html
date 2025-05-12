@@ -115,7 +115,14 @@
         animateElement("crypto-box", `
           <div class="text-xl font-extrabold drop-shadow text-purple-800">رمزارزها</div>
           <div class="space-y-1">
-             <div style="color:${getColor(bitcoin.usd_24h_change)}">BTC: $${toPersianNumber(bitcoin.usd.toLocaleString())} = $${toPersianNumber(btcm.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }))} | ${toPersianNumber(Math.floor(btcpr).toLocaleString())}</div>
+<!-- لینک فونت آیکون -->   
+          <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+<!-- استفاده در داخل DIV -->
+          <div style="color:${getColor(bitcoin.usd_24h_change)}">
+            <span class="material-symbols-outlined" style="vertical-align: middle;">currency_bitcoin</span>
+            BTC: $${toPersianNumber(bitcoin.usd.toLocaleString())} = $${toPersianNumber(btcm.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }))} | ${toPersianNumber(Math.floor(btcpr).toLocaleString())}
+          </div>
              <div style="color:${getColor(ethereum.usd_24h_change)}">ETH: $${toPersianNumber(ethereum.usd.toLocaleString())} = $${toPersianNumber(ethm.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }))} | ${toPersianNumber(Math.floor(ethpr).toLocaleString())}</div>
              <div style="color:${getColor(filecoin.usd_24h_change)}">FIL: $${toPersianNumber(filecoin.usd.toLocaleString())} = $${toPersianNumber(film.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }))} | ${toPersianNumber(Math.floor(filpr).toLocaleString())}</div>
              <p class="text-2xl font-extrabold persian-numbers text-black drop-shadow mt-2">${toPersianNumber(totalIrt.toLocaleString())}</p>
