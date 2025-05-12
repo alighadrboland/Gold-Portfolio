@@ -103,13 +103,13 @@
 
         const usdtPrice = usdtObj.price || 0;
         totalIrt = Math.floor(totalUsd * usdtPrice);
-        const btcpr = (btcAmount * bitcoin.usd) * usdtPrice;
-        const ethpr = (ethAmount * ethereum.usd) * usdtPrice;
-        const filpr = (filAmount * filecoin.usd) * usdtPrice;
         const btcm = btcAmount * bitcoin.usd;
         const ethm = ethAmount * ethereum.usd;
         const film = filAmount * filecoin.usd;
-
+        const btcpr = btcm * usdtPrice;
+        const ethpr = ethm * usdtPrice;
+        const filpr = film * usdtPrice;
+        
         const getColor = (change) => change > 0 ? 'green' : change < 0 ? 'red' : 'black';
 
         animateElement("crypto-box", `
