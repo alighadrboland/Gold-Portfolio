@@ -6,8 +6,6 @@
   <title>پورتفوی دارایی</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-
   <style>
     * {
       font-family: 'Vazirmatn', sans-serif !important;
@@ -115,17 +113,14 @@
         const getColor = (change) => change > 0 ? 'green' : change < 0 ? 'red' : 'black';
 
         animateElement("crypto-box", `
-        <div class="text-xl font-extrabold drop-shadow text-purple-800 flex items-center gap-2">
-           <span class="material-symbols-outlined">view_cozy</span>
-           رمزارزها
-        </div>
-        <div class="space-y-2">
+          <div class="text-xl font-extrabold drop-shadow text-purple-800">رمزارزها</div>
+          <div class="space-y-2 mt-3 font-bold">
              <div style="color:${getColor(bitcoin.usd_24h_change)}">BTC: $${toPersianNumber(bitcoin.usd.toLocaleString())} = $${toPersianNumber(btcm.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }))} | ${toPersianNumber(Math.floor(btcpr).toLocaleString())}</div>
              <div style="color:${getColor(ethereum.usd_24h_change)}">ETH: $${toPersianNumber(ethereum.usd.toLocaleString())} = $${toPersianNumber(ethm.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }))} | ${toPersianNumber(Math.floor(ethpr).toLocaleString())}</div>
              <div style="color:${getColor(filecoin.usd_24h_change)}">FIL: $${toPersianNumber(filecoin.usd.toLocaleString())} = $${toPersianNumber(film.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }))} | ${toPersianNumber(Math.floor(filpr).toLocaleString())}</div>
              <p class="text-2xl font-extrabold persian-numbers text-black drop-shadow mt-2">${toPersianNumber(totalIrt.toLocaleString())}</p>
-        </div>
-     `);
+         </div>
+       `);
 
         const percentColor = usdtObj.change_percent > 0 ? 'green' : usdtObj.change_percent < 0 ? 'red' : 'black';
         animateElement("usdt-box", `<span style="color:${percentColor}">تتر: ${toPersianNumber(usdtPrice.toLocaleString())} (${toPersianNumber(Math.abs(usdtObj.change_value).toLocaleString())} | ${toPersianNumber(Math.abs(usdtObj.change_percent.toFixed(2)))}%)</span>`);
