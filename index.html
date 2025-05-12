@@ -44,14 +44,14 @@
       <p id="portfolio-value" class="text-2xl font-extrabold persian-numbers text-black drop-shadow">...</p>
     </section>
 
-    <section id="profit-box" class="bg-white rounded-xl shadow-md p-3 text-center text-yellow-400 persian-numbers">
+    <section id="profit-box" class="bg-white rounded-xl shadow-md p-3 text-center text-black persian-numbers">
       در حال محاسبه سود/زیان...
     </section>
 
     <section id="crypto-box" class="bg-white rounded-xl shadow-md p-3 text-center text-black persian-numbers">
       در حال دریافت اطلاعات رمزارزها...
     </section>
-    <section class="bg-purple-800 rounded-xl shadow-md p-3 text-center">
+    <section class="bg-white rounded-xl shadow-md p-3 text-center">
       <p id="gold-amount" class="text-2xl font-extrabold persian-numbers text-white drop-shadow">...</p>
     </section>
 
@@ -60,7 +60,7 @@
 
   <script>
     const myGoldGrams = 438.44;
-    const fundUnits = 16680;
+    const ayarUnits = 16680;
     const avgayarPrice = 192081;
     const avgGoldPrice = (
       (127 * 2312000) +
@@ -115,8 +115,8 @@
         animateElement("crypto-box", `
           <div class="text-purple-800 text-xl font-bold drop-shadow mb-2">رمزارزها</div>
           <div class="space-y-1">
-             <div style="color:${getColor(bitcoin.usd_24h_change)}">BTC: ${toPersianNumber(bitcoin.usd.toLocaleString())} = ${toPersianNumber(btcm.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }))} = ${toPersianNumber(Math.floor(btcpr).toLocaleString())}</div>
-             <div style="color:${getColor(ethereum.usd_24h_change)}">ETH: ${toPersianNumber(ethereum.usd.toLocaleString())} = ${toPersianNumber(ethm.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }))} = ${toPersianNumber(Math.floor(ethpr).toLocaleString())}</div>
+             <div style="color:${getColor(bitcoin.usd_24h_change)}">BTC: ${toPersianNumber(bitcoin.usd.toLocaleString())} = ${toPersianNumber(btcm.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }))} = ${toPersianNumber(Math.floor(btcpr).toLocaleString())}</div>
+             <div style="color:${getColor(ethereum.usd_24h_change)}">ETH: ${toPersianNumber(ethereum.usd.toLocaleString())} = ${toPersianNumber(ethm.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }))} = ${toPersianNumber(Math.floor(ethpr).toLocaleString())}</div>
              <div style="color:${getColor(filecoin.usd_24h_change)}">FIL: ${toPersianNumber(filecoin.usd.toLocaleString())} = ${toPersianNumber(film.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }))} = ${toPersianNumber(Math.floor(filpr).toLocaleString())}</div>
              <p class="text-2xl font-extrabold persian-numbers text-black drop-shadow mt-2">${toPersianNumber(totalIrt.toLocaleString())}</p>
          </div>
@@ -186,10 +186,10 @@
                 const symbols = await ayarRes.json();
                 const ayar = symbols.find(i => i.l18 === "عیار");
                 const ayarpr = ((ayar.pc - avgayarPrice) / avgayarPrice) * 100;
-                const ayarmoney = ((ayar.pc - avgayarPrice) * fundUnits) / 10;
+                const ayarmoney = ((ayar.pc - avgayarPrice) * ayarUnits) / 10;
             
                 if (ayar && ayar.pc) {
-                    const result = fundUnits * (ayar.pc / 10);
+                    const result = ayarUnits * (ayar.pc / 10);
                     const combined = totalGoldValue + result + totalIrt;
                     const color = ayar.pcp > 0 ? 'green' : ayar.pcp < 0 ? 'red' : 'black';
 
@@ -197,7 +197,7 @@
                     animateElement("gold-amount", toPersianNumber(Math.floor(combined).toLocaleString()));
 
                     animateElement("profit-box", `
-                          <div class="text-xl font-extrabold drop-shadow text-purple-800">صندوق عیار (${toPersianNumber(fundUnits.toLocaleString())} واحد)</div>
+                          <div class="text-xl font-extrabold drop-shadow text-purple-800">صندوق عیار (${toPersianNumber(ayarUnits.toLocaleString())} واحد)</div>
                           <div class="text-2xl font-extrabold drop-shadow text-black mt-2">${toPersianNumber(Math.floor(result).toLocaleString())}</div>
                     `);
 
