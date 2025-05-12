@@ -141,11 +141,18 @@
         if (usd) {
           const color = usd.change_value > 0 ? 'green' : usd.change_value < 0 ? 'red' : 'black';
           animateElement("usd-box", `<span style="color:${color}">دلار: ${toPersianNumber(usd.price.toLocaleString())} (${toPersianNumber(Math.abs(usd.change_value).toLocaleString())} | ${toPersianNumber(Math.abs(usd.change_percent.toFixed(2)))}%)</span>`);
+
           const ounceGold = data.gold.find(i => i.symbol === "XAUUSD");
           if (ounceGold) {
              const ozColor = ounceGold.change_value > 0 ? 'green' : ounceGold.change_value < 0 ? 'red' : 'black';
              const ounceHtml = `<div id="ounce-box" style="color:${ozColor}">انس جهانی طلا: $${toPersianNumber(ounceGold.price.toLocaleString())} ($${toPersianNumber(Math.abs(ounceGold.change_value).toLocaleString())} | ${toPersianNumber(Math.abs(ounceGold.change_percent.toFixed(2)))}%)</div>`;
-             document.getElementById("usdt-box").insertAdjacentHTML("afterend", ounceHtml);
+
+             const existingOunceBox = document.getElementById("ounce-box");
+             if (existingOunceBox) {
+                 existingOunceBox.outerHTML = ounceHtml;
+             } else {
+                document.getElementById("usdt-box").insertAdjacentHTML("afterend", ounceHtml);
+             }
           }
         }
 
