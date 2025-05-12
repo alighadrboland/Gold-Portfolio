@@ -167,7 +167,7 @@
          // حالا سطر جدید را اضافه کنید
          document.querySelector("#portfolio-value").insertAdjacentHTML(
            "afterend",
-           `<div class="text-sm font-bold text-purple-800 mt-1 persian-numbers">
+           `<div class="text-base font-bold text-purple-800 mt-1 persian-numbers">
                میانگین قیمت خرید: ${toPersianNumber(Math.floor(avgGoldPrice).toLocaleString())} 
                (${goldprText}%)
            </div>`
@@ -208,7 +208,7 @@
 
                     document.querySelector("#profit-box").insertAdjacentHTML(
                        "beforeend",
-                       `<div class="text-sm font-bold mt-1 persian-numbers ${rowColorClass} p-1 rounded">
+                       `<div class="text-base font-bold mt-1 persian-numbers ${rowColorClass} p-1 rounded">
                             ${formattedAyarMoney} (${ayarprText})
                         </div>`
                     );
