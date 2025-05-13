@@ -25,10 +25,10 @@
 </head>
 <body class="bg-yellow-500 text-gray-800">
   <main class="max-w-xl mx-auto p-4 space-y-5">
-    <section class="bg-purple-800 rounded-xl shadow-md p-3 text-center">
+    <section class="bg-purple-800 rounded-xl shadow-lg p-3 text-center">
        <button onclick="fetchData()" class="text-white text-lg font-bold w-full">🔄 بروزرسانی ارزش دارایی ها</button>
     </section>
-    <section class="bg-white rounded-xl shadow-md p-4 text-center">
+    <section class="bg-white rounded-xl shadow-lg p-4 text-center">
       <div class="text-lg font-bold space-y-2 persian-numbers drop-shadow-lg">
         <div id="usd-box">دلار: ...</div>
         <div id="usdt-box">تتر: ...</div>
@@ -39,23 +39,23 @@
       </div>
     </section>
 
-    <section class="bg-white rounded-xl shadow-md p-4 text-center persian-numbers">
-      <h3 id="portfolio-title" class="text-2xl font-extrabold text-purple-800 mb-2 drop-shadow">طلای آبشده</h3>
-      <p id="portfolio-value" class="text-2xl font-extrabold persian-numbers text-black mt-3 drop-shadow">...</p>
+    <section class="bg-white rounded-xl shadow-lg p-4 text-center persian-numbers">
+      <h3 id="portfolio-title" class="text-2xl font-extrabold text-purple-800 mb-2 drop-shadow-sm">طلای آبشده</h3>
+      <p id="portfolio-value" class="text-2xl font-extrabold persian-numbers text-black mt-3 drop-shadow-sm">...</p>
     </section>
 
-    <section id="profit-box" class="bg-white rounded-xl shadow-md p-4 text-center text-black mt-3 persian-numbers">
+    <section id="profit-box" class="bg-white rounded-xl shadow-lg p-4 text-center text-black mt-3 persian-numbers">
       در حال محاسبه سود/زیان...
     </section>
 
-    <section id="crypto-box" class="bg-white rounded-xl shadow-md p-4 text-center text-black persian-numbers">
+    <section id="crypto-box" class="bg-white rounded-xl shadow-lg p-4 text-center text-black persian-numbers">
       در حال دریافت اطلاعات رمزارزها...
     </section>
-    <section class="bg-purple-800 rounded-xl shadow-md p-4 text-center">
-      <p id="gold-amount" class="text-2xl font-extrabold persian-numbers text-white mt-1 drop-shadow">...</p>
+    <section class="bg-purple-800 rounded-xl shadow-lg p-4 text-center">
+      <p id="gold-amount" class="text-2xl font-extrabold persian-numbers text-white mt-1 drop-shadow-sm">...</p>
     </section>
 
-    <p id="last-update" class="text-sm text-black text-center mt-4 persian-numbers">در حال دریافت زمان...</p>
+    <p id="last-update" class="text-sm text-black text-center drop-shadow-sm mt-4 persian-numbers">در حال دریافت زمان...</p>
   </main>
 
   <script>
@@ -113,7 +113,7 @@
         const getColor = (change) => change > 0 ? 'green' : change < 0 ? 'red' : 'black';
 
         animateElement("crypto-box", `
-          <div class="text-2xl font-extrabold drop-shadow text-purple-800">رمزارزها</div>
+          <div class="text-2xl font-extrabold drop-shadow-sm text-purple-800">رمزارزها</div>
           <div class="space-y-2 mt-5 text-lg font-bold drop-shadow-lg">
             <div style="color:${getColor(bitcoin.usd_24h_change)}">
                BTC: $${toPersianNumber(parseInt(bitcoin.usd).toLocaleString())}
@@ -130,7 +130,7 @@
                (%${toPersianNumber(Math.abs(filecoin.usd_24h_change.toFixed(2)))})
                = $${toPersianNumber(film.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }))} | ${toPersianNumber(Math.floor(filpr).toLocaleString())}
             </div>
-            <p class="text-2xl font-extrabold persian-numbers text-black drop-shadow mt-5">${toPersianNumber(totalIrt.toLocaleString())}</p>
+            <p class="text-2xl font-extrabold persian-numbers text-black drop-shadow-sm mt-5">${toPersianNumber(totalIrt.toLocaleString())}</p>
           </div>
         `);
 
@@ -192,7 +192,7 @@
          // حالا سطر جدید را اضافه کنید
          document.querySelector("#portfolio-value").insertAdjacentHTML(
            "afterend",
-           `<div class="text-base font-bold text-purple-800 mt-3 persian-numbers drop-shadow-base">
+           `<div class="text-base font-bold text-purple-800 mt-3 persian-numbers drop-shadow-sm">
                میانگین قیمت خرید: ${toPersianNumber(Math.floor(avgGoldPrice).toLocaleString())} 
                (${goldprText}%)
            </div>`
@@ -222,8 +222,8 @@
                     animateElement("gold-amount", toPersianNumber(Math.floor(combined).toLocaleString()));
 
                     animateElement("profit-box", `
-                          <div class="text-2xl font-extrabold drop-shadow text-purple-800">صندوق عیار (${toPersianNumber(ayarUnits.toLocaleString())} واحد)</div>
-                          <div class="text-2xl font-extrabold drop-shadow text-black mt-4">${toPersianNumber(Math.floor(result).toLocaleString())}</div>
+                          <div class="text-2xl font-extrabold drop-shadow-sm text-purple-800">صندوق عیار (${toPersianNumber(ayarUnits.toLocaleString())} واحد)</div>
+                          <div class="text-2xl font-extrabold drop-shadow-sm text-black mt-4">${toPersianNumber(Math.floor(result).toLocaleString())}</div>
                     `);
 
                     const isProfitPositive = ayarmoney >= 0;
