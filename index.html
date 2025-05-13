@@ -21,27 +21,9 @@
       0% { opacity: 0.2; transform: scale(0.97); }
       100% { opacity: 1; transform: scale(1); }
     }
-    .grainy-bg {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .grainy-bg::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEUAAAD///+l2Z/dAAAACklEQVQI12NgAAAAAgAB4iG8MwAAAABJRU5ErkJggg==");
-      opacity: 0.2;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .grainy-bg > * {
-      position: relative;
-      z-index: 1;
   </style>
 </head>
-<body class="bg-gradient-to-br from-yellow-700 via-yellow-400 to-yellow-200 text-gray-800 min-h-screen grainy-bg">
+<body class="bg-gradient-to-br from-yellow-600 via-yellow-400 to-yellow-200 text-gray-800 min-h-screen">
   <main class="max-w-xl mx-auto p-3 space-y-5">
     <section class="bg-purple-800 rounded-xl shadow-xl p-3 text-center">
        <button onclick="fetchData()" class="text-white text-lg font-bold w-full">🔄 بروزرسانی ارزش دارایی ها</button>
