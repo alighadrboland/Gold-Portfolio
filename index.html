@@ -41,10 +41,6 @@
 
     <section class="bg-white rounded-xl shadow-2xl p-3 text-center persian-numbers">
       <h3 id="portfolio-title" class="text-2xl font-extrabold text-purple-800 mb-2 drop-shadow-lg">طلای آبشده</h3>
-      <div class="flex justify-between items-center">
-         <h3 id="portfolio-title" class="text-2xl font-extrabold text-purple-800 mb-2 drop-shadow-lg">طلای آبشده</h3>
-         <button onclick="openModal()" class="w-8 h-8 rounded-full bg-purple-600 text-white text-xl flex items-center justify-center shadow-md hover:bg-purple-700">+</button>
-      </div>
       <p id="portfolio-value" class="text-2xl font-extrabold persian-numbers text-black mt-3 drop-shadow-lg">...</p>
     </section>
 
@@ -262,34 +258,8 @@
         console.error("خطا در دریافت اطلاعات طلا و ارز:", err);
       }
     }
+
     fetchData();
-    function openModal() {
-      document.getElementById("goldModal").classList.remove("hidden");
-    }
-
-    function closeModal() {
-      document.getElementById("goldModal").classList.add("hidden");
-    }
-
-    function updateGoldAmount() {
-       const input = document.getElementById("goldInput").value;
-       const value = parseFloat(input);
-       if (!isNaN(value) && value > 0) {
-           window.myGoldGrams = value;
-           closeModal();
-           fetchData(); // دوباره مقدارها را آپدیت کن
-       } else {
-           alert("لطفاً مقدار معتبر وارد کنید.");
-       }
-    }
   </script>
-<div id="goldModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-  <div class="bg-white rounded-xl shadow-2xl p-5 max-w-sm w-full text-center space-y-4">
-    <h2 class="text-xl font-bold text-purple-800">مقدار طلای آبشده (گرم)</h2>
-    <input id="goldInput" type="number" class="w-full p-2 border border-gray-300 rounded-md text-center" placeholder="مثلاً ۴۵۰.۵" />
-    <button onclick="updateGoldAmount()" class="bg-purple-700 text-white px-4 py-2 rounded-md font-bold hover:bg-purple-800">تأیید</button>
-    <button onclick="closeModal()" class="text-sm text-gray-500 mt-2 hover:text-black">بستن</button>
-  </div>
-</div>
 </body>
 </html>
