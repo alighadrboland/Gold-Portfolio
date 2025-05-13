@@ -229,7 +229,7 @@
                     const isProfitPositive = ayarmoney >= 0;
                     const formattedAyarMoney = toPersianNumber(Math.floor(Math.abs(ayarmoney)).toLocaleString());
                     const ayarprText = `%${toPersianNumber(Math.abs(ayarpr).toFixed(2))}`;
-                    const rowColorClass = isProfitPositive ? "text-green-500" : "text-red-500";
+                    const rowColorClass = isProfitPositive ? "text-green" : "text-red";
 
                     document.querySelector("#profit-box").insertAdjacentHTML(
                        "beforeend",
