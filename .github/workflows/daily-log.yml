@@ -1,15 +1,17 @@
 const https = require('https');
 const fs = require('fs');
+const cheerio = require('cheerio');
 
-const url = 'https://raw.githubusercontent.com/alighadrboland/Gold-Porfolio/main/index.html';
+const url = 'https://alighadrboland.github.io/Gold-Porfolio/';
 
 https.get(url, res => {
   let data = '';
   res.on('data', chunk => (data += chunk));
   res.on('end', () => {
-    const match = data.match(/combined\s*=\s*([\d.]+)/i);
-    if (match) {
-      const combined = match[1];
+    const $ = cheerio.load(data);
+    const combined = $('#combined-value').text().trim();
+
+    if (combined) {
       const now = new Date().toISOString().slice(0, 10);
       const row = `${now},${combined}\n`;
 
