@@ -14,11 +14,12 @@ https.get(url, (res) => {
         const combined = parseFloat(match[1]);
         const now = new Date().toISOString().slice(0, 10);
         const row = `${now},${combined}\n`;
-        fs.appendFileSync('log.csv', row);
-        console.log(`✅ Logged: ${row}`);
-      } else {
-        console.error('❌ مقدار combined پیدا نشد.');
-      }
+        if (!fs.existsSync('log.csv') || !fs.readFileSync('log.csv').includes(now)) {
+              fs.appendFileSync('log.csv', row);
+              console.log(`✅ Logged: ${row}`);
+        } else {
+              console.log(`ℹ️ Already logged for ${now}`);
+        }
     } catch (err) {
       console.error('❌ خطا در پردازش داده:', err);
     }
