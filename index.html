@@ -212,47 +212,30 @@
                 const ayar = symbols.find(i => i.l18 === "عیار");
                 const ayarpr = ((ayar.pc - avgayarPrice) / avgayarPrice) * 100;
                 const ayarmoney = ((ayar.pc - avgayarPrice) * ayarUnits) / 10;
-            
                 if (ayar && ayar.pc) {
-                   const result = ayarUnits * (ayar.pc / 10);
-                   const combined = totalGoldValue + result + totalIrt;
-                   const color = ayar.pcp > 0 ? 'green' : ayar.pcp < 0 ? 'red' : 'black';
-
-                   animateElement("fund-price-box", `<span style="color:${color}">صندوق عیار: ${toPersianNumber(ayar.pc.toLocaleString())} (${toPersianNumber(Math.abs(ayar.pcc).toLocaleString())} | ${toPersianNumber(Math.abs(ayar.pcp.toFixed(2)))}%)</span>`);
-                   animateElement("gold-amount", toPersianNumber(Math.floor(combined).toLocaleString()));
-
-                   animateElement("profit-box", `
-                       <div class="text-2xl font-extrabold drop-shadow-lg text-purple-800">صندوق عیار (${toPersianNumber(ayarUnits.toLocaleString())} واحد)</div>
-                       <div class="text-2xl font-extrabold drop-shadow-lg text-black mt-4">${toPersianNumber(Math.floor(result).toLocaleString())}</div>
-                   `);
-
-                   const isProfitPositive = ayarmoney >= 0;
-                   const formattedAyarMoney = toPersianNumber(Math.floor(Math.abs(ayarmoney)).toLocaleString());
-                   const ayarprText = `%${toPersianNumber(Math.abs(ayarpr).toFixed(2))}`;
-                   const rowColorClass = isProfitPositive ? "text-green-600 drop-shadow-lg" : "text-red-600 drop-shadow-lg";
-
-                   document.querySelector("#profit-box").insertAdjacentHTML(
+                    const result = ayarUnits * (ayar.pc / 10);
+                    const combined = totalGoldValue + result + totalIrt;
+                    const color = ayar.pcp > 0 ? 'green' : ayar.pcp < 0 ? 'red' : 'black';
+                    animateElement("fund-price-box", `<span style="color:${color}">صندوق عیار: ${toPersianNumber(ayar.pc.toLocaleString())} (${toPersianNumber(Math.abs(ayar.pcc).toLocaleString())} | ${toPersianNumber(Math.abs(ayar.pcp.toFixed(2)))}%)</span>`);
+                    animateElement("gold-amount", toPersianNumber(Math.floor(combined).toLocaleString()));
+                    animateElement("profit-box", `
+                          <div class="text-2xl font-extrabold drop-shadow-lg text-purple-800">صندوق عیار (${toPersianNumber(ayarUnits.toLocaleString())} واحد)</div>
+                          <div class="text-2xl font-extrabold drop-shadow-lg text-black mt-4">${toPersianNumber(Math.floor(result).toLocaleString())}</div>
+                    `);
+                    const isProfitPositive = ayarmoney >= 0;
+                    const formattedAyarMoney = toPersianNumber(Math.floor(Math.abs(ayarmoney)).toLocaleString());
+                    const ayarprText = `%${toPersianNumber(Math.abs(ayarpr).toFixed(2))}`;
+                    const rowColorClass = isProfitPositive ? "text-green-600 drop-shadow-lg" : "text-red-600 drop-shadow-lg";
+                    document.querySelector("#profit-box").insertAdjacentHTML(
                        "beforeend",
                        `<div class="text-lg font-bold mt-3 persian-numbers ${rowColorClass} p-1 rounded">
-                           ${formattedAyarMoney} (${ayarprText})
-                       </div>`
-                   );
-
-    // ✅ اضافه‌شده: مقدار combined را در span مخصوص بنویس
-                   const combinedSpan = document.getElementById("combined-value");
-                   if (combinedSpan) {
-                       combinedSpan.textContent = combined;
-                   } else {
-                       const span = document.createElement("span");
-                       span.id = "combined-value";
-                       span.style.display = "none";
-                       span.textContent = combined;
-                       document.body.appendChild(span);
-                  }
-
-                } else {
-                 animateElement("profit-box", "صندوق عیار یافت نشد");
-                }
+                            ${formattedAyarMoney} (${ayarprText})
+                        </div>`
+                    );
+             } else {
+                   animateElement("profit-box", "صندوق عیار یافت نشد");
+             }
+                
           } catch (err) {
                  console.error("خطا در دریافت اطلاعات صندوق:", err);
                  animateElement("profit-box", "خطا در دریافت قیمت صندوق");
