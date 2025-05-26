@@ -17,8 +17,8 @@ jobs:
           node -e "
             const fs = require('fs');
             const data = JSON.parse(fs.readFileSync('data.json'));
-            const combined = data.totalGoldValue + data.result + data.totalIrt;
-            fs.writeFileSync('combined.txt', Math.floor(combined).toString());
+            const combine = data.combined;
+            fs.writeFileSync('combined.txt', Math.floor(combine).toString());
           "
 
       - name: Commit and push changes
