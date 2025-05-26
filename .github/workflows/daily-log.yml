@@ -1,0 +1,32 @@
+name: Daily Combined Logger
+
+on:
+  schedule:
+    - cron: '0 5 * * *'  # هر روز ساعت ۵ صبح UTC
+  workflow_dispatch:
+
+jobs:
+  log_combined:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies (none needed)
+
+      - name: Run log-value.js
+        run: node log-value.js
+
+      - name: Commit and push
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'actions@github.com'
+          git add log.csv
+          git commit -m "📊 Add combined value for $(date +'%Y-%m-%d')" || echo "No changes to commit"
+          git push
