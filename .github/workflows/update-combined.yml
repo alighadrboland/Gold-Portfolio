@@ -1,30 +1,30 @@
-name: Update combined.txt daily
+name: Update combined.txt
 
 on:
   schedule:
-    - cron: '0 6 * * *'  # هر روز ساعت ۶ صبح UTC (ساعت ۱۰:۳۰ صبح ایران)
-  workflow_dispatch:      # امکان اجرای دستی
+    - cron: '0 6 * * *'  # هر روز ساعت ۶ صبح UTC
+  workflow_dispatch:
 
 jobs:
-  update:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Fetch combined value from site
-      run: |
-        COMBINED=$(curl -s https://alighadrboland.github.io/Gold-Porfolio/combined.txt)
-        echo "Latest combined value: $COMBINED"
-        echo "$COMBINED" > combined.txt
+      - name: Calculate combined and write to file
+        run: |
+          node -e "
+            const fs = require('fs');
+            const data = JSON.parse(fs.readFileSync('data.json'));
+            const combined = data.totalGoldValue + data.result + data.totalIrt;
+            fs.writeFileSync('combined.txt', Math.floor(combined).toString());
+          "
 
-    - name: Commit and push changes
-      env:
-        TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        git config user.name "github-actions"
-        git config user.email "github-actions@users.noreply.github.com"
-        git add combined.txt
-        git commit -m "Update combined.txt" || echo "No changes to commit"
-        git push https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git HEAD:main
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add combined.txt
+          git commit -m "Update combined.txt" || echo "No changes"
+          git push
