@@ -224,6 +224,11 @@
                     animateElement("profit-box", `
                           <div class="text-2xl font-extrabold drop-shadow-lg text-purple-800">صندوق عیار (${toPersianNumber(ayarUnits.toLocaleString())} واحد)</div>
                           <div class="text-2xl font-extrabold drop-shadow-lg text-black mt-4">${toPersianNumber(Math.floor(result).toLocaleString())}</div>
+                    <span id="combined-value" style="display:none;"></span>
+                    <script>
+  // قرار دادن مقدار combined در span
+                        document.getElementById("combined-value").textContent = combined;
+                     </script>
                     `);
 
                     const isProfitPositive = ayarmoney >= 0;
