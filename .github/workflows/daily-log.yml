@@ -16,7 +16,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # تا git بتواند به درستی روی شاخه اصلی کار کند
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -26,10 +26,15 @@ jobs:
       - name: Run log-value.js
         run: node log-value.js
 
-      - name: Commit and push
+      - name: Commit and push changes
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'actions@github.com'
           git add log.csv
-          git commit -m "📊 Add combined value for $(date +'%Y-%m-%d')" || echo "No changes to commit"
-          git push origin HEAD:main
+
+          if git diff --cached --quiet; then
+            echo "⏩ No changes to commit."
+          else
+            git commit -m "📊 Add combined value for $(date +'%Y-%m-%d')"
+            git push origin HEAD:main
+          fi
