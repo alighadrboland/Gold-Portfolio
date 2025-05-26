@@ -2,8 +2,8 @@ name: Daily Log
 
 on:
   schedule:
-    - cron: '0 6 * * *'  # ساعت 6 صبح UTC
-  workflow_dispatch:     # برای اجرای دستی هم فعال است
+    - cron: '0 6 * * *'  # اجرای روزانه ساعت 6 صبح UTC
+  workflow_dispatch:     # قابلیت اجرای دستی
 
 jobs:
   log-value:
@@ -22,7 +22,7 @@ jobs:
         run: npm install cheerio
 
       - name: Run script
-        run: node daily-log.js
+        run: node log-value.js
 
       - name: Commit and push changes
         run: |
