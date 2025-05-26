@@ -18,8 +18,6 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install dependencies (none needed)
-
       - name: Run log-value.js
         run: node log-value.js
 
