@@ -120,11 +120,11 @@
                (%${toPersianNumber(Math.abs(bitcoin.usd_24h_change.toFixed(2)))})
                = $${toPersianNumber(btcm.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }))} | ${toPersianNumber(Math.floor(btcpr).toLocaleString())}
             </div>
-            <div style="color:${getColor(ethereum.usd_24h_change)}">
-               ETH: $${toPersianNumber(parseInt(ethereum.usd).toLocaleString())}
-               (%${toPersianNumber(Math.abs(ethereum.usd_24h_change.toFixed(2)))})
-               = $${toPersianNumber(ethm.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }))} | ${toPersianNumber(Math.floor(ethpr).toLocaleString())}
-            </div>
+            //<div style="color:${getColor(ethereum.usd_24h_change)}">
+               //ETH: $${toPersianNumber(parseInt(ethereum.usd).toLocaleString())}
+               //(%${toPersianNumber(Math.abs(ethereum.usd_24h_change.toFixed(2)))})
+               //= $${toPersianNumber(ethm.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }))} | ${toPersianNumber(Math.floor(ethpr).toLocaleString())}
+            //</div>
             <div style="color:${getColor(filecoin.usd_24h_change)}">
                FIL: $${toPersianNumber(filecoin.usd.toLocaleString())}
                (%${toPersianNumber(Math.abs(filecoin.usd_24h_change.toFixed(2)))})
