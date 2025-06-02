@@ -59,15 +59,15 @@
   </main>
 
   <script>
-    const myGoldGrams = 441.85;
+    const myGoldGrams = 442.664;
     const ayarUnits = 20609;
     const avgayarPrice = 189467;
     const avgGoldPrice = (
-      (127 * 2312000) +
-      (40 * 3810000) +
+      (127.790 * 2312000) +
+      (40.524 * 3810000) +
       (111.440 * 4725000) +
-      (62.320 * 8110000) +
-      (101.090 * 6850000)
+      (62.230 * 8110000) +
+      (100.680 * 6850000)
     ) / myGoldGrams;
 
     const btcAmount = 0;
@@ -169,7 +169,7 @@
 
           const goldPrice = gold18.price;
           const commision = goldPrice - 30000;
-          const totalGoldValue = ((myGoldGrams * 750) / 750) * commision;
+          const totalGoldValue = myGoldGrams * commision;
           const Goldpr = ((goldPrice - avgGoldPrice) / avgGoldPrice) * 100;
 
           document.getElementById("portfolio-title").innerText = `طلای آبشده (${toPersianNumber(myGoldGrams.toLocaleString())} گرم)`;
