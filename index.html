@@ -215,8 +215,8 @@
                 const ayarmoney = ((ayar.pc - avgayarPrice) * ayarUnits) / 10;
             
                 if (ayar && ayar.pc) {
-                    const unitfee = ((ayarUnits * (ayar.pc / 10)) * 0.0125) / 100;
-                    const result = (ayarUnits * (ayar.pc / 10));
+                    const unitfee = ((ayarUnits * (ayar.pc / 10)) * 0.12) / 100;
+                    const result = (ayarUnits * (ayar.pc / 10)) - unitfee;
                     const combined = totalGoldValue + result + totalIrt + cashAmount;
                     const color = ayar.pcp > 0 ? 'green' : ayar.pcp < 0 ? 'red' : 'black';
 
