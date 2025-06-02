@@ -51,6 +51,11 @@
     <section id="crypto-box" class="bg-white rounded-xl shadow-2xl p-3 text-center text-black persian-numbers">
       در حال دریافت اطلاعات رمزارزها...
     </section>
+
+    <section id="cash-box" class="bg-blue-500 rounded-xl shadow-2xl p-3 text-center text-white persian-numbers">
+          نقدی: <span id="cash-amount"></span>
+    </section>
+
     <section class="bg-purple-800 rounded-xl shadow-2xl p-3 text-center">
       <p id="gold-amount" class="text-2xl font-extrabold persian-numbers text-white mt-1 drop-shadow-lg">...</p>
     </section>
@@ -59,6 +64,7 @@
   </main>
 
   <script>
+    const cashAmount = 2365264;
     const myGoldGrams = 442.664;
     const ayarUnits = 20609;
     const avgayarPrice = 189467;
@@ -242,8 +248,7 @@
                  console.error("خطا در دریافت اطلاعات صندوق:", err);
                  animateElement("profit-box", "خطا در دریافت قیمت صندوق");
           }
-
-
+          document.getElementById("cash-amount").innerText = toPersianNumber(cashAmount.toLocaleString());
           const now = new Date();
           const formattedDate = toPersianNumber(now.toLocaleDateString("fa-IR"));
           const formattedTime = toPersianNumber(now.toLocaleTimeString("fa-IR").replace(/:\d+$/, ''));
