@@ -52,7 +52,7 @@
       در حال دریافت اطلاعات رمزارزها...
     </section>
 
-    <section id="cash-box" class="bg-blue-500 rounded-xl shadow-2xl p-3 text-center text-white persian-numbers">
+    <section id="cash-box" class="bg-blue-700 rounded-xl shadow-2xl p-3 text-center text-white persian-numbers">
           نقدی: <span id="cash-amount"></span>
     </section>
 
@@ -217,7 +217,7 @@
                 if (ayar && ayar.pc) {
                     const unitfee = ((ayarUnits * (ayar.pc / 10)) * 0.0025) / 100;
                     const result = (ayarUnits * (ayar.pc / 10)) - unitfee;
-                    const combined = totalGoldValue + result + totalIrt;
+                    const combined = totalGoldValue + result + totalIrt + cashAmount;
                     const color = ayar.pcp > 0 ? 'green' : ayar.pcp < 0 ? 'red' : 'black';
 
                     animateElement("fund-price-box", `<span style="color:${color}">صندوق عیار: ${toPersianNumber(ayar.pc.toLocaleString())} (${toPersianNumber(Math.abs(ayar.pcc).toLocaleString())} | ${toPersianNumber(Math.abs(ayar.pcp.toFixed(2)))}%)</span>`);
