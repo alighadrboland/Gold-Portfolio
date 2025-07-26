@@ -64,7 +64,7 @@
   </main>
 
   <script>
-    const cashAmount = 11726;
+    const cashAmount;
     const myGoldGrams = 442.664;
     const ayarUnits = 45912;
     const avgayarPrice = 205955;
@@ -190,7 +190,6 @@
               existingAvgGoldPriceRow.remove();
           }
 
-         // حالا سطر جدید را اضافه کنید
          document.querySelector("#portfolio-value").insertAdjacentHTML(
            "afterend",
            `<div class="text-base font-bold text-purple-800 mt-3 persian-numbers drop-shadow-lg">
@@ -199,7 +198,9 @@
            </div>`
          );
           
-
+          const goldvalue = ((ounceGold.price * usd.price) / 31.1) / 0.75;
+          const cashAmount = ((gold18.price - goldvalue) / goldvalue) * 100;
+          document.getElementById("cash-amount").innerText = toPersianNumber(cashAmount.toLocaleString());
           const urls = [
             "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz&type=1",
             "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeKyzGgWec9Po3hG9QVoMxMtCI3z5P&type=1",
@@ -248,7 +249,7 @@
                  console.error("خطا در دریافت اطلاعات صندوق:", err);
                  animateElement("profit-box", "خطا در دریافت قیمت صندوق");
           }
-          document.getElementById("cash-amount").innerText = toPersianNumber(cashAmount.toLocaleString());
+
           const now = new Date();
           const formattedDate = toPersianNumber(now.toLocaleDateString("fa-IR"));
           const formattedTime = toPersianNumber(now.toLocaleTimeString("fa-IR").replace(/:\d+$/, ''));
