@@ -53,7 +53,7 @@
     </section>
 
     <section id="cash-box" class="bg-blue-800 rounded-xl shadow-2xl p-2 text-center text-white persian-numbers">
-        درصد حباب طلا: <span id="cash-amount"></span>
+          نقدی: <span id="cash-amount"></span>
     </section>
 
     <section class="bg-purple-800 rounded-xl shadow-2xl p-3 text-center">
@@ -177,9 +177,6 @@
           const commision = goldPrice - 30000;
           const totalGoldValue = myGoldGrams * commision;
           const Goldpr = ((goldPrice - avgGoldPrice) / avgGoldPrice) * 100;
-          const goldvalue = ((ounceGold.price * usd.price) / 31.1) / 0.75;
-          const goldbubble = ((gold18.price - goldvalue) / goldvalue) * 100;
-          document.getElementById("cash-amount").innerText = `${toPersianNumber(goldbubble.toFixed(2))}٪`;
 
           document.getElementById("portfolio-title").innerText = `طلای آبشده (${toPersianNumber(myGoldGrams.toLocaleString())} گرم)`;
           animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
@@ -251,6 +248,7 @@
                  console.error("خطا در دریافت اطلاعات صندوق:", err);
                  animateElement("profit-box", "خطا در دریافت قیمت صندوق");
           }
+          document.getElementById("cash-amount").innerText = toPersianNumber(cashAmount.toLocaleString());
           const now = new Date();
           const formattedDate = toPersianNumber(now.toLocaleDateString("fa-IR"));
           const formattedTime = toPersianNumber(now.toLocaleTimeString("fa-IR").replace(/:\d+$/, ''));
