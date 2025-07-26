@@ -26,21 +26,22 @@
 <body class="bg-yellow-400 text-black">
   <main class="max-w-xl mx-auto p-3 space-y-5">
     <section class="bg-purple-800 rounded-xl shadow-2xl p-3 text-center">
-      <button onclick="fetchData()" class="text-white text-lg font-bold w-full">🔄 بروزرسانی ارزش دارایی ها</button>
+       <button onclick="fetchData()" class="text-white text-lg font-bold w-full">🔄 بروزرسانی ارزش دارایی ها</button>
     </section>
-
     <section class="bg-white rounded-xl shadow-2xl p-3 text-center">
       <div class="text-lg font-bold space-y-2 persian-numbers drop-shadow-lg">
         <div id="usd-box">دلار: ...</div>
         <div id="usdt-box">تتر: ...</div>
         <div id="gold18-box">طلای ۱۸ عیار: ...</div>
         <div id="fund-price-box">صندوق عیار: ...</div>
+        <p id="gold-price" class="hidden"></p>
+        <small id="gold-change" class="hidden"></small>
       </div>
     </section>
 
     <section class="bg-white rounded-xl shadow-2xl p-3 text-center persian-numbers">
       <h3 id="portfolio-title" class="text-2xl font-extrabold text-purple-800 mb-2 drop-shadow-lg">طلای آبشده</h3>
-      <p id="portfolio-value" class="text-2xl font-extrabold text-black mt-3 drop-shadow-lg">...</p>
+      <p id="portfolio-value" class="text-2xl font-extrabold persian-numbers text-black mt-3 drop-shadow-lg">...</p>
     </section>
 
     <section id="profit-box" class="bg-white rounded-xl shadow-2xl p-3 text-center text-black mt-3 persian-numbers">
@@ -52,18 +53,21 @@
     </section>
 
     <section id="cash-box" class="bg-blue-800 rounded-xl shadow-2xl p-2 text-center text-white persian-numbers">
-      درصد حباب طلا: <span id="cash-amount"></span>
+          نقدی: <span id="cash-amount"></span>
     </section>
 
     <section class="bg-purple-800 rounded-xl shadow-2xl p-3 text-center">
-      <p id="gold-amount" class="text-2xl font-extrabold text-white mt-1 drop-shadow-lg">...</p>
+      <p id="gold-amount" class="text-2xl font-extrabold persian-numbers text-white mt-1 drop-shadow-lg">...</p>
     </section>
 
     <p id="last-update" class="text-sm text-black text-center drop-shadow-lg mt-4 persian-numbers">در حال دریافت زمان...</p>
   </main>
 
   <script>
+    const cashAmount = 11726;
     const myGoldGrams = 442.664;
+    const ayarUnits = 45912;
+    const avgayarPrice = 205955;
     const avgGoldPrice = (
       (127.790 * 2312000) +
       (40.524 * 3810000) +
@@ -71,6 +75,10 @@
       (62.230 * 8110000) +
       (100.680 * 6850000)
     ) / myGoldGrams;
+
+    const btcAmount = 0.0006272;
+    const ethAmount = 0;
+    const filAmount = 4.80177626;
 
     function toPersianNumber(input) {
       const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
@@ -86,30 +94,169 @@
     }
 
     async function fetchData() {
+      let totalIrt = 0;
+
       try {
-        const res = await fetch("https://brsapi.ir/Api/Market/Gold_Currency.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz");
-        const data = await res.json();
+        const coingeckoRes = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,filecoin,tether&vs_currencies=usd&include_24hr_change=true");
+        const cryptoData = await coingeckoRes.json();
+        const { bitcoin, ethereum, filecoin, tether } = cryptoData;
+
+        const totalUsd = (btcAmount * bitcoin.usd) + (ethAmount * ethereum.usd) + (filAmount * filecoin.usd);
+  
+        const rateRes = await fetch("https://brsapi.ir/Api/Market/Gold_Currency.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz");
+        const rateData = await rateRes.json();
+        const usdtObj = rateData.currency.find(i => i.symbol === "USDT_IRT") || {};
+
+        const usdtPrice = usdtObj.price || 0;
+        totalIrt = Math.floor(totalUsd * usdtPrice);
+        const btcm = btcAmount * bitcoin.usd;
+        const ethm = ethAmount * ethereum.usd;
+        const film = filAmount * filecoin.usd;
+        const btcpr = btcm * usdtPrice;
+        const ethpr = ethm * usdtPrice;
+        const filpr = film * usdtPrice;
+        
+        const getColor = (change) => change > 0 ? 'green' : change < 0 ? 'red' : 'black';
+
+        animateElement("crypto-box", `
+          <div class="text-2xl font-extrabold drop-shadow-lg text-purple-800">رمزارزها</div>
+          <div class="space-y-2 mt-5 text-lg font-bold drop-shadow-lg">
+            <div style="color:${getColor(bitcoin.usd_24h_change)}">
+               BTC: $${toPersianNumber(parseInt(bitcoin.usd).toLocaleString())}
+               (%${toPersianNumber(Math.abs(bitcoin.usd_24h_change.toFixed(2)))})
+               = $${toPersianNumber(btcm.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }))} | ${toPersianNumber(Math.floor(btcpr).toLocaleString())}
+            </div>
+            <div style="color:${getColor(filecoin.usd_24h_change)}">
+               FIL: $${toPersianNumber(filecoin.usd.toLocaleString())}
+               (%${toPersianNumber(Math.abs(filecoin.usd_24h_change.toFixed(2)))})
+               = $${toPersianNumber(film.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }))} | ${toPersianNumber(Math.floor(filpr).toLocaleString())}
+            </div>
+            <p class="text-2xl font-extrabold persian-numbers text-black drop-shadow-lg mt-6">${toPersianNumber(totalIrt.toLocaleString())}</p>
+          </div>
+        `);
+
+        const percentColor = usdtObj.change_percent > 0 ? 'green' : usdtObj.change_percent < 0 ? 'red' : 'black';
+        animateElement("usdt-box", `<span style="color:${percentColor}">تتر: ${toPersianNumber(usdtPrice.toLocaleString())} (${toPersianNumber(Math.abs(usdtObj.change_value).toLocaleString())} | ${toPersianNumber(Math.abs(usdtObj.change_percent.toFixed(2)))}%)</span>`);
+
+    } catch (err) {
+       console.error("خطا در دریافت اطلاعات رمزارز:", err);
+       animateElement("crypto-box", "خطا در دریافت قیمت رمزارزها");
+    }
+
+
+      try {
+        const response = await fetch("https://brsapi.ir/Api/Market/Gold_Currency.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz");
+        const data = await response.json();
 
         const gold18 = data.gold.find(i => i.symbol === "IR_GOLD_18K");
-        const ounceGold = data.gold.find(i => i.symbol === "XAUUSD");
         const usd = data.currency.find(i => i.symbol === "USD");
 
-        if (gold18 && ounceGold && usd) {
-          const goldValue = ((ounceGold.price * usd.price) / 31.1) / 0.75;
-          const goldBubble = ((gold18.price - goldValue) / goldValue) * 100;
+        if (usd) {
+          const color = usd.change_value > 0 ? 'green' : usd.change_value < 0 ? 'red' : 'black';
+          animateElement("usd-box", `<span style="color:${color}">دلار: ${toPersianNumber(usd.price.toLocaleString())} (${toPersianNumber(Math.abs(usd.change_value).toLocaleString())} | ${toPersianNumber(Math.abs(usd.change_percent.toFixed(2)))}%)</span>`);
 
-          const goldBubbleText = goldBubble < 0
-            ? `${toPersianNumber(Math.abs(goldBubble).toFixed(2))}-`
-            : toPersianNumber(goldBubble.toFixed(2));
+          const ounceGold = data.gold.find(i => i.symbol === "XAUUSD");
+          if (ounceGold) {
+             const ozColor = ounceGold.change_value > 0 ? 'green' : ounceGold.change_value < 0 ? 'red' : 'black';
+             const ounceHtml = `<div id="ounce-box" style="color:${ozColor}">انس جهانی طلا: ${toPersianNumber(ounceGold.price.toLocaleString())}$ (${toPersianNumber(Math.abs(ounceGold.change_value).toLocaleString())}$ | ${toPersianNumber(Math.abs(ounceGold.change_percent.toFixed(2)))}%)</div>`;
 
-          document.getElementById("cash-amount").innerText = `${goldBubbleText}٪`;
-        } else {
-          document.getElementById("cash-amount").innerText = "نامشخص";
+             const existingOunceBox = document.getElementById("ounce-box");
+             if (existingOunceBox) {
+                 existingOunceBox.outerHTML = ounceHtml;
+             } else {
+                document.getElementById("usdt-box").insertAdjacentHTML("afterend", ounceHtml);
+             }
+          }
         }
 
-      } catch (e) {
-        console.error("خطا در دریافت داده‌ها:", e);
-        document.getElementById("cash-amount").innerText = "خطا در دریافت";
+        if (gold18) {
+          const changeColor = gold18.change_percent > 0 ? 'green' : gold18.change_percent < 0 ? 'red' : 'black';
+          animateElement("gold18-box", `<span style="color:${changeColor}">طلای ۱۸ عیار: ${toPersianNumber(gold18.price.toLocaleString())} (${toPersianNumber(Math.abs(gold18.change_value).toLocaleString())} | ${toPersianNumber(Math.abs(gold18.change_percent.toFixed(2)))}%)</span>`);
+
+          const goldPrice = gold18.price;
+          const commision = goldPrice - 30000;
+          const totalGoldValue = myGoldGrams * commision;
+          const Goldpr = ((goldPrice - avgGoldPrice) / avgGoldPrice) * 100;
+
+          document.getElementById("portfolio-title").innerText = `طلای آبشده (${toPersianNumber(myGoldGrams.toLocaleString())} گرم)`;
+          animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
+
+          const goldprText = Goldpr < 0
+                 ? `${toPersianNumber(Math.abs(Goldpr).toFixed(2))}-`
+                 : toPersianNumber(Goldpr.toFixed(2));
+
+          const existingAvgGoldPriceRow = document.querySelector("#portfolio-value + .text-base");
+          if (existingAvgGoldPriceRow) {
+              existingAvgGoldPriceRow.remove();
+          }
+
+         // حالا سطر جدید را اضافه کنید
+         document.querySelector("#portfolio-value").insertAdjacentHTML(
+           "afterend",
+           `<div class="text-base font-bold text-purple-800 mt-3 persian-numbers drop-shadow-lg">
+               میانگین قیمت خرید: ${toPersianNumber(Math.floor(avgGoldPrice).toLocaleString())} 
+               (${goldprText}%)
+           </div>`
+         );
+          
+
+          const urls = [
+            "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz&type=1",
+            "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeKyzGgWec9Po3hG9QVoMxMtCI3z5P&type=1",
+            "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreezhPfvWeEOGOPucTWsPukkDazGzTQ&type=1"
+          ];
+          const randomUrl = urls[Math.floor(Math.random() * urls.length)];
+
+          try {
+                const ayarRes = await fetch(randomUrl);
+                const symbols = await ayarRes.json();
+                const ayar = symbols.find(i => i.l18 === "عیار");
+                const ayarpr = ((ayar.pc - avgayarPrice) / avgayarPrice) * 100;
+                const ayarmoney = ((ayar.pc - avgayarPrice) * ayarUnits) / 10;
+            
+                if (ayar && ayar.pc) {
+                    const unitfee = ((ayarUnits * (ayar.pc / 10)) * 0.12) / 100;
+                    const result = (ayarUnits * (ayar.pc / 10)) - unitfee;
+                    const combined = totalGoldValue + result + totalIrt + cashAmount;
+                    const color = ayar.pcp > 0 ? 'green' : ayar.pcp < 0 ? 'red' : 'black';
+
+                    animateElement("fund-price-box", `<span style="color:${color}">صندوق عیار: ${toPersianNumber(ayar.pc.toLocaleString())} (${toPersianNumber(Math.abs(ayar.pcc).toLocaleString())} | ${toPersianNumber(Math.abs(ayar.pcp.toFixed(2)))}%)</span>`);
+                    animateElement("gold-amount", toPersianNumber(Math.floor(combined).toLocaleString()));
+
+                    animateElement("profit-box", `
+                          <div class="text-2xl font-extrabold drop-shadow-lg text-purple-800">صندوق عیار (${toPersianNumber(ayarUnits.toLocaleString())} واحد)</div>
+                          <div class="text-2xl font-extrabold drop-shadow-lg text-black mt-4">${toPersianNumber(Math.floor(result).toLocaleString())}</div>
+                    `);
+
+                    const isProfitPositive = ayarmoney >= 0;
+                    const formattedAyarMoney = toPersianNumber(Math.floor(Math.abs(ayarmoney)).toLocaleString());
+                    const ayarprText = `%${toPersianNumber(Math.abs(ayarpr).toFixed(2))}`;
+                    const rowColorClass = isProfitPositive ? "text-green-600 drop-shadow-lg" : "text-red-600 drop-shadow-lg";
+
+                    document.querySelector("#profit-box").insertAdjacentHTML(
+                       "beforeend",
+                       `<div class="text-lg font-bold mt-3 persian-numbers ${rowColorClass} p-1 rounded">
+                            ${formattedAyarMoney} (${ayarprText})
+                        </div>`
+                    );
+
+
+             } else {
+                   animateElement("profit-box", "صندوق عیار یافت نشد");
+             }
+          } catch (err) {
+                 console.error("خطا در دریافت اطلاعات صندوق:", err);
+                 animateElement("profit-box", "خطا در دریافت قیمت صندوق");
+          }
+          document.getElementById("cash-amount").innerText = toPersianNumber(cashAmount.toLocaleString());
+          const now = new Date();
+          const formattedDate = toPersianNumber(now.toLocaleDateString("fa-IR"));
+          const formattedTime = toPersianNumber(now.toLocaleTimeString("fa-IR").replace(/:\d+$/, ''));
+          document.getElementById("last-update").innerText = `آخرین بروزرسانی: ${formattedDate} - ${formattedTime}`;
+        }
+
+      } catch (err) {
+        console.error("خطا در دریافت اطلاعات طلا و ارز:", err);
       }
     }
 
