@@ -247,7 +247,7 @@
                  console.error("خطا در دریافت اطلاعات صندوق:", err);
                  animateElement("profit-box", "خطا در دریافت قیمت صندوق");
           }
-          document.getElementById("gold-box").innerHTML = `درصد حباب طلای ۱۸ عیار: <span id="goldbubble">${toPersianNumber(goldbubble.toFixed(2))}</span>%`;
+          document.getElementById("gold-box").innerText = toPersianNumber(goldbubble.toLocaleString());
           const now = new Date();
           const formattedDate = toPersianNumber(now.toLocaleDateString("fa-IR"));
           const formattedTime = toPersianNumber(now.toLocaleTimeString("fa-IR").replace(/:\d+$/, ''));
