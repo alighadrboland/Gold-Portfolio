@@ -64,7 +64,7 @@
   </main>
 
   <script>
-    const cashAmount;
+    const cashAmount = 11726;
     const myGoldGrams = 442.664;
     const ayarUnits = 45912;
     const avgayarPrice = 205955;
@@ -180,9 +180,7 @@
 
           document.getElementById("portfolio-title").innerText = `طلای آبشده (${toPersianNumber(myGoldGrams.toLocaleString())} گرم)`;
           animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
-          const goldvalue = ((ounceGold.price * usd.price) / 31.1) / 0.75;
-          const cashAmount = ((gold18.price - goldvalue) / goldvalue) * 100;
-          document.getElementById("cash-amount").innerText = toPersianNumber(cashAmount.toLocaleString());
+
           const goldprText = Goldpr < 0
                  ? `${toPersianNumber(Math.abs(Goldpr).toFixed(2))}-`
                  : toPersianNumber(Goldpr.toFixed(2));
@@ -250,7 +248,7 @@
                  console.error("خطا در دریافت اطلاعات صندوق:", err);
                  animateElement("profit-box", "خطا در دریافت قیمت صندوق");
           }
-          
+          document.getElementById("cash-amount").innerText = toPersianNumber(cashAmount.toLocaleString());
           const now = new Date();
           const formattedDate = toPersianNumber(now.toLocaleDateString("fa-IR"));
           const formattedTime = toPersianNumber(now.toLocaleTimeString("fa-IR").replace(/:\d+$/, ''));
