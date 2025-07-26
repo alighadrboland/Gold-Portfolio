@@ -40,7 +40,7 @@
     </section>
 
      <section id="gold-box" class="bg-blue-800 rounded-xl shadow-2xl p-2 text-center text-white persian-numbers">
-          درصد حباب طلای ۱۸ عیار: <span id="gold-bubble"></span>
+          درصد حباب طلای ۱۸ عیار: <span id="goldbubble"></span>
     </section>
     <section class="bg-white rounded-xl shadow-2xl p-3 text-center persian-numbers">
       <h3 id="portfolio-title" class="text-2xl font-extrabold text-purple-800 mb-2 drop-shadow-lg">طلای آبشده</h3>
@@ -247,7 +247,7 @@
                  console.error("خطا در دریافت اطلاعات صندوق:", err);
                  animateElement("profit-box", "خطا در دریافت قیمت صندوق");
           }
-          document.getElementById("gold-bubble").innerText = toPersianNumber(goldbubble.toLocaleString());
+          document.getElementById("gold-box").innerText = toPersianNumber(goldbubble.toLocaleString());
           const now = new Date();
           const formattedDate = toPersianNumber(now.toLocaleDateString("fa-IR"));
           const formattedTime = toPersianNumber(now.toLocaleTimeString("fa-IR").replace(/:\d+$/, ''));
