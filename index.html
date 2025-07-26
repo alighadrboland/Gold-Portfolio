@@ -64,7 +64,7 @@
   </main>
 
   <script>
-    const cashAmount = 11726;
+    const cashAmount;
     const myGoldGrams = 442.664;
     const ayarUnits = 45912;
     const avgayarPrice = 205955;
@@ -248,6 +248,8 @@
                  console.error("خطا در دریافت اطلاعات صندوق:", err);
                  animateElement("profit-box", "خطا در دریافت قیمت صندوق");
           }
+          const goldvalue = ((ounceGold.price * usd.price) / 31.1) / 0.75;
+          const cashAmount = ((gold18.price - goldvalue) / goldvalue) * 100;
           document.getElementById("cash-amount").innerText = toPersianNumber(cashAmount.toLocaleString());
           const now = new Date();
           const formattedDate = toPersianNumber(now.toLocaleDateString("fa-IR"));
