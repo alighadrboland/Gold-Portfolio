@@ -39,8 +39,10 @@
       </div>
     </section>
 
-     <section id="gold-box" class="bg-blue-800 rounded-xl shadow-2xl p-2 text-center text-white persian-numbers">
-          درصد حباب طلای ۱۸ عیار: <span id="goldbubble"></span>
+    <section id="gold-box" class="...">
+       درصد حباب طلای ۱۸ عیار: <span id="goldbubble"></span>
+    </section>
+
     </section>
     <section class="bg-white rounded-xl shadow-2xl p-3 text-center persian-numbers">
       <h3 id="portfolio-title" class="text-2xl font-extrabold text-purple-800 mb-2 drop-shadow-lg">طلای آبشده</h3>
@@ -253,7 +255,7 @@
             const goldvalue = ((ounceGold.price * usd.price) / 31.1) / 0.75;
             const goldbubble = ((gold18.price - goldvalue) / goldvalue) * 100;
             document.getElementById("goldbubble").innerText = `${toPersianNumber(goldbubble.toFixed(2))}٪`;
-        }
+          }
           document.getElementById("last-update").innerText = `آخرین بروزرسانی: ${formattedDate} - ${formattedTime}`;
         }
 
