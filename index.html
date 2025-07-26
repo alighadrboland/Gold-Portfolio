@@ -64,6 +64,7 @@
   </main>
 
   <script>
+    const cashAmount = 11726;
     const myGoldGrams = 442.664;
     const ayarUnits = 45912;
     const avgayarPrice = 205955;
@@ -188,9 +189,8 @@
           if (existingAvgGoldPriceRow) {
               existingAvgGoldPriceRow.remove();
           }
-          const goldvalue = ((ounceGold.price * usd.price) / 31.1) / 0.75;
-          const cashAmount = ((gold18.price - goldvalue) / goldvalue) * 100;
-          document.getElementById("cash-amount").innerText = toPersianNumber(cashAmount.toLocaleString());
+
+         // حالا سطر جدید را اضافه کنید
          document.querySelector("#portfolio-value").insertAdjacentHTML(
            "afterend",
            `<div class="text-base font-bold text-purple-800 mt-3 persian-numbers drop-shadow-lg">
@@ -199,7 +199,7 @@
            </div>`
          );
           
-          
+
           const urls = [
             "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz&type=1",
             "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeKyzGgWec9Po3hG9QVoMxMtCI3z5P&type=1",
@@ -217,7 +217,7 @@
                 if (ayar && ayar.pc) {
                     const unitfee = ((ayarUnits * (ayar.pc / 10)) * 0.12) / 100;
                     const result = (ayarUnits * (ayar.pc / 10)) - unitfee;
-                    const combined = totalGoldValue + result + totalIrt ;
+                    const combined = totalGoldValue + result + totalIrt + cashAmount;
                     const color = ayar.pcp > 0 ? 'green' : ayar.pcp < 0 ? 'red' : 'black';
 
                     animateElement("fund-price-box", `<span style="color:${color}">صندوق عیار: ${toPersianNumber(ayar.pc.toLocaleString())} (${toPersianNumber(Math.abs(ayar.pcc).toLocaleString())} | ${toPersianNumber(Math.abs(ayar.pcp.toFixed(2)))}%)</span>`);
@@ -248,7 +248,7 @@
                  console.error("خطا در دریافت اطلاعات صندوق:", err);
                  animateElement("profit-box", "خطا در دریافت قیمت صندوق");
           }
-
+          document.getElementById("cash-amount").innerText = toPersianNumber(cashAmount.toLocaleString());
           const now = new Date();
           const formattedDate = toPersianNumber(now.toLocaleDateString("fa-IR"));
           const formattedTime = toPersianNumber(now.toLocaleTimeString("fa-IR").replace(/:\d+$/, ''));
