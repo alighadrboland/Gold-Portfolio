@@ -39,8 +39,8 @@
       </div>
     </section>
 
-    <section id="gold-box" class="...">
-       درصد حباب طلای ۱۸ عیار: <span id="goldbubble"></span>
+    <section id="gold-box" class="bg-blue-800 rounded-xl shadow-2xl p-2 text-center text-white persian-numbers">
+          نقدی: <span id="goldbubble"></span>
     </section>
 
     </section>
@@ -248,14 +248,14 @@
                  console.error("خطا در دریافت اطلاعات صندوق:", err);
                  animateElement("profit-box", "خطا در دریافت قیمت صندوق");
           }
-          const now = new Date();
-          const formattedDate = toPersianNumber(now.toLocaleDateString("fa-IR"));
-          const formattedTime = toPersianNumber(now.toLocaleTimeString("fa-IR").replace(/:\d+$/, ''));
           if (ounceGold && usd && gold18) {
             const goldvalue = ((ounceGold.price * usd.price) / 31.1) / 0.75;
             const goldbubble = ((gold18.price - goldvalue) / goldvalue) * 100;
             document.getElementById("goldbubble").innerText = `${toPersianNumber(goldbubble.toFixed(2))}٪`;
           }
+          const now = new Date();
+          const formattedDate = toPersianNumber(now.toLocaleDateString("fa-IR"));
+          const formattedTime = toPersianNumber(now.toLocaleTimeString("fa-IR").replace(/:\d+$/, ''));
           document.getElementById("last-update").innerText = `آخرین بروزرسانی: ${formattedDate} - ${formattedTime}`;
         }
 
