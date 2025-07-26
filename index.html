@@ -164,8 +164,7 @@
                 document.getElementById("usdt-box").insertAdjacentHTML("afterend", ounceHtml);
              }
           }
-          const goldvalue = ((ounceGold.price * usd.price) / 31.1) / 0.75;
-          const goldbubble = ((gold18.price - goldvalue) / goldvalue) * 100;
+          
         }
         
         if (gold18) {
@@ -247,10 +246,14 @@
                  console.error("خطا در دریافت اطلاعات صندوق:", err);
                  animateElement("profit-box", "خطا در دریافت قیمت صندوق");
           }
-          document.getElementById("gold-box").innerText = toPersianNumber(goldbubble.toLocaleString());
           const now = new Date();
           const formattedDate = toPersianNumber(now.toLocaleDateString("fa-IR"));
           const formattedTime = toPersianNumber(now.toLocaleTimeString("fa-IR").replace(/:\d+$/, ''));
+          if (ounceGold && usd && gold18) {
+            const goldvalue = ((ounceGold.price * usd.price) / 31.1) / 0.75;
+            const goldbubble = ((gold18.price - goldvalue) / goldvalue) * 100;
+            document.getElementById("goldbubble").innerText = `${toPersianNumber(goldbubble.toFixed(2))}٪`;
+        }
           document.getElementById("last-update").innerText = `آخرین بروزرسانی: ${formattedDate} - ${formattedTime}`;
         }
 
