@@ -149,7 +149,7 @@
         const gold18 = data.gold.find(i => i.symbol === "IR_GOLD_18K");
         const usd = data.currency.find(i => i.symbol === "USD");
         const ounceGold = data.gold.find(i => i.symbol === "XAUUSD");
-        const gvalue = ((ounceGold.price * usd.price) / 31.1) / 0.75;
+        const gvalue = ((ounceGold.price * usd.price) / 31.1) * 0.75;
         const cashAmount = ((gold18.price - gvalue) / gvalue) * 100;
         document.getElementById("cash-amount").innerText = toPersianNumber(cashAmount.toFixed(2)) + "٪";
         if (usd) {
