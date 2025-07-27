@@ -146,19 +146,20 @@
       try {
         const response = await fetch("https://brsapi.ir/Api/Market/Gold_Currency.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz");
         const data = await response.json();
-
         const gold18 = data.gold.find(i => i.symbol === "IR_GOLD_18K");
         const usd = data.currency.find(i => i.symbol === "USD");
-
+        const ounceGold = data.gold.find(i => i.symbol === "XAUUSD");
+        const gvalue = ((ounceGold.price * usd.price) / 31.1) / 0.75;
+        const cashAmount = ((gold18.price - gvalue) / gvalue) * 100;
+        document.getElementById("cash-amount").innerText = toPersianNumber(cashAmount.toFixed(2)) + "٪";
         if (usd) {
           const color = usd.change_value > 0 ? 'green' : usd.change_value < 0 ? 'red' : 'black';
           animateElement("usd-box", `<span style="color:${color}">دلار: ${toPersianNumber(usd.price.toLocaleString())} (${toPersianNumber(Math.abs(usd.change_value).toLocaleString())} | ${toPersianNumber(Math.abs(usd.change_percent.toFixed(2)))}%)</span>`);
 
-          const ounceGold = data.gold.find(i => i.symbol === "XAUUSD");
+         
           if (ounceGold) {
              const ozColor = ounceGold.change_value > 0 ? 'green' : ounceGold.change_value < 0 ? 'red' : 'black';
              const ounceHtml = `<div id="ounce-box" style="color:${ozColor}">انس جهانی طلا: ${toPersianNumber(ounceGold.price.toLocaleString())}$ (${toPersianNumber(Math.abs(ounceGold.change_value).toLocaleString())}$ | ${toPersianNumber(Math.abs(ounceGold.change_percent.toFixed(2)))}%)</div>`;
-
              const existingOunceBox = document.getElementById("ounce-box");
              if (existingOunceBox) {
                  existingOunceBox.outerHTML = ounceHtml;
@@ -197,11 +198,7 @@
                (${goldprText}%)
            </div>`
          );
-          if (gold18 && ounceGold) {
-               const gvalue = ((ounceGold.price * usd.price) / 31.1) / 0.75;
-               const cashAmount = ((goldPrice - gvalue) / gvalue) * 100;
-               document.getElementById("cash-amount").innerText = toPersianNumber(cashAmount.toFixed(2)) + "٪";
-          }
+          
           const urls = [
             "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz&type=1",
             "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeKyzGgWec9Po3hG9QVoMxMtCI3z5P&type=1",
