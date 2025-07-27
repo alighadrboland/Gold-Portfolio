@@ -52,8 +52,8 @@
       در حال دریافت اطلاعات رمزارزها...
     </section>
 
-    <section id="cash-box" class="bg-blue-800 rounded-xl shadow-2xl p-2 text-center text-white persian-numbers">
-          نقدی: <span id="cash-amount"></span>
+    <section id="gold-bubble" class="bg-blue-800 rounded-xl shadow-2xl p-2 text-center text-white persian-numbers">
+          نقدی: <span id="goldbubble"></span>
     </section>
 
     <section class="bg-purple-800 rounded-xl shadow-2xl p-3 text-center">
@@ -150,8 +150,8 @@
         const usd = data.currency.find(i => i.symbol === "USD");
         const ounceGold = data.gold.find(i => i.symbol === "XAUUSD");
         const gvalue = ((ounceGold.price * usd.price) / 31.1) * 0.75;
-        const cashAmount = ((gold18.price - gvalue) / gvalue) * 100;
-        document.getElementById("cash-amount").innerText = toPersianNumber(cashAmount.toFixed(2)) + "٪";
+        const gbubble = ((gold18.price - gvalue) / gvalue) * 100;
+        document.getElementById("goldbubble").innerText = toPersianNumber(gbubble.toFixed(2)) + "٪";
         if (usd) {
           const color = usd.change_value > 0 ? 'green' : usd.change_value < 0 ? 'red' : 'black';
           animateElement("usd-box", `<span style="color:${color}">دلار: ${toPersianNumber(usd.price.toLocaleString())} (${toPersianNumber(Math.abs(usd.change_value).toLocaleString())} | ${toPersianNumber(Math.abs(usd.change_percent.toFixed(2)))}%)</span>`);
