@@ -152,7 +152,7 @@
         const gvalue = ((ounceGold.price * usd.price) / 31.1) * 0.75;
         const gbubble = ((gold18.price - gvalue) / gvalue) * 100;
         const goldbubbleElement = document.getElementById("goldbubble");
-        const formattedGbubble = (gbubble < 0 ? "−" : "") + toPersianNumber(Math.abs(gbubble).toFixed(2)) + "٪";
+        const formattedGbubble =  toPersianNumber(Math.abs(gbubble).toFixed(2)) + "٪" + (gbubble < 0 ? "−" : "");
         goldbubbleElement.innerText = formattedGbubble;
         // تغییر رنگ باکس بر اساس مقدار حباب
         const goldBubbleBox = document.getElementById("gold-bubble");
