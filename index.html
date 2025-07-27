@@ -151,7 +151,6 @@
         const ounceGold = data.gold.find(i => i.symbol === "XAUUSD");
         const gvalue = ((ounceGold.price * usd.price) / 31.1) * 0.75;
         const gbubble = ((gold18.price - gvalue) / gvalue) * 100;
-        const absGbubble = Math.abs(gbubble); // حذف علامت منفی
         document.getElementById("goldbubble").innerText = toPersianNumber(absGbubble.toFixed(2)) + "٪";
 
         // تغییر رنگ باکس بر اساس مقدار حباب
