@@ -151,7 +151,7 @@
         const ounceGold = data.gold.find(i => i.symbol === "XAUUSD");
         const gvalue = ((ounceGold.price * usd.price) / 31.1) * 0.75;
         const gbubble = ((gold18.price - gvalue) / gvalue) * 100;
-        document.getElementById("goldbubble").innerText = toPersianNumber(gbubble.toFixed(2)) + "٪";
+        const formattedGbubble = (gbubble < 0 ? "−" : "") + toPersianNumber(Math.abs(gbubble).toFixed(2)) + "٪";
 
         // تغییر رنگ باکس بر اساس مقدار حباب
         const goldBubbleBox = document.getElementById("gold-bubble");
