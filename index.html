@@ -169,6 +169,11 @@
         }
 
         if (gold18) {
+          if (gold18 && ounceGold) {
+               const gvalue = ((ounceGold.price * usd.price) / 31.1) / 0.75;
+               const cashAmount = ((goldPrice - gvalue) / gvalue) * 100;
+               document.getElementById("cash-amount").innerText = toPersianNumber(cashAmount.toFixed(2)) + "٪";
+          }
           const changeColor = gold18.change_percent > 0 ? 'green' : gold18.change_percent < 0 ? 'red' : 'black';
           animateElement("gold18-box", `<span style="color:${changeColor}">طلای ۱۸ عیار: ${toPersianNumber(gold18.price.toLocaleString())} (${toPersianNumber(Math.abs(gold18.change_value).toLocaleString())} | ${toPersianNumber(Math.abs(gold18.change_percent.toFixed(2)))}%)</span>`);
 
@@ -196,9 +201,7 @@
                (${goldprText}%)
            </div>`
          );
-          const gvalue = ((ounceGold.price * usd.price) / 31.1) / 0.75;
-          const cashAmount = ((goldPrice - gvalue) / gvalue) * 100;
-          document.getElementById("cash-amount").innerText = toPersianNumber(cashAmount.toLocaleString());
+          
           const urls = [
             "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz&type=1",
             "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeKyzGgWec9Po3hG9QVoMxMtCI3z5P&type=1",
