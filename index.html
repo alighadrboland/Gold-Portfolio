@@ -64,7 +64,6 @@
   </main>
 
   <script>
-    const cashAmount = 11726;
     const myGoldGrams = 442.664;
     const ayarUnits = 45912;
     const avgayarPrice = 205955;
@@ -177,7 +176,8 @@
           const commision = goldPrice - 30000;
           const totalGoldValue = myGoldGrams * commision;
           const Goldpr = ((goldPrice - avgGoldPrice) / avgGoldPrice) * 100;
-
+          const gvalue = ((ounceGold.price * usd.price) / 31.1) / 0.75;
+          const cashAmount = ((goldPrice - gvalue) / gvalue) * 100;
           document.getElementById("portfolio-title").innerText = `طلای آبشده (${toPersianNumber(myGoldGrams.toLocaleString())} گرم)`;
           animateElement("portfolio-value", toPersianNumber(Math.floor(totalGoldValue).toLocaleString()));
 
@@ -217,7 +217,7 @@
                 if (ayar && ayar.pc) {
                     const unitfee = ((ayarUnits * (ayar.pc / 10)) * 0.12) / 100;
                     const result = (ayarUnits * (ayar.pc / 10)) - unitfee;
-                    const combined = totalGoldValue + result + totalIrt + cashAmount;
+                    const combined = totalGoldValue + result + totalIrt;
                     const color = ayar.pcp > 0 ? 'green' : ayar.pcp < 0 ? 'red' : 'black';
 
                     animateElement("fund-price-box", `<span style="color:${color}">صندوق عیار: ${toPersianNumber(ayar.pc.toLocaleString())} (${toPersianNumber(Math.abs(ayar.pcc).toLocaleString())} | ${toPersianNumber(Math.abs(ayar.pcp.toFixed(2)))}%)</span>`);
