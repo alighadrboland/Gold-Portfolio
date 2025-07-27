@@ -39,10 +39,10 @@
       </div>
     </section>
 
-    <section id="gold-bubble" class="bg-blue-800 rounded-xl shadow-2xl p-2 text-center text-white persian-numbers">
+    <section id="gold-bubble" class="rounded-xl shadow-2xl p-2 text-center text-white persian-numbers">
           درصد حباب طلای ۱۸ عیار: <span id="goldbubble"></span>
     </section>
-    
+
     <section class="bg-white rounded-xl shadow-2xl p-3 text-center persian-numbers">
       <h3 id="portfolio-title" class="text-2xl font-extrabold text-purple-800 mb-2 drop-shadow-lg">طلای آبشده</h3>
       <p id="portfolio-value" class="text-2xl font-extrabold persian-numbers text-black mt-3 drop-shadow-lg">...</p>
@@ -151,7 +151,20 @@
         const ounceGold = data.gold.find(i => i.symbol === "XAUUSD");
         const gvalue = ((ounceGold.price * usd.price) / 31.1) * 0.75;
         const gbubble = ((gold18.price - gvalue) / gvalue) * 100;
-        document.getElementById("goldbubble").innerText = toPersianNumber(gbubble.toFixed(2)) + "٪";
+        const absGbubble = Math.abs(gbubble); // حذف علامت منفی
+        document.getElementById("goldbubble").innerText = toPersianNumber(absGbubble.toFixed(2)) + "٪";
+
+        // تغییر رنگ باکس بر اساس مقدار حباب
+        const goldBubbleBox = document.getElementById("gold-bubble");
+        goldBubbleBox.classList.remove("bg-green-800", "bg-blue-800", "bg-red-800");
+        if (gbubble < 0) {
+           goldBubbleBox.classList.add("bg-green-800");
+        } else if (gbubble >= 0 && gbubble < 1) {
+           goldBubbleBox.classList.add("bg-blue-800");
+        } else {
+           goldBubbleBox.classList.add("bg-red-800");
+        }
+
         if (usd) {
           const color = usd.change_value > 0 ? 'green' : usd.change_value < 0 ? 'red' : 'black';
           animateElement("usd-box", `<span style="color:${color}">دلار: ${toPersianNumber(usd.price.toLocaleString())} (${toPersianNumber(Math.abs(usd.change_value).toLocaleString())} | ${toPersianNumber(Math.abs(usd.change_percent.toFixed(2)))}%)</span>`);
