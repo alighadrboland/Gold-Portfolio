@@ -75,9 +75,9 @@
       (100.680 * 6850000)
     ) / myGoldGrams;
 
-    const btcAmount = 0.0006272;
+    const btcAmount = 0;
     const ethAmount = 0;
-    const filAmount = 4.80177626;
+    const filAmount = 0;
 
     function toPersianNumber(input) {
       const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
@@ -124,11 +124,6 @@
                BTC: $${toPersianNumber(parseInt(bitcoin.usd).toLocaleString())}
                (%${toPersianNumber(Math.abs(bitcoin.usd_24h_change.toFixed(2)))})
                = $${toPersianNumber(btcm.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }))} | ${toPersianNumber(Math.floor(btcpr).toLocaleString())}
-            </div>
-            <div style="color:${getColor(filecoin.usd_24h_change)}">
-               FIL: $${toPersianNumber(filecoin.usd.toLocaleString())}
-               (%${toPersianNumber(Math.abs(filecoin.usd_24h_change.toFixed(2)))})
-               = $${toPersianNumber(film.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }))} | ${toPersianNumber(Math.floor(filpr).toLocaleString())}
             </div>
             <p class="text-2xl font-extrabold persian-numbers text-black drop-shadow-lg mt-6">${toPersianNumber(totalIrt.toLocaleString())}</p>
           </div>
