@@ -109,11 +109,7 @@
         const usdtPrice = usdtObj.price || 0;
         totalIrt = Math.floor(totalUsd * usdtPrice);
         const btcm = btcAmount * bitcoin.usd;
-        const ethm = ethAmount * ethereum.usd;
-        const film = filAmount * filecoin.usd;
         const btcpr = btcm * usdtPrice;
-        const ethpr = ethm * usdtPrice;
-        const filpr = film * usdtPrice;
         
         const getColor = (change) => change > 0 ? 'green' : change < 0 ? 'red' : 'black';
 
@@ -125,7 +121,6 @@
                (%${toPersianNumber(Math.abs(bitcoin.usd_24h_change.toFixed(2)))})
                = $${toPersianNumber(btcm.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }))} | ${toPersianNumber(Math.floor(btcpr).toLocaleString())}
             </div>
-            <p class="text-2xl font-extrabold persian-numbers text-black drop-shadow-lg mt-6">${toPersianNumber(totalIrt.toLocaleString())}</p>
           </div>
         `);
 
