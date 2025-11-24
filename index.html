@@ -94,14 +94,12 @@
       totalIrt = 0;
 
       try {
-        const coingeckoRes = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,filecoin,tether&vs_currencies=usd&include_24hr_change=true");
+        const coingeckoRes = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether&vs_currencies=usd&include_24hr_change=true");
         const cryptoData = await coingeckoRes.json();
-        const { bitcoin, ethereum, filecoin, tether } = cryptoData || {};
+        const { bitcoin, tether } = cryptoData || {};
 
         // محاسبه اولیه USD ارزها (اگر داده‌ها موجود باشند)
-        const totalUsd = ((btcAmount && bitcoin && bitcoin.usd) ? (btcAmount * bitcoin.usd) : 0)
-                       + ((ethAmount && ethereum && ethereum.usd) ? (ethAmount * ethereum.usd) : 0)
-                       + ((filAmount && filecoin && filecoin.usd) ? (filAmount * filecoin.usd) : 0);
+        const totalUsd = ((btcAmount && bitcoin && bitcoin.usd) ? (btcAmount * bitcoin.usd) : 0);
 
         const rateRes = await fetch("https://brsapi.ir/Api/Market/Gold_Currency.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz");
         const rateData = await rateRes.json();
