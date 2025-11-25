@@ -14,308 +14,180 @@
   </style>
 </head>
 <body class="bg-yellow-400 text-black">
-  <main class="max-w-xl mx-auto p-3 space-y-2">
-    <section class="bg-purple-800 rounded-xl shadow-2xl p-3 text-center">
-       <button id="refresh-btn" class="text-white text-lg font-bold w-full">🔄 بروزرسانی ارزش دارایی ها</button>
-    </section>
+<main class="max-w-xl mx-auto p-3 space-y-2">
+  <section class="bg-purple-800 rounded-xl shadow-2xl p-3 text-center">
+     <button id="refresh-btn" class="text-white text-lg font-bold w-full">🔄 بروزرسانی ارزش دارایی ها</button>
+  </section>
 
-    <section class="bg-white rounded-xl shadow-2xl p-3 text-center border-2 border-blue-700">
-      <div class="text-lg font-bold space-y-1 persian-numbers drop-shadow-lg">
-        <div id="usd-box">دلار: ...</div>
-        <div id="usdt-box">تتر: ...</div>
-        <div id="gold18-box">طلای ۱۸ عیار: ...</div>
-        <div id="fund-price-box">صندوق کهربا: ...</div>
-        <p id="gold-price" class="hidden"></p>
-        <small id="gold-change" class="hidden"></small>
-      </div>
-    </section>
+  <section class="bg-white rounded-xl shadow-2xl p-3 text-center border-2 border-blue-700">
+    <div class="text-lg font-bold space-y-1 persian-numbers drop-shadow-lg">
+      <div id="usd-box">دلار: ...</div>
+      <div id="usdt-box">تتر: ...</div>
+      <div id="gold18-box">طلای ۱۸ عیار: ...</div>
+      <div id="fund-price-box">صندوق کهربا: ...</div>
+      <p id="gold-price" class="hidden"></p>
+      <small id="gold-change" class="hidden"></small>
+    </div>
+  </section>
 
-    <section id="gold-bubble" class="rounded-xl shadow-2xl p-2 text-center text-white persian-numbers">
-      حباب طلای ۱۸ عیار: <span id="goldbubble"></span>
-    </section>
+  <section id="gold-bubble" class="rounded-xl shadow-2xl p-2 text-center text-white persian-numbers">
+    حباب طلای ۱۸ عیار: <span id="goldbubble"></span>
+  </section>
 
-    <section id="profit-box" class="bg-white rounded-xl shadow-2xl p-3 text-center text-black mt-3 persian-numbers border-2 border-blue-700">
-      در حال محاسبه سود/زیان...
-    </section>
+  <section id="profit-box" class="bg-white rounded-xl shadow-2xl p-3 text-center text-black mt-3 persian-numbers border-2 border-blue-700">
+    در حال محاسبه سود/زیان...
+  </section>
 
-    <section id="crypto-box" class="bg-white rounded-xl shadow-2xl p-3 text-center text-black persian-numbers border-2 border-blue-700">
-      در حال دریافت اطلاعات رمزارزها...
-    </section>
+  <section id="crypto-box" class="bg-white rounded-xl shadow-2xl p-3 text-center text-black persian-numbers border-2 border-blue-700">
+    در حال دریافت اطلاعات رمزارزها...
+  </section>
 
-    <section class="bg-white rounded-xl shadow-2xl p-3 text-center persian-numbers border-2 border-blue-700">
-      <h3 id="portfolio-title" class="text-2xl font-extrabold text-purple-800 mb-2 drop-shadow-lg">طلای آبشده</h3>
-      <p id="portfolio-value" class="text-xl font-extrabold persian-numbers text-black mt-3 drop-shadow-lg">مقدار ریالی سرمایه گذاری: ۱۴۳۰۰۰</p>
-      <p id="merged-value" class="text-xl font-bold persian-numbers text-black mt-2 drop-shadow-lg"></p>
-      <p id="profit-percent" class="text-xl font-bold persian-numbers mt-2 drop-shadow-lg"></p>
-    </section>
+  <section class="bg-white rounded-xl shadow-2xl p-3 text-center persian-numbers border-2 border-blue-700">
+    <h3 id="portfolio-title" class="text-2xl font-extrabold text-purple-800 mb-2 drop-shadow-lg">طلای آبشده</h3>
+    <p id="portfolio-value" class="text-xl font-extrabold persian-numbers text-black mt-3 drop-shadow-lg">مقدار ریالی سرمایه گذاری: ۱۴۳۰۰۰</p>
+    <p id="merged-value" class="text-xl font-bold persian-numbers text-black mt-2 drop-shadow-lg"></p>
+    <p id="profit-percent" class="text-xl font-bold persian-numbers mt-2 drop-shadow-lg"></p>
+  </section>
 
-    <section id="final-box" 
-         class="bg-white rounded-xl shadow-2xl p-3 text-center text-black mt-3 persian-numbers border-2 border-blue-700 text-xl font-bold drop-shadow-lg">
-      در حال محاسبه سود/زیان
-    </section>
+  <section id="final-box" 
+       class="bg-white rounded-xl shadow-2xl p-3 text-center text-black mt-3 persian-numbers border-2 border-blue-700 text-xl font-bold drop-shadow-lg">
+    در حال محاسبه سود/زیان
+  </section>
 
+  <p id="last-update" class="text-sm text-black text-center drop-shadow-lg mt-4 persian-numbers">در حال دریافت زمان...</p>
+</main>
 
-    <p id="last-update" class="text-sm text-black text-center drop-shadow-lg mt-4 persian-numbers">در حال دریافت زمان...</p>
-  </main>
+<script>
+(function AppModule() {
+  const kahroba_UNITS = 223;
+  const AVG_kahroba_PRICE = 111873;
+  const BTC_AMOUNT = 0.0002921;
+  const MY_GOLD_GRAMS = 0;
+  const INVESTMENT_KAHROBA = 2500000;
+  const INVESTMENT_BTC = 2811000;
+  const INVESTMENT_BASE = INVESTMENT_KAHROBA + INVESTMENT_BTC;
+  const START_DATE = new Date(2025, 10, 25);
 
-  <script>
-  (function AppModule() {
-    // ثابت‌های مورد نیاز (کم و مفید)
-    const kahroba_UNITS = 223;
-    const AVG_kahroba_PRICE = 111873;
-    const BTC_AMOUNT = 0.0002921;
-    const MY_GOLD_GRAMS = 0;
-    const INVESTMENT_KAHROBA = 2500000;
-    const INVESTMENT_BTC = 2811000;
-    const INVESTMENT_BASE = INVESTMENT_KAHROBA + INVESTMENT_BTC;
-    const START_DATE = new Date(2025, 10, 25); // 25 نوامبر 2025
+  function toPersianNumber(input) {
+    if (input === null || input === undefined) return '';
+    if (typeof input === 'number') input = input.toLocaleString('en-US');
+    const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+    return input.toString().replace(/\d/g, d => persianDigits[d]);
+  }
 
-    // ابزارها
-    function toPersianNumber(input) {
-      if (input === null || input === undefined) return '';
-      if (typeof input === 'number') input = input.toLocaleString('en-US');
-      const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
-      return input.toString().replace(/\d/g, d => persianDigits[d]);
-    }
+  function animateElement(id, content) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.remove('fade-update');
+    void el.offsetWidth;
+    el.innerHTML = content;
+    el.classList.add('fade-update');
+  }
 
-    function animateElement(id, content) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.classList.remove('fade-update');
-      void el.offsetWidth;
-      el.innerHTML = content;
-      el.classList.add('fade-update');
-    }
-
-    // پیدا کردن آیتم 'کهربا' در پاسخ‌‌ها (فشرده و مقاوم)
-    function findkahrobaInArray(arr) {
-      if (!Array.isArray(arr)) return null;
-      return arr.find(item => {
-        if (!item) return false;
-        const fields = ['l18','fa','name','title','pc','pcc','pcp'];
-        for (const f of fields) {
-          if (item[f] && typeof item[f] === 'string' && item[f].includes && item[f].includes('کهربا')) return true;
-        }
-        // fallback: هر فیلد متنی که شامل 'کهربا' باشد
-        return Object.values(item).some(v => typeof v === 'string' && v.includes && v.includes('کهربا'));
-      }) || null;
-    }
-
-    // تلاش تسلسلی برای گرفتن لیست نمادها
-    async function fetchkahrobaFromEndpoints(urls) {
-      for (const url of urls) {
-        try {
-          const res = await fetch(url);
-          if (!res.ok) continue;
-          const json = await res.json();
-          let arr = null;
-          if (Array.isArray(json)) arr = json;
-          else if (json && Array.isArray(json.data)) arr = json.data;
-          else if (json && Array.isArray(json.symbols)) arr = json.symbols;
-          else {
-            arr = Object.values(json).find(v => Array.isArray(v)) || null;
-          }
-          const found = findkahrobaInArray(arr);
-          if (found) return found;
-        } catch (e) {
-          // ادامه به آدرس بعدی
-        }
+  function findkahrobaInArray(arr) {
+    if (!Array.isArray(arr)) return null;
+    return arr.find(item => {
+      if (!item) return false;
+      const fields = ['l18','fa','name','title','pc','pcc','pcp'];
+      for (const f of fields) {
+        if (item[f] && typeof item[f] === 'string' && item[f].includes && item[f].includes('کهربا')) return true;
       }
-      return null;
-    }
+      return Object.values(item).some(v => typeof v === 'string' && v.includes && v.includes('کهربا'));
+    }) || null;
+  }
 
-    // اجرا: جمع‌آوری داده‌ها و محاسبات
-    async function fetchData() {
-      // ریست‌های اولیه
-      animateElement('crypto-box', 'در حال دریافت اطلاعات رمزارزها...');
-      animateElement('profit-box', 'در حال محاسبه سود/زیان...');
-      animateElement('usd-box', 'دلار: ...');
-      animateElement('usdt-box', 'تتر: ...');
-
+  async function fetchkahrobaFromEndpoints(urls) {
+    for (const url of urls) {
       try {
-        // فراخوانی هم‌زمان منابع (coingecko و brsapi)
-        const [cgRes, brsRes] = await Promise.all([
-          fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether&vs_currencies=usd&include_24hr_change=true'),
-          fetch('https://brsapi.ir/Api/Market/Gold_Currency.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz')
-        ]);
-        const cg = cgRes.ok ? await cgRes.json() : {};
-        const brs = brsRes.ok ? await brsRes.json() : {};
-
-        // رمزارزها
-        const bitcoin = cg && cg.bitcoin ? cg.bitcoin : null;
-        const tether = cg && cg.tether ? cg.tether : null;
-        const totalUsdFromBtc = (bitcoin && BTC_AMOUNT) ? (BTC_AMOUNT * (bitcoin.usd || 0)) : 0;
-
-        // نرخ ریالی از brsapi (USDT_IRT)
-        const usdtObj = (brs && brs.currency) ? brs.currency.find(i => i.symbol === 'USDT_IRT') || {} : {};
-        const usdtPrice = usdtObj.price || 0;
-        const totalIrt = Math.floor(totalUsdFromBtc * usdtPrice);
-        const btcpr = Math.floor(totalUsdFromBtc * usdtPrice) || 0;
-
-        // نمایش رمزارزها
-        if (bitcoin) {
-          const btcChange = bitcoin.usd_24h_change || 0;
-          const btcm = BTC_AMOUNT * (bitcoin.usd || 0);
-          const getColor = c => c > 0 ? 'green' : c < 0 ? 'red' : 'black';
-          animateElement('crypto-box', `
-            <div class="text-2xl font-extrabold drop-shadow-lg text-purple-800">بیت کوین</div>
-            <div class="space-y-1 mt-5 text-lg font-bold drop-shadow-lg">
-              <div style="color:${getColor(btcChange)}">
-                BTC: $${toPersianNumber((bitcoin.usd||0).toLocaleString())}
-                (%${toPersianNumber(Math.abs((btcChange||0).toFixed(2)))})
-                = $${toPersianNumber(Math.floor(btcm).toLocaleString())} | ${toPersianNumber(btcpr.toLocaleString())}
-              </div>
-            </div>
-          `);
-        } else {
-          animateElement('crypto-box', 'خطا در دریافت قیمت بیت‌کوین');
+        const res = await fetch(url);
+        if (!res.ok) continue;
+        const json = await res.json();
+        let arr = null;
+        if (Array.isArray(json)) arr = json;
+        else if (json && Array.isArray(json.data)) arr = json.data;
+        else if (json && Array.isArray(json.symbols)) arr = json.symbols;
+        else {
+          arr = Object.values(json).find(v => Array.isArray(v)) || null;
         }
-
-        // نمایش تتر
-        const usdtChangeValue = usdtObj.change_value !== undefined ? usdtObj.change_value : 0;
-        const usdtChangePercent = usdtObj.change_percent !== undefined ? usdtObj.change_percent : 0;
-        const usdtColor = usdtObj.change_percent > 0 ? 'green' : usdtObj.change_percent < 0 ? 'red' : 'black';
-        animateElement('usdt-box', `<span style="color:${usdtColor}">تتر: ${toPersianNumber(usdtPrice.toLocaleString())} (${toPersianNumber(Math.abs(usdtChangeValue).toLocaleString())} | ${toPersianNumber(Math.abs(usdtChangePercent.toFixed(2)))}%)</span>`);
-
-        // اطلاعات طلا و دلار از brsapi
-        const goldList = brs && brs.gold ? brs.gold : [];
-        const currencyList = brs && brs.currency ? brs.currency : [];
-        const gold18 = goldList.find(i => i.symbol === 'IR_GOLD_18K') || null;
-        const usd = currencyList.find(i => i.symbol === 'USD') || null;
-        const ounceGold = goldList.find(i => i.symbol === 'XAUUSD') || null;
-
-        // حباب طلا و رنگ‌بندی بخش حباب
-        if (ounceGold && usd) {
-          const gvalue = ((ounceGold.price * usd.price) / 31.1034768) * 0.75;
-          const gbubble = gold18 ? ((gold18.price - gvalue) / gvalue) * 100 : 0;
-          const goldbubbleElement = document.getElementById('goldbubble');
-          const formattedGbubble = toPersianNumber(Math.abs(gbubble).toFixed(2)) + "٪" + (gbubble < 0 ? "−" : "");
-          if (goldbubbleElement) goldbubbleElement.innerText = formattedGbubble;
-
-          const goldBubbleBox = document.getElementById('gold-bubble');
-          if (goldBubbleBox) {
-            goldBubbleBox.classList.remove('bg-green-800','bg-blue-800','bg-red-800');
-            if (gbubble < 0) goldBubbleBox.classList.add('bg-green-800');
-            else if (gbubble >= 0 && gbubble < 1) goldBubbleBox.classList.add('bg-blue-800');
-            else goldBubbleBox.classList.add('bg-red-800');
-          }
-        }
-
-        // دلار و انس جهانی
-        if (usd) {
-          const usdChangeValue = usd.change_value !== undefined ? usd.change_value : 0;
-          const usdChangePercent = usd.change_percent !== undefined ? usd.change_percent : 0;
-          const color = usdChangeValue > 0 ? 'green' : usdChangeValue < 0 ? 'red' : 'black';
-          animateElement('usd-box', `<span style="color:${color}">دلار: ${toPersianNumber(Math.floor(usd.price).toLocaleString())} (${toPersianNumber(Math.abs(usdChangeValue).toLocaleString())} | ${toPersianNumber(Math.abs(usdChangePercent.toFixed(2)))}%)</span>`);
-
-          if (ounceGold) {
-            const ozChangeValue = ounceGold.change_value !== undefined ? ounceGold.change_value : 0;
-            const ozChangePercent = ounceGold.change_percent !== undefined ? ounceGold.change_percent : 0;
-            const ozColor = ozChangeValue > 0 ? 'green' : ozChangeValue < 0 ? 'red' : 'black';
-            const ounceHtml = `<div id="ounce-box" style="color:${ozColor}">انس جهانی طلا: ${toPersianNumber(Math.floor(ounceGold.price).toLocaleString())}$ (${toPersianNumber(Math.abs(ozChangeValue).toLocaleString())}$ | ${toPersianNumber(Math.abs(ozChangePercent.toFixed(2)))}%)</div>`;
-            const existing = document.getElementById('ounce-box');
-            if (existing) existing.outerHTML = ounceHtml;
-            else document.getElementById('usdt-box').insertAdjacentHTML('afterend', ounceHtml);
-          }
-        }
-
-        // طلای 18
-        if (gold18) {
-          const gChangeValue = gold18.change_value !== undefined ? gold18.change_value : 0;
-          const gChangePercent = gold18.change_percent !== undefined ? gold18.change_percent : 0;
-          const changeColor = gChangePercent > 0 ? 'green' : gChangePercent < 0 ? 'red' : 'black';
-          animateElement('gold18-box', `<span style="color:${changeColor}">طلای ۱۸ عیار: ${toPersianNumber(Math.floor(gold18.price).toLocaleString())} (${toPersianNumber(Math.abs(gChangeValue).toLocaleString())} | ${toPersianNumber(Math.abs(gChangePercent.toFixed(2)))}%)</span>`);
-
-          // محاسبات داخلی مربوط به طلا / صندوق
-          const goldPrice = gold18.price;
-          const commission = goldPrice - 30000;
-          const totalGoldValue = MY_GOLD_GRAMS * commission;
-
-          // نمایش روزها از تاریخ شروع
-          const today = new Date();
-          const diffDays = Math.floor((today - START_DATE) / (1000 * 60 * 60 * 24));
-          document.getElementById('portfolio-title').innerText = `سرمایه‌گذاری طی ${toPersianNumber(diffDays)} روز`;
-          animateElement('portfolio-value', `ارزش سرمایه گذاری: ${toPersianNumber(INVESTMENT_BASE)}`);
-
-          // پیدا کردن صندوق 'کهربا' از چند endpoint
-          const urls = [
-            "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz&type=1",
-            "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeKyzGgWec9Po3hG9QVoMxMtCI3z5P&type=1",
-            "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreezhPfvWeEOGOPucTWsPukkDazGzTQ&type=1"
-          ];
-          const kahroba = await fetchkahrobaFromEndpoints(urls);
-
-          if (kahroba && typeof kahroba.pc === 'number') {
-            const kahrobapc = kahroba.pc;
-            const kahrobapr = ((kahrobapc - AVG_kahroba_PRICE) / AVG_kahroba_PRICE) * 100;
-            const kahrobamoney = ((kahrobapc - AVG_kahroba_PRICE) * kahroba_UNITS) / 10;
-            const unitfee = ((kahroba_UNITS * (kahrobapc / 10)) * 0.12) / 100;
-            const result = Math.floor((kahroba_UNITS * (kahrobapc / 10)) - unitfee); // ارزش ریالی صندوق
-            const combined = Math.floor(totalGoldValue + result + totalIrt);
-
-            const color = (kahroba.pcp !== undefined) ? (kahroba.pcp > 0 ? 'green' : kahroba.pcp < 0 ? 'red' : 'black') : 'black';
-            const pcc = kahroba.pcc !== undefined ? kahroba.pcc : 0;
-            const pcp = kahroba.pcp !== undefined ? kahroba.pcp : 0;
-            const kahrobaProfitPercent = ((result - INVESTMENT_KAHROBA) / INVESTMENT_KAHROBA) * 100;
-            const kahrobaColor = kahrobaProfitPercent > 0 ? 'green' : kahrobaProfitPercent < 0 ? 'red' : 'black';
-            animateElement('fund-price-box', `<span style="color:${kahrobaColor}">
-                 صندوق کهربا: ${toPersianNumber(Math.floor(kahrobapc).toLocaleString())} 
-                 (${toPersianNumber(Math.abs(kahrobapc - AVG_kahroba_PRICE))} | 
-                 ${toPersianNumber(Math.abs(kahrobaProfitPercent.toFixed(2)))}%)
-            </span>`);
-
-
-            animateElement('profit-box', `
-              <div class="text-2xl font-extrabold drop-shadow-lg text-purple-800">صندوق کهربا (${toPersianNumber(kahroba_UNITS.toLocaleString())} واحد)</div>
-              <div class="text-2xl font-extrabold drop-shadow-lg text-black mt-4">${toPersianNumber(result)}</div>
-            `);
-
-            // merged, profit percent
-            const btcValue = Math.floor(btcpr) || 0;
-            const fundValue = Math.floor(result) || 0;
-            const merged = btcValue + fundValue;
-            const mergedEl = document.getElementById('merged-value');
-            if (mergedEl) mergedEl.innerText = `ارزش دارایی: ${toPersianNumber(merged)}`;
-
-            const profitAmount = merged - INVESTMENT_BASE;   // مبلغ بازدهی
-            const profitPercent = INVESTMENT_BASE ? ((profitAmount) / INVESTMENT_BASE) * 100 : 0;
-
-            const profitEl = document.getElementById('final-box');   // ← تغییر فقط همین خط
-            const profitColor = profitPercent > 0 ? 'green' : profitPercent < 0 ? 'red' : 'black';
-
-            if (profitEl) {
-               profitEl.style.color = profitColor;
-               profitEl.innerText =
-                `بازدهی: ${toPersianNumber(Math.abs(profitAmount))} (${toPersianNumber(Math.abs(profitPercent).toFixed(2))}%)`;
-            }
-
-            } else {
-              animateElement('fund-price-box', 'صندوق کهربا یافت نشد');
-              animateElement('final-box', 'صندوق کهربا یافت نشد');  // ← همان ساختار قبلی، فقط نام باکس جدید
-            }
-
-
-          // زمان آخرین بروزرسانی
-          const now = new Date();
-          const formattedDate = toPersianNumber(now.toLocaleDateString('fa-IR'));
-          const formattedTime = toPersianNumber(now.toLocaleTimeString('fa-IR').replace(/:\d+$/, ''));
-          document.getElementById('last-update').innerText = `آخرین بروزرسانی: ${formattedDate} - ${formattedTime}`;
-        }
-
-      } catch (err) {
-        // خطای کلی
-        animateElement('crypto-box', 'خطا در دریافت اطلاعات رمزارزها');
-        animateElement('profit-box', 'خطا در دریافت اطلاعات');
-      }
+        const found = findkahrobaInArray(arr);
+        if (found) return found;
+      } catch (e) {}
     }
+    return null;
+  }
 
-    // اتصال دکمه و اجرای اولیه
-    document.getElementById('refresh-btn').addEventListener('click', fetchData);
-    fetchData();
+  async function fetchData() {
+    animateElement('crypto-box', 'در حال دریافت اطلاعات رمزارزها...');
+    animateElement('profit-box', 'در حال محاسبه سود/زیان...');
+    animateElement('usd-box', 'دلار: ...');
+    animateElement('usdt-box', 'تتر: ...');
 
-    // انتشار (در صورت نیاز به دسترسی از خارج)
-    window.appFetchData = fetchData;
-  })();
-  </script>
+    try {
+      const [cgRes, brsRes] = await Promise.all([
+        fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether&vs_currencies=usd&include_24hr_change=true'),
+        fetch('https://brsapi.ir/Api/Market/Gold_Currency.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz')
+      ]);
+      const cg = cgRes.ok ? await cgRes.json() : {};
+      const brs = brsRes.ok ? await brsRes.json() : {};
+
+      // بیت کوین
+      const bitcoin = cg.bitcoin || null;
+      const BTC_USD = bitcoin ? bitcoin.usd : 0;
+      const BTC_RIAL = Math.floor(BTC_AMOUNT * BTC_USD * (brs.currency?.find(i=>i.symbol==='USDT_IRT')?.price||1));
+      const btcProfitPercent = INVESTMENT_BTC ? ((BTC_RIAL - INVESTMENT_BTC)/INVESTMENT_BTC)*100 : 0;
+      const btcColor = btcProfitPercent >0?'green':btcProfitPercent<0?'red':'black';
+
+      if(bitcoin){
+        animateElement('crypto-box', `
+          <div class="text-2xl font-extrabold drop-shadow-lg text-purple-800">بیت کوین</div>
+          <div class="space-y-1 mt-5 text-lg font-bold drop-shadow-lg">
+            <div style="color:${btcColor}">
+              BTC: $${toPersianNumber(BTC_USD.toLocaleString())} (${toPersianNumber(Math.abs(btcProfitPercent).toFixed(2))}%)
+              = ${toPersianNumber(BTC_RIAL.toLocaleString())} ریال
+            </div>
+          </div>
+        `);
+      }
+
+      // صندوق کهربا
+      const urls = [
+        "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz&type=1",
+        "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeKyzGgWec9Po3hG9QVoMxMtCI3z5P&type=1",
+        "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreezhPfvWeEOGOPucTWsPukkDazGzTQ&type=1"
+      ];
+      const kahroba = await fetchkahrobaFromEndpoints(urls);
+
+      if(kahroba && typeof kahroba.pc==='number'){
+        const result = Math.floor((kahroba_UNITS * (kahroba.pc / 10)) - ((kahroba_UNITS * (kahroba.pc / 10))*0.12/100));
+        const fundProfitPercent = INVESTMENT_KAHROBA ? ((result - INVESTMENT_KAHROBA)/INVESTMENT_KAHROBA)*100 : 0;
+        const fundColor = fundProfitPercent>0?'green':fundProfitPercent<0?'red':'black';
+        animateElement('fund-price-box', `<span style="color:${fundColor}">صندوق کهربا: ${toPersianNumber(Math.floor(kahroba.pc).toLocaleString())} (${toPersianNumber(Math.abs(fundProfitPercent).toFixed(2))}%)</span>`);
+
+        // merged و بازدهی نهایی
+        const merged = BTC_RIAL + result;
+        const profitAmount = merged - INVESTMENT_BASE;
+        const profitPercent = INVESTMENT_BASE ? (profitAmount/INVESTMENT_BASE)*100 : 0;
+        const profitColor = profitPercent>0?'green':profitPercent<0?'red':'black';
+
+        animateElement('merged-value', `ارزش دارایی: ${toPersianNumber(merged)}`);
+        const finalBox = document.getElementById('final-box');
+        finalBox.style.color = profitColor;
+        finalBox.innerText = `بازدهی: ${toPersianNumber(Math.abs(profitAmount))} (${toPersianNumber(Math.abs(profitPercent).toFixed(2))}%)`;
+      }
+
+      // زمان آخرین بروزرسانی
+      const now = new Date();
+      document.getElementById('last-update').innerText = `آخرین بروزرسانی: ${toPersianNumber(now.toLocaleDateString('fa-IR'))} - ${toPersianNumber(now.toLocaleTimeString('fa-IR').replace(/:\d+$/,''))}`;
+
+    } catch(err){
+      animateElement('crypto-box','خطا در دریافت اطلاعات رمزارزها');
+      animateElement('profit-box','خطا در دریافت اطلاعات');
+    }
+  }
+
+  document.getElementById('refresh-btn').addEventListener('click', fetchData);
+  fetchData();
+})();
+</script>
 </body>
 </html>
