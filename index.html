@@ -19,7 +19,7 @@
        <button id="refresh-btn" class="text-white text-lg font-bold w-full">🔄 بروزرسانی ارزش دارایی ها</button>
     </section>
 
-    <section class="bg-white rounded-xl shadow-2xl p-3 text-center border-3 border-blue-700">
+    <section class="bg-white rounded-xl shadow-2xl p-3 text-center border-2 border-blue-700">
       <div class="text-lg font-bold space-y-1 persian-numbers drop-shadow-lg">
         <div id="usd-box">دلار: ...</div>
         <div id="usdt-box">تتر: ...</div>
@@ -34,19 +34,23 @@
       حباب طلای ۱۸ عیار: <span id="goldbubble"></span>
     </section>
 
-    <section id="profit-box" class="bg-white rounded-xl shadow-2xl p-3 text-center text-black mt-3 persian-numbers border-3 border-blue-700">
+    <section id="profit-box" class="bg-white rounded-xl shadow-2xl p-3 text-center text-black mt-3 persian-numbers border-2 border-blue-700">
       در حال محاسبه سود/زیان...
     </section>
 
-    <section id="crypto-box" class="bg-white rounded-xl shadow-2xl p-3 text-center text-black persian-numbers border-3 border-blue-700">
+    <section id="crypto-box" class="bg-white rounded-xl shadow-2xl p-3 text-center text-black persian-numbers border-2 border-blue-700">
       در حال دریافت اطلاعات رمزارزها...
     </section>
 
-    <section class="bg-white rounded-xl shadow-2xl p-3 text-center persian-numbers border-3 border-blue-700">
+    <section class="bg-white rounded-xl shadow-2xl p-3 text-center persian-numbers border-2 border-blue-700">
       <h3 id="portfolio-title" class="text-2xl font-extrabold text-purple-800 mb-2 drop-shadow-lg">طلای آبشده</h3>
       <p id="portfolio-value" class="text-xl font-extrabold persian-numbers text-black mt-3 drop-shadow-lg">مقدار ریالی سرمایه گذاری: ۱۴۳۰۰۰</p>
       <p id="merged-value" class="text-xl font-bold persian-numbers text-black mt-2 drop-shadow-lg">...</p>
       <p id="profit-percent" class="text-xl font-bold persian-numbers mt-2 drop-shadow-lg">...</p>
+    </section>
+
+    <section id="final-box" class="bg-white rounded-xl shadow-2xl p-3 text-center text-black mt-3 persian-numbers border-2 border-blue-700">
+      در حال محاسبه سود/زیان...
     </section>
 
     <p id="last-update" class="text-sm text-black text-center drop-shadow-lg mt-4 persian-numbers">در حال دریافت زمان...</p>
@@ -265,19 +269,20 @@
             const profitAmount = merged - INVESTMENT_BASE;   // مبلغ بازدهی
             const profitPercent = INVESTMENT_BASE ? ((profitAmount) / INVESTMENT_BASE) * 100 : 0;
 
-            const profitEl = document.getElementById('profit-percent');
+            const profitEl = document.getElementById('final-box');   // ← تغییر فقط همین خط
             const profitColor = profitPercent > 0 ? 'green' : profitPercent < 0 ? 'red' : 'black';
 
             if (profitEl) {
                profitEl.style.color = profitColor;
                profitEl.innerText =
-                 `بازدهی: ${toPersianNumber(Math.abs(profitAmount))} (${toPersianNumber(Math.abs(profitPercent).toFixed(2))}%)`;
-          }
+                `بازدهی: ${toPersianNumber(Math.abs(profitAmount))} (${toPersianNumber(Math.abs(profitPercent).toFixed(2))}%)`;
+            }
 
-          } else {
-            animateElement('fund-price-box', 'صندوق کهربا یافت نشد');
-            animateElement('profit-box', 'صندوق کهربا یافت نشد');
-          }
+            } else {
+              animateElement('fund-price-box', 'صندوق کهربا یافت نشد');
+              animateElement('final-box', 'صندوق کهربا یافت نشد');  // ← همان ساختار قبلی، فقط نام باکس جدید
+            }
+
 
           // زمان آخرین بروزرسانی
           const now = new Date();
