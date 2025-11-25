@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>پورتفوی دارایی</title>
+  <title>پورتفوی سرمایه گذاری</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
   <style>
@@ -16,7 +16,7 @@
 <body class="bg-yellow-400 text-black">
   <main class="max-w-xl mx-auto p-3 space-y-2">
     <section class="bg-purple-800 rounded-xl shadow-2xl p-3 text-center">
-       <button id="refresh-btn" class="text-white text-lg font-bold w-full">🔄 بروزرسانی ارزش دارایی ها</button>
+       <button id="refresh-btn" class="text-white text-lg font-bold w-full">🔄 بروزرسانی ارزش سرمایه گذاری ها</button>
     </section>
 
     <section class="bg-white rounded-xl shadow-2xl p-3 text-center border-2 border-blue-700">
@@ -295,7 +295,7 @@ if (kahroba && typeof kahroba.pc === 'number') {
     const profitColor = profitPercent > 0 ? 'green' : profitPercent < 0 ? 'red' : 'black';
     if (profitEl) {
        profitEl.style.color = profitColor;
-       profitEl.innerText = `بازدهی: ${toPersianNumber(Math.abs(profitAmount))} (${toPersianNumber(Math.abs(profitPercent).toFixed(2))}%)`;
+       profitEl.innerText = `بازدهی کل: ${toPersianNumber(Math.abs(profitAmount))} (${toPersianNumber(Math.abs(profitPercent).toFixed(2))}%)`;
     }
 }
 
