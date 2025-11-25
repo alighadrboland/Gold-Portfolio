@@ -69,9 +69,7 @@
     const ayarUnits = 13916;
     const avgayarPrice = 238213;
     const btcAmount = 0.01;
-    const myGoldGrams = 0;
-    const avgGoldPrice = 0; // اگر نیاز دارید مقدار دیگری باشد، مقداردهی کنید
-
+    const sarmayeh = 0;
     let btcpr = 0; // مقدار ریالی بیت‌کوین (پس از تبدیل به ریال)
     let totalIrt = 0;
 
@@ -189,13 +187,10 @@
           const changeColor = gChangePercent > 0 ? 'green' : gChangePercent < 0 ? 'red' : 'black';
           animateElement("gold18-box", `<span style="color:${changeColor}">طلای ۱۸ عیار: ${toPersianNumber(Math.floor(gold18.price).toLocaleString())} (${toPersianNumber(Math.abs(gChangeValue).toLocaleString())} | ${toPersianNumber(Math.abs(gChangePercent.toFixed(2)))}%)</span>`);
 
-          const goldPrice = gold18.price;
-          const commision = goldPrice - 30000;
-          const totalGoldValue = myGoldGrams * commision;
-          const Goldpr = avgGoldPrice ? ((goldPrice - avgGoldPrice) / avgGoldPrice) * 100 : 0;
-          document.getElementById("portfolio-title").innerText = `طلای آبشده (${toPersianNumber(myGoldGrams.toLocaleString())} گرم)`;
+         
+          document.getElementById("portfolio-title").innerText = "بازدهی سرمایه‌گذاری";
 
-          animateElement("portfolio-value", `مقدار ریالی سرمایه گذاری: ${toPersianNumber((143000).toString())}`);
+          animateElement("portfolio-value", `مقدار ریالی سرمایه گذاری: ${toPersianNumber((sarmayeh).toString())}`);
 
                     try {
                 // تلاش ترتیبی روی لیست URLها به جای انتخاب رندوم
