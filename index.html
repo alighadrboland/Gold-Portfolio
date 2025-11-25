@@ -23,15 +23,15 @@
       <div class="text-lg font-bold space-y-2 persian-numbers drop-shadow-lg">
         <div id="usd-box">دلار: ...</div>
         <div id="usdt-box">تتر: ...</div>
-        <div id="gold18-box">طلای ۱۸ عیار: ...</div>
-        <div id="fund-price-box">صندوق عیار: ...</div>
+        <div id="gold18-box">طلای ۱۸ کهربا: ...</div>
+        <div id="fund-price-box">صندوق کهربا: ...</div>
         <p id="gold-price" class="hidden"></p>
         <small id="gold-change" class="hidden"></small>
       </div>
     </section>
 
     <section id="gold-bubble" class="rounded-xl shadow-2xl p-2 text-center text-white persian-numbers">
-      حباب طلای ۱۸ عیار: <span id="goldbubble"></span>
+      حباب طلای ۱۸ کهربا: <span id="goldbubble"></span>
     </section>
 
     <section id="profit-box" class="bg-white rounded-xl shadow-2xl p-3 text-center text-black mt-3 persian-numbers">
@@ -55,8 +55,8 @@
   <script>
   (function AppModule() {
     // ثابت‌های مورد نیاز (کم و مفید)
-    const AYAR_UNITS = 13916;
-    const AVG_AYAR_PRICE = 238213;
+    const kahroba_UNITS = 13916;
+    const AVG_kahroba_PRICE = 238213;
     const BTC_AMOUNT = 0.0002921;
     const MY_GOLD_GRAMS = 0;
     const INVESTMENT_BASE = 143000;
@@ -79,22 +79,22 @@
       el.classList.add('fade-update');
     }
 
-    // پیدا کردن آیتم 'عیار' در پاسخ‌‌ها (فشرده و مقاوم)
-    function findAyarInArray(arr) {
+    // پیدا کردن آیتم 'کهربا' در پاسخ‌‌ها (فشرده و مقاوم)
+    function findkahrobaInArray(arr) {
       if (!Array.isArray(arr)) return null;
       return arr.find(item => {
         if (!item) return false;
         const fields = ['l18','fa','name','title','pc','pcc','pcp'];
         for (const f of fields) {
-          if (item[f] && typeof item[f] === 'string' && item[f].includes && item[f].includes('عیار')) return true;
+          if (item[f] && typeof item[f] === 'string' && item[f].includes && item[f].includes('کهربا')) return true;
         }
-        // fallback: هر فیلد متنی که شامل 'عیار' باشد
-        return Object.values(item).some(v => typeof v === 'string' && v.includes && v.includes('عیار'));
+        // fallback: هر فیلد متنی که شامل 'کهربا' باشد
+        return Object.values(item).some(v => typeof v === 'string' && v.includes && v.includes('کهربا'));
       }) || null;
     }
 
     // تلاش تسلسلی برای گرفتن لیست نمادها
-    async function fetchAyarFromEndpoints(urls) {
+    async function fetchkahrobaFromEndpoints(urls) {
       for (const url of urls) {
         try {
           const res = await fetch(url);
@@ -107,7 +107,7 @@
           else {
             arr = Object.values(json).find(v => Array.isArray(v)) || null;
           }
-          const found = findAyarInArray(arr);
+          const found = findkahrobaInArray(arr);
           if (found) return found;
         } catch (e) {
           // ادامه به آدرس بعدی
@@ -216,7 +216,7 @@
           const gChangeValue = gold18.change_value !== undefined ? gold18.change_value : 0;
           const gChangePercent = gold18.change_percent !== undefined ? gold18.change_percent : 0;
           const changeColor = gChangePercent > 0 ? 'green' : gChangePercent < 0 ? 'red' : 'black';
-          animateElement('gold18-box', `<span style="color:${changeColor}">طلای ۱۸ عیار: ${toPersianNumber(Math.floor(gold18.price).toLocaleString())} (${toPersianNumber(Math.abs(gChangeValue).toLocaleString())} | ${toPersianNumber(Math.abs(gChangePercent.toFixed(2)))}%)</span>`);
+          animateElement('gold18-box', `<span style="color:${changeColor}">طلای ۱۸ کهربا: ${toPersianNumber(Math.floor(gold18.price).toLocaleString())} (${toPersianNumber(Math.abs(gChangeValue).toLocaleString())} | ${toPersianNumber(Math.abs(gChangePercent.toFixed(2)))}%)</span>`);
 
           // محاسبات داخلی مربوط به طلا / صندوق
           const goldPrice = gold18.price;
@@ -229,41 +229,41 @@
           document.getElementById('portfolio-title').innerText = `بازدهی سرمایه‌گذاری طی ${toPersianNumber(diffDays)} روز`;
           animateElement('portfolio-value', `مقدار ریالی سرمایه گذاری: ${toPersianNumber(INVESTMENT_BASE.toString())}`);
 
-          // پیدا کردن صندوق 'عیار' از چند endpoint
+          // پیدا کردن صندوق 'کهربا' از چند endpoint
           const urls = [
             "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz&type=1",
             "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeKyzGgWec9Po3hG9QVoMxMtCI3z5P&type=1",
             "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreezhPfvWeEOGOPucTWsPukkDazGzTQ&type=1"
           ];
-          const ayar = await fetchAyarFromEndpoints(urls);
+          const kahroba = await fetchkahrobaFromEndpoints(urls);
 
-          if (ayar && typeof ayar.pc === 'number') {
-            const ayarpc = ayar.pc;
-            const ayarpr = ((ayarpc - AVG_AYAR_PRICE) / AVG_AYAR_PRICE) * 100;
-            const ayarmoney = ((ayarpc - AVG_AYAR_PRICE) * AYAR_UNITS) / 10;
-            const unitfee = ((AYAR_UNITS * (ayarpc / 10)) * 0.12) / 100;
-            const result = Math.floor((AYAR_UNITS * (ayarpc / 10)) - unitfee); // ارزش ریالی صندوق
+          if (kahroba && typeof kahroba.pc === 'number') {
+            const kahrobapc = kahroba.pc;
+            const kahrobapr = ((kahrobapc - AVG_kahroba_PRICE) / AVG_kahroba_PRICE) * 100;
+            const kahrobamoney = ((kahrobapc - AVG_kahroba_PRICE) * kahroba_UNITS) / 10;
+            const unitfee = ((kahroba_UNITS * (kahrobapc / 10)) * 0.12) / 100;
+            const result = Math.floor((kahroba_UNITS * (kahrobapc / 10)) - unitfee); // ارزش ریالی صندوق
             const combined = Math.floor(totalGoldValue + result + totalIrt);
 
-            const color = (ayar.pcp !== undefined) ? (ayar.pcp > 0 ? 'green' : ayar.pcp < 0 ? 'red' : 'black') : 'black';
-            const pcc = ayar.pcc !== undefined ? ayar.pcc : 0;
-            const pcp = ayar.pcp !== undefined ? ayar.pcp : 0;
-            animateElement('fund-price-box', `<span style="color:${color}">صندوق عیار: ${toPersianNumber(Math.floor(ayarpc).toLocaleString())} (${toPersianNumber(Math.abs(pcc).toLocaleString())} | ${toPersianNumber(Math.abs(pcp.toFixed(2)))}%)</span>`);
+            const color = (kahroba.pcp !== undefined) ? (kahroba.pcp > 0 ? 'green' : kahroba.pcp < 0 ? 'red' : 'black') : 'black';
+            const pcc = kahroba.pcc !== undefined ? kahroba.pcc : 0;
+            const pcp = kahroba.pcp !== undefined ? kahroba.pcp : 0;
+            animateElement('fund-price-box', `<span style="color:${color}">صندوق کهربا: ${toPersianNumber(Math.floor(kahrobapc).toLocaleString())} (${toPersianNumber(Math.abs(pcc).toLocaleString())} | ${toPersianNumber(Math.abs(pcp.toFixed(2)))}%)</span>`);
 
             animateElement('profit-box', `
-              <div class="text-2xl font-extrabold drop-shadow-lg text-purple-800">صندوق عیار (${toPersianNumber(AYAR_UNITS.toLocaleString())} واحد)</div>
+              <div class="text-2xl font-extrabold drop-shadow-lg text-purple-800">صندوق کهربا (${toPersianNumber(kahroba_UNITS.toLocaleString())} واحد)</div>
               <div class="text-2xl font-extrabold drop-shadow-lg text-black mt-4">${toPersianNumber(result.toString())}</div>
             `);
 
-            const isProfitPositive = ayarmoney >= 0;
-            const formattedAyarMoney = toPersianNumber(Math.floor(Math.abs(ayarmoney)).toString());
-            const ayarprText = `%${toPersianNumber(Math.abs(ayarpr).toFixed(2))}`;
+            const isProfitPositive = kahrobamoney >= 0;
+            const formattedkahrobaMoney = toPersianNumber(Math.floor(Math.abs(kahrobamoney)).toString());
+            const kahrobaprText = `%${toPersianNumber(Math.abs(kahrobapr).toFixed(2))}`;
             const rowColorClass = isProfitPositive ? "text-green-600 drop-shadow-lg" : "text-red-600 drop-shadow-lg";
 
             document.querySelector("#profit-box").insertAdjacentHTML(
               "beforeend",
               `<div class="text-lg font-bold mt-3 persian-numbers ${rowColorClass} p-1 rounded">
-                ${formattedAyarMoney} (${ayarprText})
+                ${formattedkahrobaMoney} (${kahrobaprText})
               </div>`
             );
 
@@ -282,8 +282,8 @@
               profitEl.innerText = `${toPersianNumber(Math.abs(profitPercent).toFixed(2))}%`;
             }
           } else {
-            animateElement('fund-price-box', 'صندوق عیار یافت نشد');
-            animateElement('profit-box', 'صندوق عیار یافت نشد');
+            animateElement('fund-price-box', 'صندوق کهربا یافت نشد');
+            animateElement('profit-box', 'صندوق کهربا یافت نشد');
           }
 
           // زمان آخرین بروزرسانی
