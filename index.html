@@ -192,7 +192,7 @@
           const totalGoldValue = myGoldGrams * commision;
           const Goldpr = avgGoldPrice ? ((goldPrice - avgGoldPrice) / avgGoldPrice) * 100 : 0;
 
-       // تابع تبدیل جلالی (شمسی) به تاریخ میلادی — خروجی: شیء Date
+   // تابع معتبر جلالی -> میلادی (همکاری‌شده و مقاوم)
 function jalaliToGregorian(jy, jm, jd) {
   jy = parseInt(jy, 10);
   jm = parseInt(jm, 10);
@@ -213,15 +213,12 @@ function jalaliToGregorian(jy, jm, jd) {
   var gy = 1600 + 400 * Math.floor(g_day_no / 146097);
   g_day_no = g_day_no % 146097;
 
-  var leap = true;
   if (g_day_no >= 36525) {
     g_day_no--;
     gy += 100 * Math.floor(g_day_no / 36524);
     g_day_no = g_day_no % 36524;
     if (g_day_no >= 365) {
       g_day_no++;
-    } else {
-      leap = false;
     }
   }
 
@@ -229,13 +226,12 @@ function jalaliToGregorian(jy, jm, jd) {
   g_day_no = g_day_no % 1461;
 
   if (g_day_no >= 366) {
-    leap = false;
     g_day_no -= 366;
     gy += Math.floor(g_day_no / 365);
     g_day_no = g_day_no % 365;
   }
 
-  var gregorianMonthDays = [0,31,(leap?29:28),31,30,31,30,31,31,30,31,30,31];
+  var gregorianMonthDays = [0,31, ( ( (gy%4===0 && gy%100!==0) || gy%400===0) ? 29 : 28 ),31,30,31,30,31,31,30,31,30,31];
   var gm = 0, gd = 0;
   for (var m = 1; m <= 12; m++) {
     var v = gregorianMonthDays[m];
@@ -247,11 +243,11 @@ function jalaliToGregorian(jy, jm, jd) {
     g_day_no -= v;
   }
 
-  // بازگرداندن یک شیء Date با ساعت محلی روی ساعت 00:00
+  // بازگرداندن Date (ساعت محلی روی 00:00) — ما در مقایسه از UTC استفاده می‌کنیم
   return new Date(gy, gm - 1, gd);
 }
 
-// محاسبه تعداد روزها (مبدا شمسی به صورت رشته "YYYY/MM/DD")
+// محاسبه تعداد روز از تاریخ مبدا شمسی (رشته "YYYY/MM/DD")
 function getDaysFromShamsiStart(startShamsiStr) {
   if (!startShamsiStr || typeof startShamsiStr !== "string") return NaN;
   const parts = startShamsiStr.split("/").map(p => Number(p));
@@ -260,27 +256,23 @@ function getDaysFromShamsiStart(startShamsiStr) {
   const [jy, jm, jd] = parts;
   const startDate = jalaliToGregorian(jy, jm, jd);
 
-  // استفاده از UTC برای جلوگیری از تفاوت‌های منطقه زمانی
+  // استفاده از UTC برای جلوگیری از اثر منطقه زمانی
   const startUtc = Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
-  const today = new Date();
-  const todayUtc = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+  const now = new Date();
+  const todayUtc = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
 
   const diffDays = Math.floor((todayUtc - startUtc) / (1000 * 60 * 60 * 24));
+
   return diffDays;
 }
 
-// ---------- تنظیم تاریخ مبدا به صورت دستی ----------
-const startDateString = "1404/09/04"; // <-- این را دستی تغییر بده
+// ---------- این مقدار را دستی در کدت بگذار ----------
+const startDateString = "1404/09/04"; // ← این را دقیقاً همانطور که می‌خواهی قرار بده
 const daysPassed = getDaysFromShamsiStart(startDateString);
 
-// اگر خواستی از منفی جلوگیری کنی و همیشه حداقل 0 نمایش بدی، از خط بعدی استفاده کن:
-// const safeDays = Number.isFinite(daysPassed) ? Math.max(0, daysPassed) : 0;
 
 document.getElementById("portfolio-title").innerText =
   `بازدهی سرمایه‌گذاری – ${toPersianNumber(daysPassed)} روز`;
-
-// برای دیباگ (در کنسول ببین):
-console.log("startShamsi:", startDateString, "daysPassed:", daysPassed);
 
 
 
