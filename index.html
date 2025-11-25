@@ -23,7 +23,7 @@
       <div class="text-lg font-bold space-y-2 persian-numbers drop-shadow-lg">
         <div id="usd-box">دلار: ...</div>
         <div id="usdt-box">تتر: ...</div>
-        <div id="gold18-box">طلای ۱۸ کهربا: ...</div>
+        <div id="gold18-box">طلای ۱۸ عیار: ...</div>
         <div id="fund-price-box">صندوق کهربا: ...</div>
         <p id="gold-price" class="hidden"></p>
         <small id="gold-change" class="hidden"></small>
@@ -31,7 +31,7 @@
     </section>
 
     <section id="gold-bubble" class="rounded-xl shadow-2xl p-2 text-center text-white persian-numbers">
-      حباب طلای ۱۸ کهربا: <span id="goldbubble"></span>
+      حباب طلای ۱۸ عیار: <span id="goldbubble"></span>
     </section>
 
     <section id="profit-box" class="bg-white rounded-xl shadow-2xl p-3 text-center text-black mt-3 persian-numbers">
@@ -216,7 +216,7 @@
           const gChangeValue = gold18.change_value !== undefined ? gold18.change_value : 0;
           const gChangePercent = gold18.change_percent !== undefined ? gold18.change_percent : 0;
           const changeColor = gChangePercent > 0 ? 'green' : gChangePercent < 0 ? 'red' : 'black';
-          animateElement('gold18-box', `<span style="color:${changeColor}">طلای ۱۸ کهربا: ${toPersianNumber(Math.floor(gold18.price).toLocaleString())} (${toPersianNumber(Math.abs(gChangeValue).toLocaleString())} | ${toPersianNumber(Math.abs(gChangePercent.toFixed(2)))}%)</span>`);
+          animateElement('gold18-box', `<span style="color:${changeColor}">طلای ۱۸ عیار: ${toPersianNumber(Math.floor(gold18.price).toLocaleString())} (${toPersianNumber(Math.abs(gChangeValue).toLocaleString())} | ${toPersianNumber(Math.abs(gChangePercent.toFixed(2)))}%)</span>`);
 
           // محاسبات داخلی مربوط به طلا / صندوق
           const goldPrice = gold18.price;
