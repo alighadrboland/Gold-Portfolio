@@ -69,13 +69,13 @@
     const ayarUnits = 13916;
     const avgayarPrice = 238213;
     const btcAmount = 0.01;
-    
+    const myGoldGrams = 0;
+    const avgGoldPrice = 0; // اگر نیاز دارید مقدار دیگری باشد، مقداردهی کنید
+
     let btcpr = 0; // مقدار ریالی بیت‌کوین (پس از تبدیل به ریال)
     let totalIrt = 0;
 
     function toPersianNumber(input) {
-      // اگر ورودی عددی باشد، ابتدا با toLocaleString آن را قالب‌بندی می‌کنیم تا جداکننده هزارگان اضافه شود،
-      // سپس ارقام غربی به فارسی تبدیل می‌شوند.
       if (typeof input === 'number') input = input.toLocaleString('en-US');
       const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
       return input.toString().replace(/\d/g, d => persianDigits[d]);
@@ -98,7 +98,6 @@
         const cryptoData = await coingeckoRes.json();
         const { bitcoin, tether } = cryptoData || {};
 
-        // محاسبه اولیه USD ارزها (اگر داده‌ها موجود باشند)
         const totalUsd = ((btcAmount && bitcoin && bitcoin.usd) ? (btcAmount * bitcoin.usd) : 0);
 
         const rateRes = await fetch("https://brsapi.ir/Api/Market/Gold_Currency.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz");
@@ -108,18 +107,19 @@
         const usdtPrice = usdtObj.price || 0;
         totalIrt = Math.floor(totalUsd * usdtPrice);
         const btcm = (btcAmount && bitcoin && bitcoin.usd) ? (btcAmount * bitcoin.usd) : 0;
-        btcpr = Math.floor(btcm * usdtPrice) || 0; // ذخیره مقدار ریالی بیت‌کوین (عدد صحیح)
+        btcpr = Math.floor(btcm * usdtPrice) || 0;
 
         const getColor = (change) => change > 0 ? 'green' : change < 0 ? 'red' : 'black';
 
         if (bitcoin) {
+          const btcChange = (bitcoin.usd_24h_change !== undefined) ? bitcoin.usd_24h_change : 0;
           animateElement("crypto-box", `
             <div class="text-2xl font-extrabold drop-shadow-lg text-purple-800">رمزارزها</div>
             <div class="space-y-2 mt-5 text-lg font-bold drop-shadow-lg">
-              <div style="color:${getColor(bitcoin.usd_24h_change)}">
-                 BTC: $${toPersianNumber(parseInt(bitcoin.usd || 0))}
-                 (%${toPersianNumber(Math.abs((bitcoin.usd_24h_change||0).toFixed(2)))})
-                 = $${toPersianNumber(Math.floor(btcm).toString())} | ${toPersianNumber(btcpr.toString())}
+              <div style="color:${getColor(btcChange)}">
+                 BTC: $${toPersianNumber((bitcoin.usd||0).toLocaleString())}
+                 (%${toPersianNumber(Math.abs((btcChange||0).toFixed(2)))})
+                 = $${toPersianNumber(Math.floor(btcm).toLocaleString())} | ${toPersianNumber(btcpr.toLocaleString())}
               </div>
             </div>
           `);
@@ -127,8 +127,10 @@
           animateElement("crypto-box", "خطا در دریافت قیمت بیت‌کوین");
         }
 
-        const percentColor = usdtObj.change_percent > 0 ? 'green' : usdtObj.change_percent < 0 ? 'red' : 'black';
-        animateElement("usdt-box", `<span style="color:${percentColor}">تتر: ${toPersianNumber(usdtPrice)}</span>`);
+        const percentColor = (usdtObj.change_percent !== undefined) ? (usdtObj.change_percent > 0 ? 'green' : usdtObj.change_percent < 0 ? 'red' : 'black') : 'black';
+        const usdtChangeValue = usdtObj.change_value !== undefined ? usdtObj.change_value : 0;
+        const usdtChangePercent = usdtObj.change_percent !== undefined ? usdtObj.change_percent : 0;
+        animateElement("usdt-box", `<span style="color:${percentColor}">تتر: ${toPersianNumber(usdtPrice.toLocaleString())} (${toPersianNumber(Math.abs(usdtChangeValue).toLocaleString())} | ${toPersianNumber(Math.abs(usdtChangePercent.toFixed(2)))}%)</span>`);
 
       } catch (err) {
          console.error("خطا در دریافت اطلاعات رمزارز:", err);
@@ -162,12 +164,16 @@
         }
 
         if (usd) {
-          const color = usd.change_value > 0 ? 'green' : usd.change_value < 0 ? 'red' : 'black';
-          animateElement("usd-box", `<span style="color:${color}">دلار: ${toPersianNumber(Math.floor(usd.price))}</span>`);
+          const usdChangeValue = usd.change_value !== undefined ? usd.change_value : 0;
+          const usdChangePercent = usd.change_percent !== undefined ? usd.change_percent : 0;
+          const color = usdChangeValue > 0 ? 'green' : usdChangeValue < 0 ? 'red' : 'black';
+          animateElement("usd-box", `<span style="color:${color}">دلار: ${toPersianNumber(Math.floor(usd.price).toLocaleString())} (${toPersianNumber(Math.abs(usdChangeValue).toLocaleString())} | ${toPersianNumber(Math.abs(usdChangePercent.toFixed(2)))}%)</span>`);
 
           if (ounceGold) {
-             const ozColor = ounceGold.change_value > 0 ? 'green' : ounceGold.change_value < 0 ? 'red' : 'black';
-             const ounceHtml = `<div id="ounce-box" style="color:${ozColor}">انس جهانی طلا: ${toPersianNumber(Math.floor(ounceGold.price))}$</div>`;
+             const ozChangeValue = ounceGold.change_value !== undefined ? ounceGold.change_value : 0;
+             const ozChangePercent = ounceGold.change_percent !== undefined ? ounceGold.change_percent : 0;
+             const ozColor = ozChangeValue > 0 ? 'green' : ozChangeValue < 0 ? 'red' : 'black';
+             const ounceHtml = `<div id="ounce-box" style="color:${ozColor}">انس جهانی طلا: ${toPersianNumber(Math.floor(ounceGold.price).toLocaleString())}$ (${toPersianNumber(Math.abs(ozChangeValue).toLocaleString())}$ | ${toPersianNumber(Math.abs(ozChangePercent.toFixed(2)))}%)</div>`;
              const existingOunceBox = document.getElementById("ounce-box");
              if (existingOunceBox) {
                  existingOunceBox.outerHTML = ounceHtml;
@@ -178,16 +184,17 @@
         }
 
         if (gold18) {
-          const changeColor = gold18.change_percent > 0 ? 'green' : gold18.change_percent < 0 ? 'red' : 'black';
-          animateElement("gold18-box", `<span style="color:${changeColor}">طلای ۱۸ عیار: ${toPersianNumber(Math.floor(gold18.price))}</span>`);
+          const gChangeValue = gold18.change_value !== undefined ? gold18.change_value : 0;
+          const gChangePercent = gold18.change_percent !== undefined ? gold18.change_percent : 0;
+          const changeColor = gChangePercent > 0 ? 'green' : gChangePercent < 0 ? 'red' : 'black';
+          animateElement("gold18-box", `<span style="color:${changeColor}">طلای ۱۸ عیار: ${toPersianNumber(Math.floor(gold18.price).toLocaleString())} (${toPersianNumber(Math.abs(gChangeValue).toLocaleString())} | ${toPersianNumber(Math.abs(gChangePercent.toFixed(2)))}%)</span>`);
 
           const goldPrice = gold18.price;
           const commision = goldPrice - 30000;
-          const totalGoldValue = myGoldGrams * commision; // غالباً صفر چون myGoldGrams=0
+          const totalGoldValue = myGoldGrams * commision;
           const Goldpr = avgGoldPrice ? ((goldPrice - avgGoldPrice) / avgGoldPrice) * 100 : 0;
           document.getElementById("portfolio-title").innerText = `طلای آبشده (${toPersianNumber(myGoldGrams.toLocaleString())} گرم)`;
 
-          // ثابت خواسته‌شده: مقدار ریالی سرمایه‌گذاری را نشان می‌دهد
           animateElement("portfolio-value", `مقدار ریالی سرمایه گذاری: ${toPersianNumber((143000).toString())}`);
 
           const urls = [
@@ -212,8 +219,11 @@
                     const combined = Math.floor(totalGoldValue + result + totalIrt);
                     const color = (ayar.pcp !== undefined) ? (ayar.pcp > 0 ? 'green' : ayar.pcp < 0 ? 'red' : 'black') : 'black';
 
-                    animateElement("fund-price-box", `<span style="color:${color}">صندوق عیار: ${toPersianNumber(Math.floor(ayarpc))}</span>`);
-                    animateElement("gold-amount", toPersianNumber(Math.floor(combined).toString()));
+                    // نمایش مقدار، مقدار تغییر (pcc) و درصد تغییر (pcp) مثل کد اول
+                    const pcc = ayar.pcc !== undefined ? ayar.pcc : 0;
+                    const pcp = ayar.pcp !== undefined ? ayar.pcp : 0;
+                    animateElement("fund-price-box", `<span style="color:${color}">صندوق عیار: ${toPersianNumber(Math.floor(ayarpc).toLocaleString())} (${toPersianNumber(Math.abs(pcc).toLocaleString())} | ${toPersianNumber(Math.abs(pcp.toFixed(2)))}%)</span>`);
+                    animateElement("gold-amount", toPersianNumber(Math.floor(combined).toLocaleString()));
 
                     animateElement("profit-box", `
                           <div class="text-2xl font-extrabold drop-shadow-lg text-purple-800">صندوق عیار (${toPersianNumber(ayarUnits.toLocaleString())} واحد)</div>
@@ -238,11 +248,9 @@
                     const fundValue = Math.floor(result) || 0;
                     const merged = btcValue + fundValue;
 
-                    // نمایش مقدار ادغام شده (به فارسی)
                     const mergedEl = document.getElementById('merged-value');
                     if (mergedEl) mergedEl.innerText = `ارزش ریالی بیت‌کوین + صندوق: ${toPersianNumber(merged.toString())}`;
 
-                    // محاسبه درصد سود/زیان نسبت به سرمایه‌گذاری پایه
                     const profitPercent = investmentBase ? ((merged - investmentBase) / investmentBase) * 100 : 0;
                     const profitEl = document.getElementById('profit-percent');
                     const profitColor = profitPercent > 0 ? 'green' : profitPercent < 0 ? 'red' : 'black';
