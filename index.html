@@ -226,8 +226,8 @@
           // نمایش روزها از تاریخ شروع
           const today = new Date();
           const diffDays = Math.floor((today - START_DATE) / (1000 * 60 * 60 * 24));
-          document.getElementById('portfolio-title').innerText = `بازدهی سرمایه‌گذاری طی ${toPersianNumber(diffDays)} روز`;
-          animateElement('portfolio-value', `مقدار ریالی سرمایه گذاری: ${toPersianNumber(INVESTMENT_BASE.toString())}`);
+          document.getElementById('portfolio-title').innerText = `سرمایه‌گذاری طی ${toPersianNumber(diffDays)} روز`;
+          animateElement('portfolio-value', `ارزش سرمایه گذاری: ${toPersianNumber(INVESTMENT_BASE)}`);
 
           // پیدا کردن صندوق 'کهربا' از چند endpoint
           const urls = [
@@ -252,7 +252,7 @@
 
             animateElement('profit-box', `
               <div class="text-2xl font-extrabold drop-shadow-lg text-purple-800">صندوق کهربا (${toPersianNumber(kahroba_UNITS.toLocaleString())} واحد)</div>
-              <div class="text-2xl font-extrabold drop-shadow-lg text-black mt-4">${toPersianNumber(result.toString())}</div>
+              <div class="text-2xl font-extrabold drop-shadow-lg text-black mt-4">${toPersianNumber(result)}</div>
             `);
 
             // merged, profit percent
@@ -260,14 +260,14 @@
             const fundValue = Math.floor(result) || 0;
             const merged = btcValue + fundValue;
             const mergedEl = document.getElementById('merged-value');
-            if (mergedEl) mergedEl.innerText = `ارزش ریالی بیت‌کوین + صندوق: ${toPersianNumber(merged.toString())}`;
+            if (mergedEl) mergedEl.innerText = `ارزش دارایی: ${toPersianNumber(merged)}`;
 
             const profitPercent = INVESTMENT_BASE ? ((merged - INVESTMENT_BASE) / INVESTMENT_BASE) * 100 : 0;
             const profitEl = document.getElementById('profit-percent');
             const profitColor = profitPercent > 0 ? 'green' : profitPercent < 0 ? 'red' : 'black';
             if (profitEl) {
               profitEl.style.color = profitColor;
-              profitEl.innerText = `${toPersianNumber(Math.abs(profitPercent).toFixed(2))}%`;
+              profitEl.innerText = `بازدهی: ${toPersianNumber(Math.abs(profitPercent).toFixed(2))}%`;
             }
           } else {
             animateElement('fund-price-box', 'صندوق کهربا یافت نشد');
