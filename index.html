@@ -256,7 +256,14 @@
             const color = (kahroba.pcp !== undefined) ? (kahroba.pcp > 0 ? 'green' : kahroba.pcp < 0 ? 'red' : 'black') : 'black';
             const pcc = kahroba.pcc !== undefined ? kahroba.pcc : 0;
             const pcp = kahroba.pcp !== undefined ? kahroba.pcp : 0;
-            animateElement('fund-price-box', `<span style="color:${color}">صندوق کهربا: ${toPersianNumber(Math.floor(kahrobapc).toLocaleString())} (${toPersianNumber(Math.abs(pcc).toLocaleString())} | ${toPersianNumber(Math.abs(pcp.toFixed(2)))}%)</span>`);
+            const kahrobaProfitPercent = ((result - INVESTMENT_KAHROBA) / INVESTMENT_KAHROBA) * 100;
+            const kahrobaColor = kahrobaProfitPercent > 0 ? 'green' : kahrobaProfitPercent < 0 ? 'red' : 'black';
+            animateElement('fund-price-box', `<span style="color:${kahrobaColor}">
+                 صندوق کهربا: ${toPersianNumber(Math.floor(kahrobapc).toLocaleString())} 
+                 (${toPersianNumber(Math.abs(kahrobapc - AVG_kahroba_PRICE))} | 
+                 ${toPersianNumber(Math.abs(kahrobaProfitPercent.toFixed(2)))}%)
+            </span>`);
+
 
             animateElement('profit-box', `
               <div class="text-2xl font-extrabold drop-shadow-lg text-purple-800">صندوق کهربا (${toPersianNumber(kahroba_UNITS.toLocaleString())} واحد)</div>
