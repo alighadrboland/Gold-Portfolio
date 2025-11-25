@@ -255,18 +255,6 @@
               <div class="text-2xl font-extrabold drop-shadow-lg text-black mt-4">${toPersianNumber(result.toString())}</div>
             `);
 
-            const isProfitPositive = kahrobamoney >= 0;
-            const formattedkahrobaMoney = toPersianNumber(Math.floor(Math.abs(kahrobamoney)).toString());
-            const kahrobaprText = `%${toPersianNumber(Math.abs(kahrobapr).toFixed(2))}`;
-            const rowColorClass = isProfitPositive ? "text-green-600 drop-shadow-lg" : "text-red-600 drop-shadow-lg";
-
-            document.querySelector("#profit-box").insertAdjacentHTML(
-              "beforeend",
-              `<div class="text-lg font-bold mt-3 persian-numbers ${rowColorClass} p-1 rounded">
-                ${formattedkahrobaMoney} (${kahrobaprText})
-              </div>`
-            );
-
             // merged, profit percent
             const btcValue = Math.floor(btcpr) || 0;
             const fundValue = Math.floor(result) || 0;
