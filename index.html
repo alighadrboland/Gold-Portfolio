@@ -191,8 +191,33 @@
           const commision = goldPrice - 30000;
           const totalGoldValue = myGoldGrams * commision;
           const Goldpr = avgGoldPrice ? ((goldPrice - avgGoldPrice) / avgGoldPrice) * 100 : 0;
-          document.getElementById("portfolio-title").innerText = "بازدهی سرمایه‌گذاری";
+          
+          // محاسبه تعداد روزهای سرمایه‌گذاری از 1404/09/04
+          function getInvestmentDays() {
+             // تاریخ شروع سرمایه‌گذاری (شمسی)
+             const startDateShamsi = "1404/09/04";
 
+             // تبدیل تاریخ شمسی به میلادی
+             const gDate = new Date(new Intl.DateTimeFormat("en-u-ca-persian").format(new Date(startDateShamsi)));
+
+            // تاریخ امروز میلادی
+            const today = new Date();
+
+            // اختلاف بر حسب روز
+           const diffTime = today - gDate;
+           const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+           return diffDays;
+        }
+
+        // مقدار روزها
+       const investmentDays = getInvestmentDays();
+
+        // نمایش در عنوان صفحه
+       document.getElementById("portfolio-title").innerText =
+           `بازدهی سرمایه‌گذاری – ${toPersianNumber(investmentDays)} روز`;
+
+          
           animateElement("portfolio-value", `مقدار ریالی سرمایه گذاری: ${toPersianNumber((sarmayeh).toString())}`);
 
                     try {
