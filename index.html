@@ -158,7 +158,7 @@
           const btcm = BTC_AMOUNT * (bitcoin.usd || 0);
           const getColor = c => c > 0 ? 'green' : c < 0 ? 'red' : 'black';
           animateElement('crypto-box', `
-            <div class="text-2xl font-extrabold drop-shadow-lg text-purple-800">بیت کوین (${toPersianNumber(BTC_AMOUNT.toLocaleString())} )
+            <div class="text-2xl font-extrabold drop-shadow-lg text-purple-800">بیت کوین (${toPersianNumber(BTC_AMOUNT.toLocaleString())})</div>
             <div class="space-y-1 mt-5 text-lg font-bold drop-shadow-lg">
               <div style="color:${getColor(btcChange)}">
                 BTC: $${toPersianNumber((bitcoin.usd||0).toLocaleString())}
