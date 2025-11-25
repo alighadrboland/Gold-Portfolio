@@ -197,17 +197,65 @@
 
           animateElement("portfolio-value", `مقدار ریالی سرمایه گذاری: ${toPersianNumber((143000).toString())}`);
 
-          const urls = [
-            "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz&type=1",
-            "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeKyzGgWec9Po3hG9QVoMxMtCI3z5P&type=1",
-            "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreezhPfvWeEOGOPucTWsPukkDazGzTQ&type=1"
-          ];
-          const randomUrl = urls[Math.floor(Math.random() * urls.length)];
+                    try {
+                // تلاش ترتیبی روی لیست URLها به جای انتخاب رندوم
+                const urls = [
+                  "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz&type=1",
+                  "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreeKyzGgWec9Po3hG9QVoMxMtCI3z5P&type=1",
+                  "https://brsapi.ir/Api/Tsetmc/AllSymbols.php?key=FreezhPfvWeEOGOPucTWsPukkDazGzTQ&type=1"
+                ];
 
-          try {
-                const ayarRes = await fetch(randomUrl);
-                const symbols = await ayarRes.json();
-                const ayar = Array.isArray(symbols) ? symbols.find(i => i.l18 === "عیار") : null;
+                let symbols = null;
+                let ayar = null;
+                // تابع کمک برای یافتن آیتم 'عیار' با چند استراتژی
+                function findAyarInArray(arr) {
+                  if (!Array.isArray(arr)) return null;
+                  // بررسی دقیق روی فیلدهای مختلف و همچنین جستجوی متن
+                  return arr.find(item =>
+                    item &&
+                    (
+                      (item.l18 && item.l18 === "عیار") ||
+                      (item.l18 && typeof item.l18 === 'string' && item.l18.includes("عیار")) ||
+                      (item.fa && typeof item.fa === 'string' && item.fa.includes("عیار")) ||
+                      (item.name && typeof item.name === 'string' && item.name.includes("عیار")) ||
+                      (item.title && typeof item.title === 'string' && item.title.includes("عیار")) ||
+                      (Object.values(item).some(v => typeof v === 'string' && v.includes && v.includes("عیار")))
+                    )
+                  ) || null;
+                }
+
+                // تلاش برای هر آدرس تا وقتی که داده درست بازگردد
+                for (let i = 0; i < urls.length; i++) {
+                  try {
+                    const ayarRes = await fetch(urls[i]);
+                    if (!ayarRes.ok) {
+                      console.warn("عدم پاسخ مناسب از URL:", urls[i], ayarRes.status);
+                      continue;
+                    }
+                    const json = await ayarRes.json();
+                    console.log("پاسخ از", urls[i], json); // برای دیباگ — کنسول را چک کنید
+                    // ممکن است داده‌ها مستقیم آرایه باشند یا درون فیلد خاصی قرار گرفته باشند
+                    if (Array.isArray(json)) {
+                      symbols = json;
+                    } else if (json && Array.isArray(json.data)) {
+                      symbols = json.data;
+                    } else if (json && Array.isArray(json.symbols)) {
+                      symbols = json.symbols;
+                    } else {
+                      // تلاش برای پیدا کردن هر آرایهٔ داخل آبجکت
+                      const foundArr = Object.values(json).find(v => Array.isArray(v));
+                      if (foundArr) symbols = foundArr;
+                    }
+
+                    if (symbols) {
+                      ayar = findAyarInArray(symbols);
+                      if (ayar) break; // پیدا شد، بیرون میایم
+                    }
+                  } catch (e) {
+                    console.warn("خطا هنگام دریافت از", urls[i], e);
+                    // ادامه به URL بعدی
+                  }
+                }
 
                 if (ayar && typeof ayar.pc === 'number') {
                     const ayarpc = ayar.pc;
@@ -219,7 +267,6 @@
                     const combined = Math.floor(totalGoldValue + result + totalIrt);
                     const color = (ayar.pcp !== undefined) ? (ayar.pcp > 0 ? 'green' : ayar.pcp < 0 ? 'red' : 'black') : 'black';
 
-                    // نمایش مقدار، مقدار تغییر (pcc) و درصد تغییر (pcp) مثل کد اول
                     const pcc = ayar.pcc !== undefined ? ayar.pcc : 0;
                     const pcp = ayar.pcp !== undefined ? ayar.pcp : 0;
                     animateElement("fund-price-box", `<span style="color:${color}">صندوق عیار: ${toPersianNumber(Math.floor(ayarpc).toLocaleString())} (${toPersianNumber(Math.abs(pcc).toLocaleString())} | ${toPersianNumber(Math.abs(pcp.toFixed(2)))}%)</span>`);
@@ -242,15 +289,13 @@
                         </div>`
                     );
 
-                    // --- محاسبه و نمایش مجموع ارزش ریالی بیت کوین و صندوق عیار ---
+                    // بقیه محاسبات (merged, percent) مثل قبل
                     const investmentBase = 143000;
                     const btcValue = Math.floor(btcpr) || 0;
                     const fundValue = Math.floor(result) || 0;
                     const merged = btcValue + fundValue;
-
                     const mergedEl = document.getElementById('merged-value');
                     if (mergedEl) mergedEl.innerText = `ارزش ریالی بیت‌کوین + صندوق: ${toPersianNumber(merged.toString())}`;
-
                     const profitPercent = investmentBase ? ((merged - investmentBase) / investmentBase) * 100 : 0;
                     const profitEl = document.getElementById('profit-percent');
                     const profitColor = profitPercent > 0 ? 'green' : profitPercent < 0 ? 'red' : 'black';
@@ -260,12 +305,15 @@
                     }
 
              } else {
+                   console.warn("صندوق عیار یافت نشد در هیچ‌یک از endpointها");
+                   animateElement("fund-price-box", "صندوق عیار یافت نشد");
                    animateElement("profit-box", "صندوق عیار یافت نشد");
              }
           } catch (err) {
-                 console.error("خطا در دریافت اطلاعات صندوق:", err);
+                 console.error("خطا در دریافت اطلاعات صندوق (کلی):", err);
                  animateElement("profit-box", "خطا در دریافت قیمت صندوق");
           }
+
           
           const now = new Date();
           const formattedDate = toPersianNumber(now.toLocaleDateString("fa-IR"));
