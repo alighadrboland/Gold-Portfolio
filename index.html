@@ -65,7 +65,9 @@
     const AVG_kahroba_PRICE = 111873;
     const BTC_AMOUNT = 0.0002921;
     const MY_GOLD_GRAMS = 0;
-    const INVESTMENT_BASE = 5311000;
+    const INVESTMENT_KAHROBA = 2500000;
+    const INVESTMENT_BTC = 2811000;
+    const INVESTMENT_BASE = INVESTMENT_KAHROBA + INVESTMENT_BTC;
     const START_DATE = new Date(2025, 10, 25); // 25 نوامبر 2025
 
     // ابزارها
@@ -249,6 +251,7 @@
             const kahrobamoney = ((kahrobapc - AVG_kahroba_PRICE) * kahroba_UNITS) / 10;
             const unitfee = ((kahroba_UNITS * (kahrobapc / 10)) * 0.12) / 100;
             const result = Math.floor((kahroba_UNITS * (kahrobapc / 10)) - unitfee); // ارزش ریالی صندوق
+            const finalresult = (result / INVESTMENT_KAHROBA) * 100;
             const combined = Math.floor(totalGoldValue + result + totalIrt);
 
             const color = (kahroba.pcp !== undefined) ? (kahroba.pcp > 0 ? 'green' : kahroba.pcp < 0 ? 'red' : 'black') : 'black';
@@ -258,7 +261,13 @@
 
             animateElement('profit-box', `
               <div class="text-2xl font-extrabold drop-shadow-lg text-purple-800">صندوق کهربا (${toPersianNumber(kahroba_UNITS.toLocaleString())} واحد)</div>
-              <div class="text-2xl font-extrabold drop-shadow-lg text-black mt-4">${toPersianNumber(result)}</div>
+              <div class="text-2xl font-extrabold drop-shadow-lg text-black mt-4">
+                ${toPersianNumber(result)}
+                <span style="color:${finalResult >= 0 ? 'green' : 'red'}">
+                  (${toPersianNumber(Math.abs(finalResult).toFixed(2))}%)
+                </span>
+              </div>
+
             `);
 
             // merged, profit percent
