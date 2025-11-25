@@ -191,85 +191,74 @@
           const commision = goldPrice - 30000;
           const totalGoldValue = myGoldGrams * commision;
           const Goldpr = avgGoldPrice ? ((goldPrice - avgGoldPrice) / avgGoldPrice) * 100 : 0;
-          
+
           // تبدیل تاریخ جلالی (شمسی) به تاریخ میلادی (Date object)
-// ورودی: سال، ماه، روز شمسی (اعداد صحیح)
-// خروجی: شیء Date میلادی
 function jalaliToGregorian(jy, jm, jd) {
-  jy = parseInt(jy, 10);
-  jm = parseInt(jm, 10);
-  jd = parseInt(jd, 10);
+  let a = jy - 979;
+  let b = jm - 1;
+  let c = jd - 1;
 
-  var jy2 = jy - 979;
-  var jm2 = jm - 1;
-  var jd2 = jd - 1;
+  let gDay =
+    365 * a +
+    Math.floor(a / 33) * 8 +
+    Math.floor(((a % 33) + 3) / 4) +
+    186 * b -
+    Math.floor((b - 6) / 2) +
+    c +
+    79;
 
-  var j_day_no = 365 * jy2 + Math.floor(jy2 / 33) * 8 + Math.floor(((jy2 % 33) + 3) / 4);
-  var j_month_days = [31,31,31,31,31,31,30,30,30,30,30,29];
-  for (var i = 0; i < jm2; ++i) {
-    j_day_no += j_month_days[i];
-  }
-  j_day_no += jd2;
+  let gy = 1600 + 400 * Math.floor(gDay / 146097);
+  gDay %= 146097;
 
-  var g_day_no = j_day_no + 79;
-  var gy = 1600 + 400 * Math.floor(g_day_no / 146097);
-  g_day_no = g_day_no % 146097;
+  let leap = true;
+  if (gDay >= 36525) {
+    gDay--;
+    gy += 100 * Math.floor(gDay / 36524);
+    gDay %= 36524;
 
-  var leap = true;
-  if (g_day_no >= 36525) {
-    g_day_no--;
-    gy += 100 * Math.floor(g_day_no / 36524);
-    g_day_no = g_day_no % 36524;
-    if (g_day_no >= 365) {
-      g_day_no++;
-    } else {
-      leap = false;
-    }
+    leap = gDay >= 365;
+    if (!leap) gDay++;
   }
 
-  gy += 4 * Math.floor(g_day_no / 1461);
-  g_day_no = g_day_no % 1461;
+  gy += 4 * Math.floor(gDay / 1461);
+  gDay %= 1461;
 
-  if (g_day_no >= 366) {
+  if (gDay >= 366) {
     leap = false;
-    g_day_no -= 366;
-    gy += Math.floor(g_day_no / 365);
-    g_day_no = g_day_no % 365;
+    gDay--;
+    gy += Math.floor(gDay / 365);
+    gDay %= 365;
   }
 
-  var gregorianMonthDays = [0,31,(leap?29:28),31,30,31,30,31,31,30,31,30,31];
-  var gm = 0, gd = 0;
-  for (var m = 1; m <= 12; m++) {
-    var v = gregorianMonthDays[m];
-    if (g_day_no < v) {
-      gm = m;
-      gd = g_day_no + 1;
-      break;
-    }
-    g_day_no -= v;
+  let gd = gDay + 1;
+  let gm;
+  for (gm = 0; gm < 12; gm++) {
+    let v = gm == 1 && leap ? 29 : [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][gm];
+    if (gd <= v) break;
+    gd -= v;
   }
-
-  return new Date(gy, gm - 1, gd);
+  return [gy, gm + 1, gd];
 }
 
-// ---------- جایگزین کردن متن عنوان با تعداد روزهای سرمایه گذاری ----------
-(function updatePortfolioTitleWithDays() {
-  // تاریخ شروع شمسی مورد نظر: 1404/09/04
-  const startShamsi = { y: 1404, m: 9, d: 4 };
-  const startDate = jalaliToGregorian(startShamsi.y, startShamsi.m, startShamsi.d);
+function getDaysFromStart(start) {
+  const [jy, jm, jd] = start.split("/").map(Number);
+  const [gy, gm, gd] = jalaliToGregorian(jy, jm, jd);
+
+  const startDate = new Date(gy, gm - 1, gd);
   const today = new Date();
+  startDate.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
 
-  // اختلاف به روز (بدون در نظر گرفتن ساعت)
-  const diffMs = today.setHours(0,0,0,0) - startDate.setHours(0,0,0,0);
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  const diffTime = today - startDate;
+  return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+}
 
-  // اگر منفی یا NaN شد، مقدار امنِ صفر قرار می‌دهیم
-  const safeDays = (Number.isFinite(diffDays) && diffDays >= 0) ? diffDays : 0;
+const startDateString = "1404/09/04"; // 👈 تاریخ مبدا
+const daysPassed = getDaysFromStart(startDateString);
 
-  // نمایش به فارسی با تابع شما (toPersianNumber)
-  document.getElementById("portfolio-title").innerText =
-    `بازدهی سرمایه‌گذاری – ${toPersianNumber(safeDays)} روز`;
-})();
+document.getElementById("portfolio-title").innerText =
+  `بازدهی سرمایه‌گذاری – ${toPersianNumber(daysPassed)} روز`;
+
 
 
           
