@@ -253,7 +253,7 @@
           // نمایش روزها از تاریخ شروع
           const today = new Date();
           const diffDays = Math.floor((today - START_DATE) / (1000 * 60 * 60 * 24));
-          document.getElementById('portfolio-title').innerText = `سرمایه‌گذاری طی ${toPersianNumber(diffDays)} روز`;
+          document.getElementById('portfolio-title').innerText = `مدت سرمایه گذاری: ${toPersianNumber(diffDays)} روز`;
           animateElement('portfolio-value', `ارزش سرمایه گذاری: ${toPersianNumber(INVESTMENT_BASE)}`);
 
           // پیدا کردن صندوق 'کهربا' از چند endpoint
