@@ -322,9 +322,9 @@ if (kahroba && typeof kahroba.pc === 'number') {
        // نمایش: مقدار کل و درصد کل و در خط دوم بازدهی روزانه (چهار رقم اعشار)
        profitEl.innerHTML = 
     `بازدهی کل: ${toPersianNumber(Math.abs(profitAmount))} (${toPersianNumber(Math.abs(profitPercent).toFixed(2))}%)` +         
-    `<div style="font-size:0.75em; margin-top:5px;">
-        متوسط بازدهی روزانه: ${toPersianNumber(Math.abs(dailyPercent).toFixed(2))}%  
-    - متوسط بازدهی ماهانه: ${toPersianNumber(Math.abs(monthlyPercent).toFixed(2))}%
+    `<div style="font-size:0.75em; margin-top:5px; text-align:center;">
+        ADR: ${toPersianNumber(Math.abs(dailyPercent).toFixed(2))}%  
+        AMR: ${toPersianNumber(Math.abs(monthlyPercent).toFixed(2))}%
     </div>`;
     }
 }
