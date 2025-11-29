@@ -155,7 +155,7 @@
         // فراخوانی هم‌زمان منابع (coingecko و brsapi)
         const [cgRes, brsRes] = await Promise.all([
           fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether&vs_currencies=usd&include_24hr_change=true'),
-          fetch('https://brsapi.ir/Api/Market/Gold_Currency.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz')
+          fetch('https://brsapi.ir/Api/Market/Gold_Currency_Pro.php?key=FreeTZPrEbgTZzbW2SSGXOlzjlulRFcz')
         ]);
         const cg = cgRes.ok ? await cgRes.json() : {};
         const brs = brsRes.ok ? await brsRes.json() : {};
